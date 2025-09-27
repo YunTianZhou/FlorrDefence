@@ -1,0 +1,11 @@
+{
+  "hp": 10000,
+  "xp": 0,
+  "body_damage": 100,
+  "level": 1,
+  "coin": 2000000,
+  "talent": 0,
+  "cards": [
+    [ "common", "basic", 5 ]
+  ]
+}

@@ -1,0 +1,332 @@
+{
+  "bee": {
+    "rarities": {
+      "common": {
+        "hp": 37,
+        "speed": 1.7,
+        "damage": 50,
+        "armor": 1,
+        "coin_drop": 40,
+        "xp_drop": 50,
+        "attribs": {
+
+        }
+      },
+      "unusual": {
+        "hp": 140,
+        "speed": 1.7,
+        "damage": 150,
+        "armor": 2,
+        "coin_drop": 200,
+        "xp_drop": 200,
+        "attribs": {
+
+        }
+      },
+      "rare": {
+        "hp": 506,
+        "speed": 1.7,
+        "damage": 450,
+        "armor": 7,
+        "coin_drop": 1000,
+        "xp_drop": 800,
+        "attribs": {
+
+        }
+      },
+      "epic": {
+        "hp": 2000,
+        "speed": 1.7,
+        "damage": 1400,
+        "armor": 22,
+        "coin_drop": 5000,
+        "xp_drop": 3200,
+        "attribs": {
+
+        }
+      },
+      "legendary": {
+        "hp": 12100,
+        "speed": 1.7,
+        "damage": 4100,
+        "armor": 65,
+        "coin_drop": 25000,
+        "xp_drop": 12800,
+        "attribs": {
+
+        }
+      }
+    }
+  },
+  "ant_soldier": {
+    "rarities": {
+      "common": {
+        "hp": 100,
+        "speed": 1.0,
+        "damage": 10,
+        "armor": 1,
+        "coin_drop": 20,
+        "xp_drop": 30,
+        "attribs": {
+
+        }
+      },
+      "unusual": {
+        "hp": 375,
+        "speed": 1.0,
+        "damage": 30,
+        "armor": 2,
+        "coin_drop": 100,
+        "xp_drop": 90,
+        "attribs": {
+
+        }
+      },
+      "rare": {
+        "hp": 1400,
+        "speed": 1.0,
+        "damage": 30,
+        "armor": 7,
+        "coin_drop": 500,
+        "xp_drop": 270,
+        "attribs": {
+
+        }
+      }
+    }
+  },
+  "beetle": {
+    "rarities": {
+      "common": {
+        "hp": 100,
+        "speed": 1.5,
+        "damage": 40,
+        "armor": 1,
+        "coin_drop": 100,
+        "xp_drop": 100,
+        "attribs": {
+
+        }
+      },
+      "unusual": {
+        "hp": 375,
+        "speed": 1.5,
+        "damage": 120,
+        "armor": 2,
+        "coin_drop": 500,
+        "xp_drop": 300,
+        "attribs": {
+
+        }
+      },
+      "rare": {
+        "hp": 1400,
+        "speed": 1.5,
+        "damage": 360,
+        "armor": 7,
+        "coin_drop": 2500,
+        "xp_drop": 900,
+        "attribs": {
+
+        }
+      }
+    }
+  },
+  "spider": {
+    "rarities": {
+      "common": {
+        "hp": 62,
+        "speed": 1.3,
+        "damage": 25,
+        "armor": 1,
+        "coin_drop": 80,
+        "xp_drop": 100,
+        "attribs": {
+          "rotation_speed": 180
+        }
+      },
+      "unusual": {
+        "hp": 234,
+        "speed": 1.3,
+        "damage": 75,
+        "armor": 2,
+        "coin_drop": 400,
+        "xp_drop": 180,
+        "attribs": {
+          "rotation_speed": 180
+        }
+      },
+      "rare": {
+        "hp": 843,
+        "speed": 1.3,
+        "damage": 225,
+        "armor": 7,
+        "coin_drop": 2000,
+        "xp_drop": 540,
+        "attribs": {
+          "rotation_speed": 180
+        }
+      },
+      "epic": {
+        "hp": 3500,
+        "speed": 1.3,
+        "damage": 675,
+        "armor": 22,
+        "coin_drop": 10000,
+        "xp_drop": 1620,
+        "attribs": {
+          "rotation_speed": 180
+        }
+      },
+      "legendary": {
+        "hp": 21000,
+        "speed": 1.3,
+        "damage": 2025,
+        "armor": 65,
+        "coin_drop": 50000,
+        "xp_drop": 4860,
+        "attribs": {
+          "rotation_speed": 180
+        }
+      }
+    }
+  },
+  "hornet": {
+    "rarities": {
+      "common": {
+        "hp": 37,
+        "speed": 1.7,
+        "damage": 50,
+        "armor": 1,
+        "coin_drop": 40,
+        "xp_drop": 50,
+        "attribs": {
+          "shoot_interval": 1,
+          "shoot_interval_jitter": 1.0,
+          "rotation_speed": 720,
+          "pre_shoot_delay": 0.3,
+          "post_shoot_delay": 0.5
+        }
+      },
+      "unusual": {
+        "hp": 140,
+        "speed": 1.7,
+        "damage": 150,
+        "armor": 2,
+        "coin_drop": 200,
+        "xp_drop": 200,
+        "attribs": {
+          "shoot_interval": 1,
+          "shoot_interval_jitter": 1.0,
+          "rotation_speed": 720,
+          "pre_shoot_delay": 0.3,
+          "post_shoot_delay": 0.5
+        }
+      },
+      "rare": {
+        "hp": 506,
+        "speed": 1.7,
+        "damage": 450,
+        "armor": 7,
+        "coin_drop": 1000,
+        "xp_drop": 800,
+        "attribs": {
+          "shoot_interval": 1,
+          "shoot_interval_jitter": 1.0,
+          "rotation_speed": 720,
+          "pre_shoot_delay": 0.3,
+          "post_shoot_delay": 0.5
+        }
+      },
+      "epic": {
+        "hp": 2000,
+        "speed": 1.7,
+        "damage": 1400,
+        "armor": 22,
+        "coin_drop": 5000,
+        "xp_drop": 3200,
+        "attribs": {
+          "shoot_interval": 1,
+          "shoot_interval_jitter": 1.0,
+          "rotation_speed": 720,
+          "pre_shoot_delay": 0.3,
+          "post_shoot_delay": 0.5
+        }
+      },
+      "legendary": {
+        "hp": 12100,
+        "speed": 1.7,
+        "damage": 4100,
+        "armor": 65,
+        "coin_drop": 25000,
+        "xp_drop": 12800,
+        "attribs": {
+          "shoot_interval": 1,
+          "shoot_interval_jitter": 1.0,
+          "rotation_speed": 720,
+          "pre_shoot_delay": 0.3,
+          "post_shoot_delay": 0.5
+        }
+      }
+    }
+  },
+  "missile": {
+    "rarities": {
+      "common": {
+        "hp": 37,
+        "speed": 1.7,
+        "damage": 50,
+        "armor": 1,
+        "coin_drop": 20,
+        "xp_drop": 50,
+        "attribs": {
+
+        }
+      },
+      "unusual": {
+        "hp": 140,
+        "speed": 1.7,
+        "damage": 150,
+        "armor": 2,
+        "coin_drop": 100,
+        "xp_drop": 200,
+        "attribs": {
+
+        }
+      },
+      "rare": {
+        "hp": 506,
+        "speed": 1.7,
+        "damage": 450,
+        "armor": 7,
+        "coin_drop": 500,
+        "xp_drop": 800,
+        "attribs": {
+
+        }
+      },
+      "epic": {
+        "hp": 2000,
+        "speed": 1.7,
+        "damage": 1400,
+        "armor": 22,
+        "coin_drop": 2500,
+        "xp_drop": 3200,
+        "attribs": {
+
+        }
+      },
+      "legendary": {
+        "hp": 12100,
+        "speed": 1.7,
+        "damage": 4100,
+        "armor": 65,
+        "coin_drop": 12500,
+        "xp_drop": 12800,
+        "attribs": {
+
+        }
+      }
+    }
+  }
+}
