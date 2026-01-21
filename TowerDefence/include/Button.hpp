@@ -100,6 +100,9 @@ public:
 	void setVar(const std::string& var) { m_sharedVar = var; }
 	const std::string& getVar() const { return m_sharedVar; }
 
+	int getSize() const { return (int)m_buttons.size(); }
+	RadioButton& getButton(int i) { return m_buttons[i]; }
+
 private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

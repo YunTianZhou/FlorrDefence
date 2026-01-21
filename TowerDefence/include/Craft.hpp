@@ -43,6 +43,7 @@ private:
 	inline static const float cardSpacing = 12.f;
 	inline static const sf::FloatRect subWindowRect = sf::FloatRect({ startX, startY - 10.f }, { width + 20.f, endY - startY - 10.f });
 	inline static CardStackInfo defaultCraftStack = { { "", "" }, 0 };
+	inline static int craftLimit = 500000;
 
 private:
 	SharedInfo& m_info;

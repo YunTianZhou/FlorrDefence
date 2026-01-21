@@ -7,10 +7,10 @@ class Entity : public sf::Drawable {
 public:
     Entity(SharedInfo& info, const sf::Texture& texture);
 
-    void hit(int damage);
-    void kill() { hit(m_hp + getArmor()); }
+    virtual void hit(int damage, DamageType type = DamageType::Normal);
+    void kill() { hit(m_hp, DamageType::Lightning); }
     bool isDead() const { return m_hp <= 0; }
-    bool isDeadAnimationDone() const { return m_deathTime <= sf::Time::Zero; }
+    virtual bool isDeadAnimationDone() const { return m_deathTime <= sf::Time::Zero; }
 
     virtual void onDead() {}
     virtual void updatePosition() {}
@@ -35,8 +35,8 @@ private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 public:
-    inline static sf::Time flashDuration = sf::seconds(0.15f);
-    inline static sf::Time deathDuration = sf::seconds(0.2f);
+    inline static const sf::Time flashDuration = sf::seconds(0.15f);
+    virtual sf::Time getDeathDuration() const { return sf::seconds(0.2f); }
 
 protected:
     SharedInfo& m_info;

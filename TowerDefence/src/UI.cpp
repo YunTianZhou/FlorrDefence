@@ -2,14 +2,14 @@
 #include "AssetManager.hpp"
 
 UI::UI(SharedInfo& info)
-	: m_info(info), m_playerStateDisplayer(info.playerState), 
-	  m_shop(info), m_backpack(m_info), m_craft(m_info) {
+	: m_info(info), m_shop(info), m_backpack(info), m_craft(info), m_talent(info),
+	  m_playerStateDisplayer(std::make_unique<PlayerStateDisplayer>(info.playerState)){
 	initComponents();
 }
 
 void UI::update() {
 	// Player State Displayer
-	m_playerStateDisplayer.update();
+	m_playerStateDisplayer->update();
 
 	// Menu
 	m_menu.update(m_info.mouseWorldPosition);
@@ -18,7 +18,7 @@ void UI::update() {
 	if (m_menu.getVar() == "Backpack") m_backpack.update();
 	else if (m_menu.getVar() == "Shop") m_shop.update();
 	else if (m_menu.getVar() == "Craft") m_craft.update();
-	else if (m_menu.getVar() == "Talents");
+	else if (m_menu.getVar() == "Talents") m_talent.update();
 	else throw;
 }
 
@@ -34,13 +34,13 @@ void UI::onEvent(const sf::Event& event) {
 			if (oldVar == "Backpack") m_backpack.onExit();
 			else if (oldVar == "Shop") m_shop.onExit();
 			else if (oldVar == "Craft") m_craft.onExit();
-			else if (oldVar == "Talents");
+			else if (oldVar == "Talents") m_talent.onExit();
 			else throw;
 
 			if (newVar == "Backpack") m_backpack.onEnter();
 			else if (newVar == "Shop") m_shop.onEnter();
 			else if (newVar == "Craft") m_craft.onEnter();
-			else if (newVar == "Talents");
+			else if (newVar == "Talents") m_talent.onEnter();
 			else throw;
 		}
 	}
@@ -48,7 +48,7 @@ void UI::onEvent(const sf::Event& event) {
 	if (m_menu.getVar() == "Backpack") m_backpack.onEvent(event);
 	else if (m_menu.getVar() == "Shop") m_shop.onEvent(event);
 	else if (m_menu.getVar() == "Craft") m_craft.onEvent(event);
-	else if (m_menu.getVar() == "Talents");
+	else if (m_menu.getVar() == "Talents") m_talent.onEvent(event);
 	else throw;
 }
 
@@ -59,7 +59,8 @@ void UI::updateComponents() {
 		m_shop.updateComponents();
 	else if (m_menu.getVar() == "Craft")
 		m_craft.updateComponents();
-	else if (m_menu.getVar() == "Talents");
+	else if (m_menu.getVar() == "Talents")
+		m_talent.updateComponents();
 	else throw;
 }
 
@@ -67,7 +68,7 @@ void UI::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	// Background
 	target.draw(m_background, states);
 	// Player States
-	target.draw(m_playerStateDisplayer, states);
+	target.draw(*m_playerStateDisplayer, states);
 	// Menu
 	target.draw(m_menu, states);
 
@@ -75,7 +76,7 @@ void UI::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	if (m_menu.getVar() == "Backpack") target.draw(m_backpack, states);
 	else if (m_menu.getVar() == "Shop") target.draw(m_shop, states);
 	else if (m_menu.getVar() == "Craft") target.draw(m_craft, states);
-	else if (m_menu.getVar() == "Talents");
+	else if (m_menu.getVar() == "Talents") target.draw(m_talent, states);
 	else throw;
 }
 

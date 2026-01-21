@@ -7,11 +7,12 @@
 #include "Backpack.hpp"
 #include "Shop.hpp"
 #include "Craft.hpp"
+#include "Talent.hpp"
 
 class UI : public sf::Drawable {
 public:
 	UI(SharedInfo& info);
-
+	
 	void update();
 	void onEvent(const sf::Event& event);
 	void updateComponents();
@@ -24,9 +25,10 @@ private:
 	SharedInfo& m_info;
 
 	sf::RectangleShape m_background;
-	PlayerStateDisplayer m_playerStateDisplayer;
+	std::unique_ptr<PlayerStateDisplayer> m_playerStateDisplayer;
 	RadioButtonGroup m_menu;
 	Backpack m_backpack;
 	Shop m_shop;
 	Craft m_craft;
+	Talent m_talent;
 };

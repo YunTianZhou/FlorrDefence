@@ -6,26 +6,51 @@
 #include "Petal.hpp"
 #include "SharedInfo.hpp"
 #include "SpawnManager.hpp"
+#include "Effect.hpp"
+
+class Map;
 
 class MapInfo {
 public:
-	MapInfo(SharedInfo& info);
+	MapInfo(SharedInfo& info, Map& map);
 	const Tower* getTower(sf::Vector2i square) const;
 	Tower* getTower(sf::Vector2i square);
 	void setCard(sf::Vector2i square, const CardInfo& card);
 	void removeCard(sf::Vector2i square);
+	int removeAll(const CardInfo& card);
 	void clear();
+	void updateTowerBuff();
+
+	void update();
+	void tick();
+
+	bool isValid(sf::Vector2i square) const;
+	bool isEmpty(sf::Vector2i square) const;
+	bool isPlaceable(sf::Vector2i square, const CardInfo& card) const;
+	bool findSquareAndPlace(const CardInfo& card);
 
 public:
 	static sf::Vector2i getSquare(sf::Vector2f position);
 	static sf::Vector2f getSquareCenter(sf::Vector2i square);
 
 public:
+	enum class SquareType {
+		Grass,
+		Trail,
+		Obstacle,
+		Slot
+	};
+
 	inline static const sf::Vector2f squareSize = { 100.f, 100.f };
+	static std::array<std::array<SquareType, 10>, 11> m_squareTypeMap;
 
 private:
+	Map& m_mapRef;
+
 	SharedInfo& m_info;
 	std::array<std::array<std::unique_ptr<Tower>, 10>, 11> m_map;
+
+	bool m_buffUpdated = false;
 };
 
 
@@ -33,22 +58,31 @@ class Map : public sf::Drawable {
 public:
 	Map(SharedInfo& info);
 
-	void update();
-	void updateBuff();
+	bool update();
 	void tick();
 	void tickDeadEntities();
 	void collision(Petal& petal, Mob& mob);
-	void onEvent(const sf::Event& event);
+	bool onEvent(const sf::Event& event);
+
+	const MapInfo& getMapInfo() const { return m_map; }
+	MapInfo& getMapInfo() { return m_map; }
+
+	const std::list<std::unique_ptr<Mob>>& getMobs() const { return m_mobs; }
+	std::list<std::unique_ptr<Mob>>& getMobs() { return m_mobs; }
+
+	const std::list<std::unique_ptr<Petal>>& getPetals() const { return m_petals; }
+	std::list<std::unique_ptr<Petal>>& getPetals() { return m_petals; }
 
 private:
 	void handlePress(const sf::Vector2i& square);
+	bool handleRightPress(const sf::Vector2i& square);
 	void handleRelease(const sf::Vector2i& square);
+	bool handlePlaceTowerRequest();
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 private:
 	bool isInside(sf::Vector2f position) const;
 	void initComponents();
-	void initSpawner();
 
 public:
 	inline static const sf::FloatRect bounds = sf::FloatRect({ 0.f, 0.f }, { 1000.f, 1100.f });
@@ -62,6 +96,7 @@ private:
 	std::list<std::unique_ptr<Mob>> m_mobs;
 	std::list<std::unique_ptr<Petal>> m_petals;
 	std::list<std::unique_ptr<Entity>> m_deadEntities;
+	std::list<std::unique_ptr<Effect>> m_effects;
 	sf::Clock m_tickClock;
 
 	SpawnManager m_spawner;

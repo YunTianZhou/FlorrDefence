@@ -149,6 +149,10 @@ Shop::Shop(SharedInfo& info)
 
 void Shop::update() {
 	// Menu
+	for (int i = 0; i < m_menu.getSize(); i++) {
+		bool disable = i > m_info.playerState.buff.shop.apply(0);
+		m_menu.getButton(i).setDisabled(disable);
+	}
 	m_menu.update(m_info.mouseWorldPosition);
 
 	// ShopInfo
@@ -225,12 +229,18 @@ void Shop::onEvent(const sf::Event& event) {
 		for (Product& product : m_products) {
 			if (product.onMouseButtonReleased(*releasedEvent)) {
 				// Buy tower
-				int count = m_info.input.keyShift && product.getCardStackInfo().card.rarity != "unique" ?
+				CardStackInfo info = product.getCardStackInfo();
+				int64_t count = m_info.input.keyShift && info.card.rarity != "unique" ?
 					m_info.playerState.coin / product.getPrice() : 1;
+
+				int64_t rem = std::max(0LL, towerLimit - m_info.playerState.backpack.getCount(info.card));
+				count = std::min(count, rem / product.getCount());
+				assert(count < INT_MAX);  // TEST
+
 				m_info.playerState.coin -= count * product.getPrice();
-				CardStackInfo cardStackInfo = product.getCardStackInfo();
-				cardStackInfo.count *= count;
-				m_info.playerState.backpack.add(cardStackInfo);
+				info.count *= int(count);
+
+				m_info.playerState.backpack.add(info);
 				if (product.getCardStackInfo().card.rarity == "unique")
 					m_info.playerState.boughtUniques.insert(product.getCardStackInfo().card.type);
 			}

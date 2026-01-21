@@ -8,9 +8,11 @@ Game::Game()
     : m_viewManager(VIEW_SIZE), m_map(m_info), m_ui(m_info) {
     m_info.init();
 
-    m_window.create(sf::VideoMode(WINDOW_INIT_SIZE), "Tower Defence");
+    sf::ContextSettings settings;
+    settings.antiAliasingLevel = 5;
+    m_window.create(sf::VideoMode(WINDOW_INIT_SIZE), "Tower Defence", sf::Style::Default, sf::State::Windowed, settings);
     m_window.setView(m_viewManager.getView());
-    m_window.setFramerateLimit(60);
+    m_window.setFramerateLimit(60); 
 }
 
 void Game::run() {
@@ -48,8 +50,21 @@ void Game::handleEvents() {
                 if (keyEvent->code == sf::Keyboard::Key::W) {
                     m_info.playerState.level++;
                 }
+                else if (keyEvent->code == sf::Keyboard::Key::Q) {
+                    m_info.playerState.level += 10;
+                }
+                else if (keyEvent->code == sf::Keyboard::Key::E) {
+                    m_info.playerState.level--;
+                }
+                else if (keyEvent->code == sf::Keyboard::Key::R) {
+                    m_info.playerState.level -= 10;
+                }
+                else if (keyEvent->code == sf::Keyboard::Key::T) {
+                    m_info.playerState.level = 1;
+                }
             }
-            m_map.onEvent(*event);
+            if (m_map.onEvent(*event))
+                m_ui.updateComponents();
             m_ui.onEvent(*event);
             if (const auto* releasedEvent = event->getIf<sf::Event::MouseButtonReleased>())
                 if (releasedEvent->button == sf::Mouse::Button::Left && m_info.draggedCard.has_value())
@@ -61,7 +76,8 @@ void Game::handleEvents() {
 void Game::update() {
     if (m_info.update(m_window))
         m_ui.updateComponents();
-    m_map.update();
+    if (m_map.update())
+        m_ui.updateComponents();
     m_ui.update();
 }
 

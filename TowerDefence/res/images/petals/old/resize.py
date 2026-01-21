@@ -8,15 +8,11 @@ sharp outlines (ideal for pixel art, text, and sprites). Store the resized image
 import os
 from PIL import Image
 
-def resize_image(input_path: str, output_path: str) -> None:
+def resize_image(input_path: str, output_path: str, ratio: int) -> None:
     """Open an image, verify size, resize with NEAREST (crisp) filter, and save."""
     with Image.open(input_path) as im:
-        if im.size != (1024, 1024):
-            print(f"Skipping '{input_path}' – expected size 1024x1024, got {im.size}")
-            return
-
         # Use NEAREST neighbor to preserve sharp edges and outlines
-        resized = im.resize((256, 256), resample=Image.NEAREST)
+        resized = im.resize((im.size[0] // ratio, im.size[1] // ratio), resample=Image.NEAREST)
         # Optionally, you can sharpen the result if needed:
         # from PIL import ImageFilter
         # resized = resized.filter(ImageFilter.SHARPEN)
@@ -36,7 +32,7 @@ def main():
 
         input_path = filename
         output_path = os.path.join(output_dir, filename)
-        resize_image(input_path, output_path)
+        resize_image(input_path, output_path, 4)
 
 
 if __name__ == '__main__':

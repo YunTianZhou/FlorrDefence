@@ -6,21 +6,34 @@
 #include <algorithm>
 #include <SFML/Graphics.hpp>
 
-static inline std::string toNiceString(int x) {
-	if (x < 1000)
-		return std::to_string(x);
-	else if (x < 1000000) {
-		int whole = x / 1000;
-		int decimal = (x % 1000) / 100;
-		return decimal ? std::to_string(whole) + "." + std::to_string(decimal) + "k"
-			: std::to_string(whole) + "k";
+static inline std::string toNiceString(int64_t x) {
+	static const char* units[] = { "", "k", "m", "b", "t" };
+	static const int N_UNITS = sizeof(units) / sizeof(units[0]);
+
+	if (x > -1000 && x < 1000) return std::to_string(x);
+
+	bool negative = x < 0;
+	uint64_t ux = static_cast<uint64_t>(negative ? -x : x);
+
+	uint64_t powers[N_UNITS];
+	powers[0] = 1;
+	for (int i = 1; i < N_UNITS; ++i) powers[i] = powers[i - 1] * 1000ULL;
+
+	int idx = 0;
+	while (idx + 1 < N_UNITS && ux >= powers[idx + 1]) ++idx;
+
+	uint64_t whole = ux / powers[idx];
+	uint64_t rem = ux % powers[idx];
+	uint64_t decimal = (powers[idx] >= 10) ? (rem / (powers[idx] / 10)) : 0;
+
+	std::string s = (negative ? "-" : "");
+	s += std::to_string(whole);
+	if (decimal) {
+		s += ".";
+		s += std::to_string(decimal);
 	}
-	else {
-		int whole = x / 1000000;
-		int decimal = (x % 1000000) / 100000;
-		return decimal ? std::to_string(whole) + "." + std::to_string(decimal) + "m"
-			: std::to_string(whole) + "m";
-	}
+	s += units[idx];
+	return s;
 }
 
 static inline std::string capitalized(const std::string& word) {
@@ -62,6 +75,14 @@ static inline std::string toNiceTime(sf::Time duration) {
 		result.pop_back();
 
 	return result;
+}
+
+static inline float getDistanceSquare(sf::Vector2f origin, sf::Vector2f target) {
+	float dx = target.x - origin.x;
+	float dy = target.y - origin.y;
+	float distSquared = dx * dx + dy * dy;
+
+	return distSquared;
 }
 
 static inline sf::FloatRect getScissorRect(const sf::RenderTarget& target, const sf::FloatRect& coordRect) {
@@ -114,4 +135,3 @@ std::vector<T> randomSample(const std::vector<T>& input, std::size_t k) {
 		k, globalRNG());
 	return result;
 }
-

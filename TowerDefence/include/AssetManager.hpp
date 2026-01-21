@@ -60,6 +60,11 @@ public:
         return getTexture("petals", names...);
     }
 
+    template<typename... Args>
+    static const sf::Texture& getTalentTexture(const Args&... names) {
+        return getTexture("ui", "talents", names...);
+    }
+
     static const sf::Font& getFont() {
         return getInstance()._getFont();
     }

@@ -17,14 +17,16 @@ Entity::Entity(SharedInfo& info, const sf::Texture& texture)
     m_sprite.setOrigin({ texture.getSize().x / 2.f, texture.getSize().y / 2.f });
 }
 
-void Entity::hit(int damage) {
+void Entity::hit(int damage, DamageType type) {
     if (isDead()) return;
-    damage -= getArmor();
-    if (damage <= 0) return;
+    if (type == DamageType::Normal) {
+        damage -= getArmor();
+        if (damage <= 0) return;
+    }
     m_hp -= damage;
     m_flashTime = flashDuration;
     if (isDead())
-        m_deathTime = deathDuration;
+        m_deathTime = getDeathDuration();
 }
 
 void Entity::updateAnimation() {
@@ -78,14 +80,14 @@ void Entity::updatePathPosition(float position) {
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     float alpha = m_alpha;
     if (m_deathTime > sf::Time::Zero) {
-        float t = m_deathTime.asSeconds() / deathDuration.asSeconds();
+        float t = m_deathTime.asSeconds() / getDeathDuration().asSeconds();
         float scale = m_scale * (1.f + (1.f - t) * 0.3f);
         alpha *= t;
 
         m_sprite.setScale({ scale, scale });
     }
     else if (isDead()) {
-        alpha = 0.f;
+        return;
     }
     m_sprite.setColor({ 255, 255, 255, unsigned char(255 * alpha) });
 

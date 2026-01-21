@@ -1,53 +1,54 @@
 {
   "basic": {
+    "description": "It basically does nothing, but high rarity of it can unleash powerful energy...",
     "type": "shoot",
     "rarities": {
       "common": {
-        "price": 100,
+        "price": 5,
         "attribs": {
           "hp": 10,
           "damage": 10,
-          "reload": 1.2,
+          "reload": 2.0,
           "range": 5.0,
           "speed": 4.0
         }
       },
       "unusual": {
-        "price": 700,
+        "price": 35,
         "attribs": {
           "hp": 30,
           "damage": 30,
-          "reload": 1.2,
+          "reload": 2.0,
           "range": 5.0,
           "speed": 4.0
         }
       },
       "rare": {
-        "price": 8000,
+        "price": 420,
         "attribs": {
           "hp": 90,
           "damage": 90,
-          "reload": 1.0,
+          "reload": 2.0,
           "range": 5.0,
           "speed": 4.0
         }
       },
       "epic": {
-        "price": 160000,
+        "price": 7560,
         "attribs": {
           "hp": 270,
           "damage": 270,
-          "reload": 1.0,
+          "reload": 2.0,
           "range": 5.0,
           "speed": 4.0
         }
       },
       "legendary": {
-        "price": 3200000,
+        "price": 279720,
         "attribs": {
           "hp": 810,
           "damage": 810,
-          "reload": 1.0,
+          "reload": 1.8,
           "range": 5.0,
           "speed": 4.0
         }
@@ -55,112 +56,122 @@
     }
   },
   "rock": {
+    "description": "Be careful not to trip over it while walking!",
     "type": "defence",
     "rarities": {
       "common": {
-        "price": 150,
+        "price": 10,
         "attribs": {
           "hp": 1000,
-          "damage": 10,
-          "reload": 10.0
+          "damage": 5,
+          "reload": 20.0
         }
       },
       "unusual": {
-        "price": 1050,
+        "price": 70,
         "attribs": {
           "hp": 3000,
-          "damage": 30,
-          "reload": 10.0
+          "damage": 15,
+          "reload": 20.0
         }
       },
       "rare": {
-        "price": 12000,
+        "price": 840,
         "attribs": {
           "hp": 9000,
-          "damage": 90,
-          "reload": 10.0
+          "damage": 45,
+          "reload": 20.0
         }
       },
       "epic": {
-        "price": 240000,
+        "price": 15120,
         "attribs": {
           "hp": 27000,
-          "damage": 270,
-          "reload": 10.0
+          "damage": 135,
+          "reload": 20.0
         }
       },
       "legendary": {
-        "price": 4800000,
+        "price": 559440,
         "attribs": {
           "hp": 81000,
-          "damage": 810,
-          "reload": 10.0
+          "damage": 405,
+          "reload": 20.0
         }
       }
     }
   },
   "ant_egg": {
+    "description": "It seems like it could hatch something interesting...",
     "type": "summon",
     "rarities": {
       "common": {
-        "price": 300,
+        "price": 15,
+        "attribs": {
+          "reload": 4.0,
+          "copy": 4
+        }
+      },
+      "unusual": {
+        "price": 105,
+        "attribs": {
+          "reload": 6.0,
+          "copy": 4
+        }
+      },
+      "rare": {
+        "price": 1260,
         "attribs": {
           "reload": 8.0,
           "copy": 4
         }
       },
-      "unusual": {
-        "price": 2100,
+      "epic": {
+        "price": 22680,
         "attribs": {
           "reload": 10.0,
           "copy": 4
         }
       },
-      "rare": {
-        "price": 23500,
+      "legendary": {
+        "price": 839160,
         "attribs": {
-          "reload": 13.0,
-          "copy": 4
-        }
-      },
-      "epic": {
-        "price": 470000,
-        "attribs": {
-          "reload": 2.8,
+          "reload": 12.0,
           "copy": 4
         }
       }
     }
   },
   "faster": {
+    "description": "Faster, make everything faster!",
     "type": "buff",
     "rarities": {
       "common": {
-        "price": 60,
+        "price": 3,
         "attribs": {
           "speed_buff": 0.2
         }
       },
       "unusual": {
-        "price": 500,
+        "price": 21,
         "attribs": {
           "speed_buff": 0.3
         }
       },
       "rare": {
-        "price": 5700,
+        "price": 252,
         "attribs": {
           "speed_buff": 0.45
         }
       },
       "epic": {
-        "price": 114000,
+        "price": 4536,
         "attribs": {
           "speed_buff": 0.6
         }
       },
       "legendary": {
-        "price": 2280000,
+        "price": 167832,
         "attribs": {
           "speed_buff": 0.7
         }
@@ -168,90 +179,93 @@
     }
   },
   "antennae": {
+    "description": "Gives most of your functional petals functions",
     "type": "buff",
     "rarities": {
       "common": {
-        "price": 500,
+        "price": 25,
         "attribs": {}
       },
       "unusual": {
-        "price": 4000,
+        "price": 175,
         "attribs": {}
       },
       "rare": {
-        "price": 45000,
+        "price": 2100,
         "attribs": {}
       },
       "epic": {
-        "price": 900000,
+        "price": 37800,
         "attribs": {}
       },
       "legendary": {
-        "price": 18000000,
+        "price": 1398600,
         "attribs": {}
       }
     }
   },
   "cutter": {
+    "description": "gives the flower extra body damage",
     "type": "buff",
     "rarities": {
       "common": {
-        "price": 150,
+        "price": 8,
         "attribs": {
-          "body_damage_buff": 54
+          "body_damage_buff": 27
         }
       },
       "unusual": {
-        "price": 1050,
+        "price": 56,
         "attribs": {
-          "body_damage_buff": 162
+          "body_damage_buff": 81
         }
       },
       "rare": {
-        "price": 12000,
+        "price": 672,
         "attribs": {
-          "body_damage_buff": 486
+          "body_damage_buff": 243
         }
       },
       "epic": {
-        "price": 240000,
+        "price": 12096,
         "attribs": {
-          "body_damage_buff": 1458
+          "body_damage_buff": 729
         }
       },
       "legendary": {
-        "price": 4800000,
+        "price": 447552,
         "attribs": {
-          "body_damage_buff": 4374
+          "body_damage_buff": 2187
         }
       }
     }
   },
   "corn": {
+    "description": "It has high durability, but requires a long time to reload.",
     "type": "shoot",
     "rarities": {
       "common": {
-        "price": 200,
+        "price": 10,
         "attribs": {
           "hp": 300,
           "damage": 8,
-          "reload": 3.0,
+          "reload": 6.0,
           "range": 5.0,
-          "speed": 2.0
+          "speed": 3.0
         }
       },
       "unusual": {
-        "price": 1400,
+        "price": 70,
         "attribs": {
           "hp": 900,
           "damage": 24,
-          "reload": 3.0,
+          "reload": 6.0,
           "range": 5.0,
-          "speed": 2.0
+          "speed": 3.0
         }
       },
       "rare": {
-        "price": 16000,
+        "price": 840,
         "attribs": {
           "hp": 2700,
           "damage": 72,
@@ -261,21 +275,21 @@
         }
       },
       "epic": {
-        "price": 320000,
+        "price": 15120,
         "attribs": {
           "hp": 8100,
           "damage": 216,
-          "reload": 3.0,
+          "reload": 6.0,
           "range": 5.0,
           "speed": 3.0
         }
       },
       "legendary": {
-        "price": 6400000,
+        "price": 559440,
         "attribs": {
           "hp": 24300,
           "damage": 648,
-          "reload": 3.0,
+          "reload": 6.0,
           "range": 5.0,
           "speed": 3.0
         }
@@ -283,149 +297,152 @@
     }
   },
   "bone": {
+    "description": "Sturdy",
     "type": "shoot",
     "rarities": {
       "common": {
-        "price": 150,
+        "price": 8,
         "attribs": {
           "hp": 10,
           "damage": 15,
           "armor": 3,
-          "reload": 1.2,
+          "reload": 2.0,
           "range": 4.0,
           "speed": 3.0
         }
       },
       "unusual": {
-        "price": 1050,
+        "price": 56,
         "attribs": {
           "hp": 30,
           "damage": 45,
           "armor": 9,
-          "reload": 1.2,
+          "reload": 2.0,
           "range": 4.0,
           "speed": 3.0
         }
       },
       "rare": {
-        "price": 12000,
+        "price": 672,
         "attribs": {
           "hp": 90,
           "damage": 135,
           "armor": 27,
-          "reload": 1.2,
-          "range": 5.0,
+          "reload": 2.0,
+          "range": 4.0,
           "speed": 3.0
         }
       },
       "epic": {
-        "price": 240000,
+        "price": 12096,
         "attribs": {
           "hp": 270,
           "damage": 405,
           "armor": 81,
-          "reload": 1.2,
+          "reload": 2.0,
           "range": 4.0,
-          "speed": 5.0
+          "speed": 3.0
         }
       },
       "legendary": {
-        "price": 4800000,
+        "price": 447552,
         "attribs": {
           "hp": 810,
-          "damage": 1215,
+          "damage": 2.0,
           "armor": 243,
           "reload": 1.2,
           "range": 4.0,
-          "speed": 5.0
+          "speed": 3.0
         }
       }
     }
   },
   "leaf": {
+    "description": "Heals you constantly",
     "type": "buff",
     "rarities": {
       "common": {
-        "price": 400,
+        "price": 20,
         "attribs": {
-          "heal_buff": 35
+          "heal_value_buff": 5
         }
       },
       "unusual": {
-        "price": 3200,
+        "price": 140,
         "attribs": {
-          "heal_buff": 105
+          "heal_value_buff": 15
         }
       },
       "rare": {
-        "price": 38400,
+        "price": 1680,
         "attribs": {
-          "heal_buff": 315
+          "heal_value_buff": 45
         }
       },
       "epic": {
-        "price": 768000,
+        "price": 30240,
         "attribs": {
-          "heal_buff": 1575
+          "heal_value_buff": 135
         }
       },
       "legendary": {
-        "price": 15360000,
+        "price": 1118880,
         "attribs": {
-          "heal_buff": 4925
+          "heal_value_buff": 405
         }
       }
     }
   },
   "missile": {
+    "description": "It deals very high damage, but it will self-destruct if placed them too close.",
     "type": "shoot",
     "rarities": {
       "common": {
-        "price": 400,
+        "price": 20,
         "attribs": {
           "hp": 2,
           "damage": 20,
-          "reload": 1.2,
+          "reload": 2.5,
           "range": 6.0,
           "speed": 4.0
         }
       },
       "unusual": {
-        "price": 3200,
+        "price": 140,
         "attribs": {
           "hp": 6,
           "damage": 60,
-          "reload": 1.2,
+          "reload": 2.5,
           "range": 6.0,
           "speed": 4.0
         }
       },
       "rare": {
-        "price": 38400,
+        "price": 1680,
         "attribs": {
           "hp": 18,
           "damage": 200,
-          "reload": 1.2,
+          "reload": 2.5,
           "range": 6.0,
           "speed": 4.0
         }
       },
       "epic": {
-        "price": 768000,
+        "price": 30240,
         "attribs": {
           "hp": 54,
           "damage": 600,
-          "reload": 1.2,
+          "reload": 2.5,
           "range": 6.0,
           "speed": 4.0
         }
       },
       "legendary": {
-        "price": 15360000,
+        "price": 1118880,
         "attribs": {
           "hp": 162,
           "damage": 1800,
-          "reload": 1.2,
+          "reload": 2.5,
           "range": 6.0,
           "speed": 4.0
         }
@@ -433,10 +450,11 @@
     }
   },
   "web": {
+    "description": "It is sticky",
     "type": "defence",
     "rarities": {
       "common": {
-        "price": 150,
+        "price": 15,
         "attribs": {
           "hp": 1,
           "reload": 8.0,
@@ -446,7 +464,7 @@
         }
       },
       "unusual": {
-        "price": 1050,
+        "price": 105,
         "attribs": {
           "hp": 1,
           "reload": 8.0,
@@ -456,7 +474,7 @@
         }
       },
       "rare": {
-        "price": 12000,
+        "price": 1260,
         "attribs": {
           "hp": 1,
           "reload": 8.0,
@@ -466,7 +484,7 @@
         }
       },
       "epic": {
-        "price": 240000,
+        "price": 22680,
         "attribs": {
           "hp": 1,
           "reload": 8.0,
@@ -476,7 +494,7 @@
         }
       },
       "legendary": {
-        "price": 4800000,
+        "price": 839160,
         "attribs": {
           "hp": 1,
           "reload": 8.0,
@@ -488,249 +506,254 @@
     }
   },
   "light": {
+    "description": "Please use me as a machine gun.",
     "type": "multi_shoot",
     "rarities": {
       "common": {
-        "price": 300,
+        "price": 15,
         "attribs": {
           "hp": 1,
           "damage": 5,
-          "reload": 0.3,
+          "reload": 0.6,
           "range": 2.0,
           "speed": 3.0,
           "copy": 1
         }
       },
       "unusual": {
-        "price": 2100,
+        "price": 105,
         "attribs": {
           "hp": 3,
           "damage": 15,
-          "reload": 0.3,
+          "reload": 0.6,
           "range": 2.0,
           "speed": 3.0,
           "copy": 1
         }
       },
       "rare": {
-        "price": 24000,
+        "price": 1260,
         "attribs": {
           "hp": 9,
           "damage": 25,
-          "reload": 0.2,
+          "reload": 0.4,
           "range": 3.0,
           "speed": 3.0,
           "copy": 1
         }
       },
       "epic": {
-        "price": 480000,
+        "price": 22680,
         "attribs": {
           "hp": 27,
           "damage": 75,
-          "reload": 0.2,
+          "reload": 0.4,
           "range": 3.0,
           "speed": 4.0,
           "copy": 1
         }
       },
       "legendary": {
-        "price": 9600000,
+        "price": 839160,
         "attribs": {
           "hp": 27,
-          "damage": 225,
-          "reload": 0.2,
+          "damage": 200,
+          "reload": 0.3,
           "range": 3.0,
           "speed": 4.0,
-          "copy": 1
+          "copy": 2
         }
       }
     }
   },
   "rose": {
+    "description": "Strange, why does it have thorns on it?",
     "type": "buff",
     "rarities": {
       "common": {
-        "price": 800,
+        "price": 20,
         "attribs": {
-          "heal": 100,
+          "heal": 5,
           "reload": 1
         }
       },
       "unusual": {
-        "price": 6400,
+        "price": 140,
         "attribs": {
-          "heal": 300,
+          "heal": 15,
           "reload": 1
         }
       },
       "rare": {
-        "price": 76800,
+        "price": 1680,
         "attribs": {
-          "heal": 900,
+          "heal": 45,
           "reload": 1
         }
       },
       "epic": {
-        "price": 1536000,
+        "price": 30240,
         "attribs": {
-          "heal": 2700,
+          "heal": 135,
           "reload": 1
         }
       },
       "legendary": {
-        "price": 30720000,
+        "price": 1118880,
         "attribs": {
-          "heal": 8100,
+          "heal": 405,
           "reload": 1
         }
       }
     }
   },
   "stinger": {
+    "description": "It stings and has a chance to crit on the mobs. Luck is affect by clover",
     "type": "shoot",
     "rarities": {
       "common": {
-        "price": 200,
+        "price": 10,
         "attribs": {
           "hp": 1,
           "damage": 100,
-          "reload": 5.0,
+          "reload": 6.0,
           "range": 5.0,
-          "speed": 4.0
+          "speed": 4.0,
+          "crit_chance": 0.02,
+          "crit_damage_factor": 2.0
         }
       },
       "unusual": {
-        "price": 1400,
+        "price": 70,
         "attribs": {
           "hp": 3,
           "damage": 300,
-          "reload": 5.0,
+          "reload": 6.0,
           "range": 5.0,
-          "speed": 4.0
+          "speed": 4.0,
+          "crit_chance": 0.03,
+          "crit_damage_factor": 2.0
         }
       },
       "rare": {
-        "price": 16000,
+        "price": 840,
         "attribs": {
           "hp": 9,
-          "damage": 1000,
-          "reload": 5.0,
+          "damage": 900,
+          "reload": 6.0,
           "range": 5.0,
-          "speed": 4.0
+          "speed": 4.0,
+          "crit_chance": 0.04,
+          "crit_damage_factor": 2.0
         }
       },
       "epic": {
-        "price": 320000,
+        "price": 15120,
         "attribs": {
           "hp": 27,
           "damage": 3000,
-          "reload": 5.0,
+          "reload": 6.0,
           "range": 5.0,
-          "speed": 4.0
+          "speed": 4.0,
+          "crit_chance": 0.05,
+          "crit_damage_factor": 2.0
         }
       },
       "legendary": {
-        "price": 6400000,
+        "price": 559440,
         "attribs": {
           "hp": 81,
           "damage": 9000,
-          "reload": 5.0,
+          "reload": 6.0,
           "range": 5.0,
-          "speed": 4.0
+          "speed": 4.0,
+          "crit_chance": 0.02,
+          "crit_damage_factor": 4.0
         }
       }
     }
   },
   "pollen": {
-    "type": "multi_shoot",
+    "description": "Actually you should put it on the ground.",
+    "type": "defence",
     "rarities": {
       "common": {
-        "price": 150,
+        "price": 8,
         "attribs": {
           "hp": 1,
           "damage": 10,
-          "reload": 1.2,
-          "range": 5.0,
-          "speed": 4.0,
+          "reload": 2.0,
           "copy": 1
         }
       },
       "unusual": {
-        "price": 1050,
+        "price": 56,
         "attribs": {
           "hp": 3,
           "damage": 30,
-          "reload": 1.2,
-          "range": 5.0,
-          "speed": 4.0,
+          "reload": 2.0,
           "copy": 1
         }
       },
       "rare": {
-        "price": 12000,
+        "price": 672,
         "attribs": {
           "hp": 9,
           "damage": 90,
-          "reload": 1.2,
-          "range": 5.0,
-          "speed": 4.0,
+          "reload": 2.0,
           "copy": 2
         }
       },
       "epic": {
-        "price": 240000,
+        "price": 12096,
         "attribs": {
           "hp": 27,
-          "damage": 270,
-          "reload": 1.2,
-          "range": 5.0,
-          "speed": 4.0,
-          "copy": 2
+          "damage": 200,
+          "reload": 2.0,
+          "copy": 3
         }
       },
       "legendary": {
-        "price": 4800000,
+        "price": 447552,
         "attribs": {
           "hp": 81,
-          "damage": 270,
-          "reload": 1.2,
-          "range": 5.0,
-          "speed": 4.0,
-          "copy": 2
+          "damage": 600,
+          "reload": 2.0,
+          "copy": 3
         }
       }
     }
   },
   "amulet": {
+    "description": "It gives you shield.",
     "type": "buff",
     "rarities": {
       "common": {
-        "price": 200,
+        "price": 10,
         "attribs": {
           "overheal_buff": 0.05
         }
       },
       "unusual": {
-        "price": 1400,
+        "price": 70,
         "attribs": {
           "overheal_buff": 0.1
         }
       },
       "rare": {
-        "price": 16000,
+        "price": 840,
         "attribs": {
           "overheal_buff": 0.15
         }
       },
       "epic": {
-        "price": 320000,
+        "price": 15120,
         "attribs": {
           "overheal_buff": 0.2
         }
       },
       "legendary": {
-        "price": 6400000,
+        "price": 559440,
         "attribs": {
           "overheal_buff": 0.3
         }
@@ -738,144 +761,147 @@
     }
   },
   "dahlia": {
+    "description": "It heals you when it dies",
     "type": "defence",
     "rarities": {
       "common": {
-        "price": 150,
+        "price": 20,
         "attribs": {
           "hp": 1,
           "damage": 1,
           "reload": 5.0,
-          "death_heal": 100
+          "death_heal": 10
         }
       },
       "unusual": {
-        "price": 1050,
+        "price": 140,
         "attribs": {
           "hp": 3,
           "damage": 3,
           "reload": 5.0,
-          "death_heal": 300
+          "death_heal": 30
         }
       },
       "rare": {
-        "price": 12000,
+        "price": 1680,
         "attribs": {
           "hp": 9,
           "damage": 9,
           "reload": 5.0,
-          "death_heal": 900
+          "death_heal": 90
         }
       },
       "epic": {
-        "price": 240000,
+        "price": 30240,
         "attribs": {
           "hp": 27,
           "damage": 27,
           "reload": 5.0,
-          "death_heal": 2700
+          "death_heal": 270
         }
       },
       "legendary": {
-        "price": 4800000,
+        "price": 1118880,
         "attribs": {
           "hp": 81,
           "damage": 81,
           "reload": 5.0,
-          "death_heal": 8100
+          "death_heal": 810
         }
       }
     }
   },
   "golden_leaf": {
+    "description": "Shiny",
     "type": "buff",
     "rarities": {
       "common": {
-        "price": 1000,
+        "price": 35,
         "attribs": {
-          "relaod_buff": -0.01
+          "reload_buff": -0.01
         }
       },
       "unusual": {
-        "price": 8000,
+        "price": 245,
         "attribs": {
-          "relaod_buff": -0.02
+          "reload_buff": -0.01
         }
       },
       "rare": {
-        "price": 96000,
+        "price": 2940,
         "attribs": {
-          "relaod_buff": -0.03
+          "reload_buff": -0.01
         }
       },
       "epic": {
-        "price": 1920000,
+        "price": 52920,
         "attribs": {
-          "relaod_buff": -0.04
+          "reload_buff": -0.01
         }
       },
       "legendary": {
-        "price": 38400000,
+        "price": 1958040,
         "attribs": {
-          "relaod_buff": -0.05
+          "reload_buff": -0.01
         }
       }
     }
   },
   "triangle": {
+    "description": "Have you seen the power of unity before?",
     "type": "shoot",
     "rarities": {
       "common": {
-        "price": 500,
+        "price": 25,
         "attribs": {
           "hp": 10,
-          "damage": 5,
-          "damage_increase": 3,
-          "reload": 1.2,
+          "damage": 8,
+          "damage_increase": 4,
+          "reload": 2.2,
           "range": 5.0,
           "speed": 3.5
         }
       },
       "unusual": {
-        "price": 4000,
+        "price": 175,
         "attribs": {
           "hp": 30,
-          "damage": 15,
-          "damage_increase": 9,
-          "reload": 1.2,
+          "damage": 24,
+          "damage_increase": 12,
+          "reload": 2.2,
           "range": 5.0,
           "speed": 3.5
         }
       },
       "rare": {
-        "price": 44000,
+        "price": 2100,
         "attribs": {
           "hp": 90,
-          "damage": 45,
-          "damage_increase": 27,
-          "reload": 1.1,
+          "damage": 72,
+          "damage_increase": 36,
+          "reload": 2.2,
           "range": 5.0,
           "speed": 3.5
         }
       },
       "epic": {
-        "price": 880000,
+        "price": 37800,
         "attribs": {
           "hp": 270,
-          "damage": 135,
-          "damage_increase": 81,
-          "reload": 1.1,
+          "damage": 216,
+          "damage_increase": 108,
+          "reload": 2.2,
           "range": 5.0,
           "speed": 3.5
         }
       },
       "legendary": {
-        "price": 17600000,
+        "price": 1398600,
         "attribs": {
           "hp": 810,
-          "damage": 435,
-          "damage_increase": 243,
-          "reload": 1.1,
+          "damage": 648,
+          "damage_increase": 324,
+          "reload": 2.2,
           "range": 5.0,
           "speed": 3.5
         }
@@ -883,34 +909,589 @@
     }
   },
   "beetle_egg": {
+    "description": "Something interesting might pop out from this...",
     "type": "summon",
     "rarities": {
       "common": {
-        "price": 400,
+        "price": 20,
         "attribs": {
-          "reload": 6.0,
+          "reload": 7.0,
           "copy": 1
         }
       },
       "unusual": {
-        "price": 3200,
+        "price": 140,
         "attribs": {
-          "reload": 8.0,
+          "reload": 9.0,
           "copy": 1
         }
       },
       "rare": {
-        "price": 38400,
+        "price": 1680,
         "attribs": {
-          "reload": 10.0,
+          "reload": 11.0,
           "copy": 1
         }
       },
       "epic": {
-        "price": 768000,
+        "price": 30240,
         "attribs": {
-          "reload": 1.7,
+          "reload": 13.0,
           "copy": 1
+        }
+      },
+      "legendary": {
+        "price": 1118880,
+        "attribs": {
+          "reload": 15.0,
+          "copy": 1
+        }
+      }
+    }
+  },
+  "lightning": {
+    "type": "shoot",
+    "damage_type": "lightning",
+    "rarities": {
+      "common": {
+        "price": 25,
+        "attribs": {
+          "hp": 1,
+          "reload": 2.5,
+          "range": 4.5,
+          "speed": 3.5,
+          "damage": 6,
+          "bounces": 2,
+          "bounce_range": 2
+        }
+      },
+      "unusual": {
+        "price": 175,
+        "attribs": {
+          "hp": 1,
+          "reload": 2.5,
+          "range": 4.5,
+          "speed": 3.5,
+          "damage": 18,
+          "bounces": 3,
+          "bounce_range": 2
+        }
+      },
+      "rare": {
+        "price": 2100,
+        "attribs": {
+          "hp": 1,
+          "reload": 2.5,
+          "range": 4.5,
+          "speed": 3.5,
+          "damage": 54,
+          "bounces": 4,
+          "bounce_range": 2
+        }
+      },
+      "epic": {
+        "price": 37800,
+        "attribs": {
+          "hp": 1,
+          "reload": 4.5,
+          "range": 5.0,
+          "speed": 3.5,
+          "damage": 162,
+          "bounces": 5,
+          "bounce_range": 2.5
+        }
+      },
+      "legendary": {
+        "price": 1398600,
+        "attribs": {
+          "hp": 1,
+          "reload": 4.5,
+          "range": 5.0,
+          "speed": 3.5,
+          "damage": 486,
+          "bounces": 6,
+          "bounce_range": 2.5
+        }
+      }
+    }
+  },
+  "shovel": {
+    "type": "defence",
+    "rarities": {
+      "common": {
+        "price": 3,
+        "attribs": {
+          "reload": 5.0
+        }
+      },
+      "unusual": {
+        "price": 21,
+        "attribs": {
+          "reload": 5.0
+        }
+      },
+      "rare": {
+        "price": 252,
+        "attribs": {
+          "reload": 5.0
+        }
+      },
+      "epic": {
+        "price": 4536,
+        "attribs": {
+          "reload": 5.0
+        }
+      },
+      "legendary": {
+        "price": 167832,
+        "attribs": {
+          "reload": 5.0
+        }
+      }
+    }
+  },
+  "pincer": {
+    "type": "shoot",
+    "rarities": {
+      "common": {
+        "price": 20,
+        "attribs": {
+          "hp": 10,
+          "damage": 5,
+          "reload": 2.5,
+          "range": 3.0,
+          "speed": 4.0,
+          "slow_down": 0.1,
+          "slow_down_duration": 0.8
+        }
+      },
+      "unusual": {
+        "price": 140,
+        "attribs": {
+          "hp": 30,
+          "damage": 15,
+          "reload": 2.5,
+          "range": 3.0,
+          "speed": 4.0,
+          "slow_down": 0.2,
+          "slow_down_duration": 1.0
+        }
+      },
+      "rare": {
+        "price": 1680,
+        "attribs": {
+          "hp": 90,
+          "damage": 45,
+          "reload": 2.5,
+          "range": 3.0,
+          "speed": 4.0,
+          "slow_down": 0.3,
+          "slow_down_duration": 1.0
+        }
+      },
+      "epic": {
+        "price": 30240,
+        "attribs": {
+          "hp": 270,
+          "damage": 135,
+          "reload": 2.5,
+          "range": 3.0,
+          "speed": 4.0,
+          "slow_down": 0.4,
+          "slow_down_duration": 1.0
+        }
+      },
+      "legendary": {
+        "price": 1118880,
+        "attribs": {
+          "hp": 810,
+          "damage": 405,
+          "reload": 2.5,
+          "range": 3.0,
+          "speed": 4.0,
+          "slow_down": 0.9,
+          "slow_down_duration": 1.0
+        }
+      }
+    }
+  },
+  "jelly": {
+    "type": "defence",
+    "rarities": {
+      "common": {
+        "price": 25,
+        "attribs": {
+          "hp": 10,
+          "damage": 3,
+          "reload": 4.0,
+          "knockback": 2.0
+        }
+      },
+      "unusual": {
+        "price": 175,
+        "attribs": {
+          "hp": 30,
+          "damage": 9,
+          "reload": 4.0,
+          "knockback": 3.0
+        }
+      },
+      "rare": {
+        "price": 2100,
+        "attribs": {
+          "hp": 90,
+          "damage": 27,
+          "reload": 4.0,
+          "knockback": 4.0
+        }
+      },
+      "epic": {
+        "price": 37800,
+        "attribs": {
+          "hp": 270,
+          "damage": 81,
+          "reload": 4.0,
+          "knockback": 5.0
+        }
+      },
+      "legendary": {
+        "price": 1398600,
+        "attribs": {
+          "hp": 810,
+          "damage": 243,
+          "reload": 4.0,
+          "knockback": 6.0
+        }
+      }
+    }
+  },
+  "coin": {
+    "type": "buff",
+    "rarities": {
+      "common": {
+        "price": 20,
+        "attribs": {
+          "coin": 2,
+          "reload": 1
+        }
+      },
+      "unusual": {
+        "price": 140,
+        "attribs": {
+          "coin": 6,
+          "reload": 1
+        }
+      },
+      "rare": {
+        "price": 1680,
+        "attribs": {
+          "coin": 18,
+          "reload": 1
+        }
+      },
+      "epic": {
+        "price": 30240,
+        "attribs": {
+          "coin": 54,
+          "reload": 1
+        }
+      },
+      "legendary": {
+        "price": 1118880,
+        "attribs": {
+          "coin": 162,
+          "reload": 1
+        }
+      }
+    }
+  },
+  "dice": {
+    "type": "shoot",
+    "rarities": {
+      "common": {
+        "price": 20,
+        "attribs": {
+          "hp": 10,
+          "damage": 10,
+          "reload": 2.5,
+          "range": 4.0,
+          "speed": 4.0
+        }
+      },
+      "unusual": {
+        "price": 140,
+        "attribs": {
+          "hp": 30,
+          "damage": 30,
+          "reload": 2.5,
+          "range": 4.0,
+          "speed": 4.0
+        }
+      },
+      "rare": {
+        "price": 1680,
+        "attribs": {
+          "hp": 90,
+          "damage": 90,
+          "reload": 2.5,
+          "range": 4.0,
+          "speed": 4.0
+        }
+      },
+      "epic": {
+        "price": 30240,
+        "attribs": {
+          "hp": 270,
+          "damage": 270,
+          "reload": 2.5,
+          "range": 4.0,
+          "speed": 4.0
+        }
+      },
+      "legendary": {
+        "price": 1118880,
+        "attribs": {
+          "hp": 810,
+          "damage": 810,
+          "reload": 2.5,
+          "range": 4.0,
+          "speed": 4.0
+        }
+      }
+    }
+  },
+  "bur": {
+    "type": "shoot",
+    "rarities": {
+      "common": {
+        "price": 10,
+        "attribs": {
+          "hp": 1,
+          "damage": 3,
+          "reload": 2.0,
+          "range": 4.0,
+          "speed": 4.0,
+          "armor_debuff": 2,
+          "armor_debuff_duration": 2.5
+        }
+      },
+      "unusual": {
+        "price": 70,
+        "attribs": {
+          "hp": 1,
+          "damage": 9,
+          "reload": 2.0,
+          "range": 4.0,
+          "speed": 4.0,
+          "armor_debuff": 6,
+          "armor_debuff_duration": 2.5
+        }
+      },
+      "rare": {
+        "price": 840,
+        "attribs": {
+          "hp": 1,
+          "damage": 27,
+          "reload": 2.0,
+          "range": 5.0,
+          "speed": 4.0,
+          "armor_debuff": 18,
+          "armor_debuff_duration": 2.5
+        }
+      },
+      "epic": {
+        "price": 15120,
+        "attribs": {
+          "hp": 1,
+          "damage": 81,
+          "reload": 2.0,
+          "range": 4.0,
+          "speed": 4.0,
+          "armor_debuff": 54,
+          "armor_debuff_duration": 2.5
+        }
+      },
+      "legendary": {
+        "price": 559440,
+        "attribs": {
+          "hp": 1,
+          "damage": 243,
+          "reload": 2.0,
+          "range": 4.0,
+          "speed": 4.0,
+          "armor_debuff": 162,
+          "armor_debuff_duration": 2.5
+        }
+      }
+    }
+  },
+  "laser": {
+    "type": "shoot",
+    "damage_type": "lightning",
+    "rarities": {
+      "common": {
+        "price": 25,
+        "attribs": {
+          "hp": 1,
+          "damage": 10,
+          "range": 2.0,
+          "damage_increase_rate": 1,
+          "max_damage_rate": 5
+        }
+      },
+      "unusual": {
+        "price": 175,
+        "attribs": {
+          "hp": 1,
+          "damage": 10,
+          "range": 2.0,
+          "damage_increase_rate": 0.1,
+          "max_damage_rate": 1.5
+        }
+      },
+      "rare": {
+        "price": 2100,
+        "attribs": {
+          "hp": 1,
+          "damage": 10,
+          "range": 2.0,
+          "damage_increase_rate": 0.1,
+          "max_damage_rate": 1.5
+        }
+      },
+      "epic": {
+        "price": 37800,
+        "attribs": {
+          "hp": 1,
+          "damage": 10,
+          "range": 2.0,
+          "damage_increase_rate": 0.1,
+          "max_damage_rate": 1.5
+        }
+      },
+      "legendary": {
+        "price": 1398600,
+        "attribs": {
+          "hp": 1,
+          "damage": 10,
+          "range": 2.0,
+          "damage_increase_rate": 0.1,
+          "max_damage_rate": 1.5
+        }
+      }
+    }
+  },
+  "chip": {
+    "type": "shoot",
+    "rarities": {
+      "common": {
+        "price": 20,
+        "attribs": {
+          "hp": 10,
+          "damage": 10,
+          "reload": 2.5,
+          "range": 4.0,
+          "speed": 2.0,
+          "evasion": 0.9
+        }
+      },
+      "unusual": {
+        "price": 140,
+        "attribs": {
+          "hp": 30,
+          "damage": 30,
+          "reload": 2.5,
+          "range": 4.0,
+          "speed": 2.0,
+          "evasion": 0.9
+        }
+      },
+      "rare": {
+        "price": 1680,
+        "attribs": {
+          "hp": 90,
+          "damage": 90,
+          "reload": 2.5,
+          "range": 4.0,
+          "speed": 2.0,
+          "evasion": 0.9
+        }
+      },
+      "epic": {
+        "price": 30240,
+        "attribs": {
+          "hp": 270,
+          "damage": 270,
+          "reload": 2.5,
+          "range": 4.0,
+          "speed": 2.0,
+          "evasion": 0.9
+        }
+      },
+      "legendary": {
+        "price": 1118880,
+        "attribs": {
+          "hp": 810,
+          "damage": 810,
+          "reload": 2.5,
+          "range": 4.0,
+          "speed": 2.0,
+          "evasion": 0.9
+        }
+      }
+    }
+  },
+  "rice": {
+    "type": "shoot",
+    "rarities": {
+      "common": {
+        "price": 20,
+        "attribs": {
+          "hp": 10,
+          "damage": 10,
+          "reload": 0.2,
+          "range": 5.0,
+          "speed": 4.0
+        }
+      },
+      "unusual": {
+        "price": 140,
+        "attribs": {
+          "hp": 30,
+          "damage": 30,
+          "reload": 2.0,
+          "range": 5.0,
+          "speed": 4.0
+        }
+      },
+      "rare": {
+        "price": 1680,
+        "attribs": {
+          "hp": 90,
+          "damage": 90,
+          "reload": 2.0,
+          "range": 5.0,
+          "speed": 4.0
+        }
+      },
+      "epic": {
+        "price": 30240,
+        "attribs": {
+          "hp": 270,
+          "damage": 270,
+          "reload": 2.0,
+          "range": 5.0,
+          "speed": 4.0
+        }
+      },
+      "legendary": {
+        "price": 1118880,
+        "attribs": {
+          "hp": 810,
+          "damage": 810,
+          "reload": 1.8,
+          "range": 5.0,
+          "speed": 4.0
         }
       }
     }

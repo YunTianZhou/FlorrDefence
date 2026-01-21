@@ -26,7 +26,7 @@ const std::vector<std::string> SHOP_TYPES = {
 };
 
 const std::map<std::string, int> SHOP_PRODUCT_COUNTS = {
-	{"common", 40}, {"rare", 30}, {"legendary", 20}, {"ultra", 10}, {"unique", 3}
+	{"common", 20}, {"rare", 15}, {"legendary", 10}, {"ultra", 5}, {"unique", 3}
 };
 
 const std::map<std::string, sf::Time> SHOP_REFRESH_TIMES = {
@@ -38,10 +38,12 @@ const std::map<std::string, sf::Time> SHOP_REFRESH_TIMES = {
 };
 
 const std::vector<std::string> TOWER_TYPES = {
-	"amulet", "antennae", "ant_egg", "basic", "beetle_egg", 
-	"bone", "corn", "cutter", "dahlia", "faster", 
-	"golden_leaf", "leaf", "light", "missile", "pollen",
-	"rock", "rose", "stinger", "triangle", "web"
+	"amulet", "ant_egg", "antennae", "basic", "beetle_egg", 
+	"bone", "bur", "chip", "coin", "corn", 
+	"cutter", "dahlia", "dice", "faster", "golden_leaf", 
+	"jelly", "laser", "leaf", "light", "lightning", 
+	"missile", "pincer", "pollen", "rice", "rock", 
+	"rose", "shovel", "stinger", "triangle", "web"
 };
 
 const std::map<CardInfo, MobInfo> TOWER_SUMMON_MOBS = {
@@ -49,9 +51,9 @@ const std::map<CardInfo, MobInfo> TOWER_SUMMON_MOBS = {
 	{ {"common", "ant_egg" }, { "common", "ant_soldier" } },
 	{ {"unusual", "ant_egg" }, { "unusual", "ant_soldier" } },
 	{ {"rare", "ant_egg" }, { "rare", "ant_soldier" } },
-	{ {"epic", "ant_egg" }, { "rare", "ant_soldier" } },
-	{ {"legendary", "ant_egg" }, { "epic", "ant_soldier" } },
-	{ {"mythic", "ant_egg" }, { "lengendary", "ant_soldier" } },
+	{ {"epic", "ant_egg" }, { "epic", "ant_soldier" } },
+	{ {"legendary", "ant_egg" }, { "legendary", "ant_soldier" } },
+	{ {"mythic", "ant_egg" }, { "mythic", "ant_soldier" } },
 	{ {"ultra", "ant_egg" }, { "mythic", "ant_soldier" } },
 	{ {"super", "ant_egg" }, { "ultra", "ant_soldier" } },
 	{ {"unique", "ant_egg" }, { "ultra", "ant_soldier" } },
@@ -60,12 +62,16 @@ const std::map<CardInfo, MobInfo> TOWER_SUMMON_MOBS = {
 	{ {"common", "beetle_egg" }, { "common", "beetle" } },
 	{ {"unusual", "beetle_egg" }, { "unusual", "beetle" } },
 	{ {"rare", "beetle_egg" }, { "rare", "beetle" } },
-	{ {"epic", "beetle_egg" }, { "rare", "beetle" } },
-	{ {"legendary", "beetle_egg" }, { "epic", "beetle" } },
-	{ {"mythic", "beetle_egg" }, { "lengendary", "beetle" } },
+	{ {"epic", "beetle_egg" }, { "epic", "beetle" } },
+	{ {"legendary", "beetle_egg" }, { "legendary", "beetle" } },
+	{ {"mythic", "beetle_egg" }, { "mythic", "beetle" } },
 	{ {"ultra", "beetle_egg" }, { "mythic", "beetle" } },
 	{ {"super", "beetle_egg" }, { "ultra", "beetle" } },
 	{ {"unique", "beetle_egg" }, { "ultra", "beetle" } },
+};
+
+const std::set<std::string> LIGHTNING_TOWERS = {
+	"lightning", "laser"
 };
 
 const std::map<std::string, float> MOB_RARITY_SCALES = {
@@ -143,7 +149,16 @@ const std::map<std::string, sf::Color> DARK_COLORS = {
 InitStates INIT_STATES;
 std::map<std::string, TowerAttribs> TOWER_ATTRIBS;
 std::map<std::string, MobAttribs> MOB_ATTRIBS;
+std::vector<TalentAttribs> TALENT_ATTRIBS;
+std::unordered_map<std::string, int> TALENT_ID_TO_INDEX;
 
+DamageType stringToDamageType(const std::string& str) {
+	if (str == "normal")
+		return DamageType::Normal;
+	else if (str == "lightning")
+		return DamageType::Lightning;
+	throw std::runtime_error(std::format("invalid damage type '{}'", str));
+}
 
 static void loadInitSupplies() {
 	std::ifstream ifs("res/config/init_states.json");
@@ -156,7 +171,7 @@ static void loadInitSupplies() {
 	INIT_STATES.xp = j["xp"].get<int>();
 	INIT_STATES.bodyDamage = j["body_damage"].get<int>();
 	INIT_STATES.level = j["level"].get<int>();
-	INIT_STATES.coin = j["coin"].get<int>();
+	INIT_STATES.coin = j["coin"].get<int64_t>();
 	INIT_STATES.talent = j["talent"].get<int>();
 	for (auto& entry : j["cards"])
 		INIT_STATES.cards.emplace_back(CardInfo(entry[0], entry[1]), entry[2].get<int>());
@@ -172,6 +187,15 @@ static void loadTowerAttribs() {
 	for (auto& [type, obj] : j.items()) {
 		TowerAttribs ta;
 		ta.type = obj["type"].get<std::string>();
+
+		if (obj.find("damage_type") != obj.end()) {
+			std::string damageType = obj["damage_type"];
+			ta.damageType = stringToDamageType(damageType);
+		}
+		else {
+			ta.damageType = DamageType::Normal;
+		}
+
 		for (auto& [rarity, entry] : obj["rarities"].items()) {
 			TowerAttribs::RarityEntry& e = ta.rarities[rarity];
 			e.price = entry["price"].get<int>();
@@ -193,6 +217,34 @@ static void loadTowerAttribs() {
 	}
 }
 
+static void loadTalentAttribs() {
+	std::ifstream ifs("res/config/talent_attribs.json");
+	assert(ifs.is_open());
+
+	nlohmann::json j;
+	ifs >> j;
+
+	int index = 0;
+	for (const auto& entry : j) {
+		TalentAttribs t;
+		t.id = entry["id"].get<std::string>();
+		t.type = entry["type"].get<std::string>();
+		t.rarity = entry["rarity"].get<std::string>();
+		if (entry.contains("prev_id") && !entry["prev_id"].is_null())
+			t.prev_id = entry["prev_id"].get<std::string>();
+		else
+			t.prev_id = std::nullopt;
+		t.position.x = entry["x"].get<float>();
+		t.position.y = entry["y"].get<float>();
+		t.buff_type = entry["buff_type"].get<std::string>();
+		t.buff_value = entry["buff_value"].get<float>();
+		t.xp_cost = entry["xp_cost"].get<int>();
+		TALENT_ATTRIBS.emplace_back(t);
+		TALENT_ID_TO_INDEX[t.id] = index;
+		index++;
+	}
+}
+
 void loadMobAttribs() {
 	std::ifstream ifs("res/config/mob_attribs.json");
 	assert(ifs.is_open());
@@ -208,7 +260,7 @@ void loadMobAttribs() {
 			e.speed = entry["speed"].get<float>();
 			e.damage = entry["damage"].get<int>();
 			e.armor = entry["armor"].get<int>();
-			e.coinDrop = entry["coin_drop"].get<int>();
+			e.coinDrop = entry["coin_drop"].get<int64_t>();
 			e.xpDrop = entry["xp_drop"].get<int>();
 			for (auto& [key, val] : entry["attribs"].items()) {
 				e.attribs[key] = val.get<float>();
@@ -222,4 +274,5 @@ void loadConstants() {
 	loadInitSupplies();
 	loadTowerAttribs();
 	loadMobAttribs();
+	loadTalentAttribs();
 }

@@ -72,12 +72,25 @@ void Backpack::onExit() {
 
 void Backpack::onEvent(const sf::Event& event) {
 	if (const auto* pressedEvent = event.getIf<sf::Event::MouseButtonPressed>()) {
-		if (pressedEvent->button == sf::Mouse::Button::Left && m_info.draggedCard == std::nullopt) {
+		if (pressedEvent->button == sf::Mouse::Button::Left && !m_info.draggedCard.has_value()) {
 			for (const CardStack& stack : m_cards) {
 				assert(stack.getCount() > 0);
 				if (stack.getRect().contains(m_info.mouseWorldPosition)) {
 					m_info.playerState.backpack.add({ stack.getCard(), -1 });
 					m_info.draggedCard = DraggedCard(stack.getCard());
+					m_updated = false;
+					break;
+				}
+			}
+		}
+		else if (pressedEvent->button == sf::Mouse::Button::Right && !m_info.draggedCard.has_value()) {
+			for (const CardStack& stack : m_cards) {
+				assert(stack.getCount() > 0);
+				if (stack.getRect().contains(m_info.mouseWorldPosition)) {
+					if (m_info.input.keyShift)
+						m_info.placeRequest = stack.getInfo();
+					else
+						m_info.placeRequest = { stack.getCard(), 1 };
 					m_updated = false;
 					break;
 				}

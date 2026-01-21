@@ -149,13 +149,15 @@ void Craft::insertCards(const CardStackInfo& cards) {
 		m_craftStack.count += cards.count;
 	}
 	else if (cards.count >= 5) {
+		float prob = CRAFT_PROBS.at(cards.card.rarity) * 100.f;
 		m_craftStack = cards;
-		m_craftProbText.setString(std::format("{}% success chance", CRAFT_PROBS.at(cards.card.rarity) * 100.f));
+		m_craftProbText.setString(std::format("{}% success chance", prob));
 		m_craftProbText.setOrigin(m_craftProbText.getGlobalBounds().size / 2.f +
 		m_craftProbText.getLocalBounds().position);
 	}
 	else return;
 
+	m_craftStack.count = std::min(m_craftStack.count, craftLimit);
 	m_craftState = "preparing";
 	m_updated = false;
 }

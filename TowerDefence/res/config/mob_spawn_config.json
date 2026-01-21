@@ -1,0 +1,664 @@
+{
+  "max_mob": 200,
+  "global": {
+    "min_interval": 0.5,
+    "max_interval": 10.0,
+    "smoothing_alpha": 0.10
+  },
+  "stages": [
+    {
+      "min_level": 1,
+      "max_level": 5,
+      "base_interval": 1.2,
+      "scale_per_level": -0.03,
+      "jitter": {
+        "range": 0.3,
+        "prob": 0.5
+      },
+      "oscillator": {
+        "period": 30.0,
+        "amplitude": 0.9
+      },
+      "mob_types": [
+        {
+          "type": "bee",
+          "rarity": "common",
+          "weight": 0.7
+        },
+        {
+          "type": "hornet",
+          "rarity": "common",
+          "weight": 0.2
+        },
+        {
+          "type": "spider",
+          "rarity": "common",
+          "weight": 0.1
+        }
+      ]
+    },
+    {
+      "min_level": 6,
+      "max_level": 10,
+      "base_interval": 1.2,
+      "scale_per_level": -0.05,
+      "jitter": {
+        "range": 0.4,
+        "prob": 0.5
+      },
+      "oscillator": {
+        "period": 30.0,
+        "amplitude": 0.7
+      },
+      "mob_types": [
+        {
+          "type": "bee",
+          "rarity": "common",
+          "weight": 0.25
+        },
+        {
+          "type": "bee",
+          "rarity": "unusual",
+          "weight": 0.15
+        },
+        {
+          "type": "hornet",
+          "rarity": "common",
+          "weight": 0.13
+        },
+        {
+          "type": "hornet",
+          "rarity": "unusual",
+          "weight": 0.07
+        },
+        {
+          "type": "fly",
+          "rarity": "common",
+          "weight": 0.15
+        },
+        {
+          "type": "fly",
+          "rarity": "unusual",
+          "weight": 0.05
+        },
+        {
+          "type": "leafbug",
+          "rarity": "common",
+          "weight": 0.15
+        },
+        {
+          "type": "leafbug",
+          "rarity": "unusual",
+          "weight": 0.05
+        }
+      ]
+    },
+    {
+      "min_level": 11,
+      "max_level": 20,
+      "base_interval": 1.2,
+      "scale_per_level": -0.04,
+      "jitter": {
+        "range": 0.4,
+        "prob": 0.5
+      },
+      "oscillator": {
+        "period": 30.0,
+        "amplitude": 0.7
+      },
+      "mob_types": [
+        {
+          "type": "bee",
+          "rarity": "common",
+          "weight": 0.10
+        },
+        {
+          "type": "bee",
+          "rarity": "unusual",
+          "weight": 0.15
+        },
+        {
+          "type": "bee",
+          "rarity": "rare",
+          "weight": 0.05
+        },
+        {
+          "type": "hornet",
+          "rarity": "common",
+          "weight": 0.05
+        },
+        {
+          "type": "hornet",
+          "rarity": "unusual",
+          "weight": 0.10
+        },
+        {
+          "type": "hornet",
+          "rarity": "rare",
+          "weight": 0.05
+        },
+        {
+          "type": "fly",
+          "rarity": "common",
+          "weight": 0.05
+        },
+        {
+          "type": "fly",
+          "rarity": "unusual",
+          "weight": 0.05
+        },
+        {
+          "type": "fly",
+          "rarity": "rare",
+          "weight": 0.05
+        },
+        {
+          "type": "leafbug",
+          "rarity": "common",
+          "weight": 0.05
+        },
+        {
+          "type": "leafbug",
+          "rarity": "unusual",
+          "weight": 0.05
+        },
+        {
+          "type": "leafbug",
+          "rarity": "rare",
+          "weight": 0.05
+        },
+        {
+          "type": "roach",
+          "rarity": "common",
+          "weight": 0.10
+        },
+        {
+          "type": "roach",
+          "rarity": "unusual",
+          "weight": 0.07
+        },
+        {
+          "type": "roach",
+          "rarity": "rare",
+          "weight": 0.03
+        }
+      ]
+    },
+    {
+      "min_level": 21,
+      "max_level": 30,
+      "base_interval": 1.4,
+      "scale_per_level": -0.03,
+      "jitter": {
+        "range": 0.4,
+        "prob": 0.5
+      },
+      "oscillator": {
+        "period": 30.0,
+        "amplitude": 0.7
+      },
+      "mob_types": [
+        {
+          "type": "spider",
+          "rarity": "epic",
+          "weight": 0.05
+        },
+        {
+          "type": "spider",
+          "rarity": "unusual",
+          "weight": 0.05
+        },
+        {
+          "type": "spider",
+          "rarity": "rare",
+          "weight": 0.10
+        },
+        {
+          "type": "hornet",
+          "rarity": "epic",
+          "weight": 0.05
+        },
+        {
+          "type": "hornet",
+          "rarity": "unusual",
+          "weight": 0.05
+        },
+        {
+          "type": "hornet",
+          "rarity": "rare",
+          "weight": 0.10
+        },
+        {
+          "type": "fly",
+          "rarity": "epic",
+          "weight": 0.05
+        },
+        {
+          "type": "fly",
+          "rarity": "unusual",
+          "weight": 0.10
+        },
+        {
+          "type": "fly",
+          "rarity": "rare",
+          "weight": 0.15
+        },
+        {
+          "type": "leafbug",
+          "rarity": "epic",
+          "weight": 0.02
+        },
+        {
+          "type": "leafbug",
+          "rarity": "unusual",
+          "weight": 0.03
+        },
+        {
+          "type": "leafbug",
+          "rarity": "rare",
+          "weight": 0.05
+        },
+        {
+          "type": "roach",
+          "rarity": "epic",
+          "weight": 0.03
+        },
+        {
+          "type": "roach",
+          "rarity": "unusual",
+          "weight": 0.07
+        },
+        {
+          "type": "roach",
+          "rarity": "rare",
+          "weight": 0.10
+        }
+      ]
+    },
+    {
+      "min_level": 31,
+      "max_level": 40,
+      "base_interval": 1.35,
+      "scale_per_level": -0.03,
+      "jitter": {
+        "range": 0.4,
+        "prob": 0.5
+      },
+      "oscillator": {
+        "period": 30.0,
+        "amplitude": 0.7
+      },
+      "mob_types": [
+        {
+          "type": "spider",
+          "rarity": "epic",
+          "weight": 0.08
+        },
+        {
+          "type": "spider",
+          "rarity": "legendary",
+          "weight": 0.005
+        },
+        {
+          "type": "spider",
+          "rarity": "rare",
+          "weight": 0.115
+        },
+        {
+          "type": "fly",
+          "rarity": "epic",
+          "weight": 0.08
+        },
+        {
+          "type": "fly",
+          "rarity": "legendary",
+          "weight": 0.005
+        },
+        {
+          "type": "fly",
+          "rarity": "rare",
+          "weight": 0.115
+        },
+        {
+          "type": "bee",
+          "rarity": "epic",
+          "weight": 0.12
+        },
+        {
+          "type": "bee",
+          "rarity": "legendary",
+          "weight": 0.005
+        },
+        {
+          "type": "bee",
+          "rarity": "rare",
+          "weight": 0.175
+        },
+        {
+          "type": "leafbug",
+          "rarity": "epic",
+          "weight": 0.08
+        },
+        {
+          "type": "leafbug",
+          "rarity": "legendary",
+          "weight": 0.005
+        },
+        {
+          "type": "leafbug",
+          "rarity": "rare",
+          "weight": 0.115
+        },
+        {
+          "type": "roach",
+          "rarity": "epic",
+          "weight": 0.03
+        },
+        {
+          "type": "roach",
+          "rarity": "legendary",
+          "weight": 0.005
+        },
+        {
+          "type": "roach",
+          "rarity": "rare",
+          "weight": 0.065
+        }
+      ]
+    },
+    {
+      "min_level": 41,
+      "max_level": 50,
+      "base_interval": 1.3,
+      "scale_per_level": -0.03,
+      "jitter": {
+        "range": 0.2,
+        "prob": 0.5
+      },
+      "oscillator": {
+        "period": 30.0,
+        "amplitude": 0.7
+      },
+      "mob_types": [
+        {
+          "type": "bee",
+          "rarity": "epic",
+          "weight": 0.10
+        },
+        {
+          "type": "bee",
+          "rarity": "legendary",
+          "weight": 0.01
+        },
+        {
+          "type": "bee",
+          "rarity": "rare",
+          "weight": 0.09
+        },
+        {
+          "type": "leafbug",
+          "rarity": "epic",
+          "weight": 0.10
+        },
+        {
+          "type": "leafbug",
+          "rarity": "legendary",
+          "weight": 0.01
+        },
+        {
+          "type": "leafbug",
+          "rarity": "rare",
+          "weight": 0.09
+        },
+        {
+          "type": "spider",
+          "rarity": "epic",
+          "weight": 0.18
+        },
+        {
+          "type": "spider",
+          "rarity": "legendary",
+          "weight": 0.01
+        },
+        {
+          "type": "spider",
+          "rarity": "rare",
+          "weight": 0.11
+        },
+        {
+          "type": "fly",
+          "rarity": "epic",
+          "weight": 0.10
+        },
+        {
+          "type": "fly",
+          "rarity": "legendary",
+          "weight": 0.01
+        },
+        {
+          "type": "fly",
+          "rarity": "rare",
+          "weight": 0.09
+        },
+        {
+          "type": "hornet",
+          "rarity": "epic",
+          "weight": 0.05
+        },
+        {
+          "type": "hornet",
+          "rarity": "legendary",
+          "weight": 0.01
+        },
+        {
+          "type": "hornet",
+          "rarity": "rare",
+          "weight": 0.04
+        }
+      ]
+    },
+    {
+      "min_level": 51,
+      "max_level": 100,
+      "base_interval": 1.50,
+      "scale_per_level": -0.01,
+      "jitter": {
+        "range": 0.4,
+        "prob": 0.5
+      },
+      "oscillator": {
+        "period": 30.0,
+        "amplitude": 0.5
+      },
+      "mob_types": [
+        {
+          "type": "bee",
+          "rarity": "epic",
+          "weight": 0.15
+        },
+        {
+          "type": "bee",
+          "rarity": "legendary",
+          "weight": 0.02
+        },
+        {
+          "type": "bee",
+          "rarity": "rare",
+          "weight": 0.03
+        },
+        {
+          "type": "leafbug",
+          "rarity": "epic",
+          "weight": 0.15
+        },
+        {
+          "type": "leafbug",
+          "rarity": "legendary",
+          "weight": 0.02
+        },
+        {
+          "type": "leafbug",
+          "rarity": "rare",
+          "weight": 0.03
+        },
+        {
+          "type": "spider",
+          "rarity": "epic",
+          "weight": 0.17
+        },
+        {
+          "type": "spider",
+          "rarity": "legendary",
+          "weight": 0.02
+        },
+        {
+          "type": "spider",
+          "rarity": "rare",
+          "weight": 0.11
+        },
+        {
+          "type": "fly",
+          "rarity": "epic",
+          "weight": 0.10
+        },
+        {
+          "type": "fly",
+          "rarity": "legendary",
+          "weight": 0.02
+        },
+        {
+          "type": "fly",
+          "rarity": "rare",
+          "weight": 0.08
+        },
+        {
+          "type": "hornet",
+          "rarity": "epic",
+          "weight": 0.05
+        },
+        {
+          "type": "hornet",
+          "rarity": "legendary",
+          "weight": 0.02
+        },
+        {
+          "type": "hornet",
+          "rarity": "rare",
+          "weight": 0.03
+        }
+      ]
+    },
+    {
+      "min_level": 100,
+      "max_level": 120,
+      "base_interval": 1.50,
+      "scale_per_level": -0.02,
+      "jitter": {
+        "range": 0.4,
+        "prob": 0.5
+      },
+      "oscillator": {
+        "period": 30.0,
+        "amplitude": 0.4
+      },
+      "mob_types": [
+        {
+          "type": "hornet",
+          "rarity": "epic",
+          "weight": 0.10
+        },
+        {
+          "type": "hornet",
+          "rarity": "legendary",
+          "weight": 0.10
+        },
+        {
+          "type": "leafbug",
+          "rarity": "epic",
+          "weight": 0.10
+        },
+        {
+          "type": "leafbug",
+          "rarity": "legendary",
+          "weight": 0.1
+        },
+        {
+          "type": "fly",
+          "rarity": "epic",
+          "weight": 0.15
+        },
+        {
+          "type": "fly",
+          "rarity": "legendary",
+          "weight": 0.15
+        },
+        {
+          "type": "bee",
+          "rarity": "epic",
+          "weight": 0.10
+        },
+        {
+          "type": "bee",
+          "rarity": "legendary",
+          "weight": 0.10
+        },
+        {
+          "type": "roach",
+          "rarity": "epic",
+          "weight": 0.05
+        },
+        {
+          "type": "roach",
+          "rarity": "legendary",
+          "weight": 0.05
+        }
+      ]
+    },
+    {
+      "min_level": 120,
+      "max_level": 200,
+      "base_interval": 2.00,
+      "scale_per_level": -0.01,
+      "jitter": {
+        "range": 0.4,
+        "prob": 0.5
+      },
+      "oscillator": {
+        "period": 30.0,
+        "amplitude": 0.3
+      },
+      "mob_types": [
+        {
+          "type": "hornet",
+          "rarity": "legendary",
+          "weight": 0.1
+        },
+        {
+          "type": "leafbug",
+          "rarity": "legendary",
+          "weight": 0.1
+        },
+        {
+          "type": "fly",
+          "rarity": "legendary",
+          "weight": 0.2
+        },
+        {
+          "type": "bee",
+          "rarity": "legendary",
+          "weight": 0.3
+        },
+        {
+          "type": "roach",
+          "rarity": "legendary",
+          "weight": 0.1
+        },
+        {
+          "type": "spider",
+          "rarity": "legendary",
+          "weight": 0.2
+        }
+      ]
+    }
+  ]
+}

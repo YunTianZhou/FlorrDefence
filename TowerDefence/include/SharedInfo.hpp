@@ -35,17 +35,21 @@ struct PlayerState {
         float shield = 0.f;
     };
 
+    int originalHpLimit = 0;
+    int prevHpLimit = 0;
     int hpLimit = 0;
     int hp = 0;
     int shield = 0;
     int xp = 0;
     int bodyDamage = 0;
     int level = 0;
-    int coin = 0;
+    int64_t coin = 0;
     int talent = 0;
     Accum acc;
     BackpackInfo backpack;
-    Buff buff;
+    BuffGroup towerBuff;
+    BuffGroup talentBuff;
+    BuffGroup buff;
     BuffManager buffManager;
     std::set<std::string> boughtUniques;
 
@@ -53,21 +57,21 @@ struct PlayerState {
     int calcRequiredXp() const;
 
     int getBodyDamage() const;
-    int getHpLimit() const;
     void hit(int damage);
     void heal(float amount);
     void addShield(float amount);
     void addXp(int amount);
-    void addCoin(int amount);
+    void addCoin(int64_t amount);
 
     void updateLevel();
     void update();
 
-    void applyHealBuff(sf::Time dt);
+    void applyHealValueBuff(sf::Time dt);
 };
 
 struct InputInfo {
     bool mouseLeftButton = false;
+    bool mouseRightButton = false;
 
     bool keyG = false;
     bool keyH = false;
@@ -82,10 +86,12 @@ struct SharedInfo {
     sf::Time time;
     sf::Time dt;
     PlayerState playerState;
-    std::array<std::array<const DefencePetal*, 10>, 11> defencePetalMap = {};
+    std::array<std::array<DefencePetal*, 10>, 11> defencePetalMap = {};
+    std::array<std::array<bool, 10>, 11> laserMap = {};
     Counter counter;
     
     std::optional<DraggedCard> draggedCard;
+    std::optional<CardStackInfo> placeRequest;
     sf::Clock timeClock;
     sf::Clock dtClock;
 

@@ -66,8 +66,11 @@ bool SpriteCollisionManager::_isCollide(const sf::Sprite& a, const sf::Sprite& b
         return false;
     sf::FloatRect intersection = *optionalIntersection;
 
-    for (int i = int(intersection.position.x); i < int(intersection.position.x + intersection.size.x); i++) {
-        for (int j = int(intersection.position.y); j < int(intersection.position.y + intersection.size.y); j++) {
+    int intervalX = std::clamp(int(intersection.size.x / 8.f) - 1, 1, 10);
+    int intervalY = std::clamp(int(intersection.size.y / 8.f) - 1, 1, 10);
+
+    for (int i = int(intersection.position.x); i < int(intersection.position.x + intersection.size.x); i += intervalX) {
+        for (int j = int(intersection.position.y); j < int(intersection.position.y + intersection.size.y); j += intervalY) {
             sf::Vector2f p(i + 0.5f, j + 0.5f);
             sf::Vector2f localA = a.getInverseTransform().transformPoint(p);
             sf::Vector2f localB = b.getInverseTransform().transformPoint(p);

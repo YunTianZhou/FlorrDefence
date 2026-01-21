@@ -4,7 +4,7 @@
 
 class DraggedCard : public sf::Drawable {
 public:
-	explicit DraggedCard(CardInfo card, std::optional<sf::Vector2i> startSquare = std::nullopt)
+	explicit DraggedCard(const CardInfo& card, std::optional<sf::Vector2i> startSquare = std::nullopt)
 		: m_startSquare(startSquare) {
 		m_card.setCard(card);
 		m_card.setLength(100.f);

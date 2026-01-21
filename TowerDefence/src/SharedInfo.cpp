@@ -24,7 +24,7 @@ void BackpackInfo::add(const CardStackInfo& stack) {
 
 // PlayerState
 void PlayerState::init() {
-    hpLimit = INIT_STATES.hp;
+    originalHpLimit = prevHpLimit = hpLimit = INIT_STATES.hp;
     hp = INIT_STATES.hp;
     xp = INIT_STATES.xp;
     bodyDamage = INIT_STATES.bodyDamage;
@@ -44,10 +44,6 @@ int PlayerState::getBodyDamage() const {
     return (int)buff.bodyDamage.apply((float)bodyDamage);
 }
 
-int PlayerState::getHpLimit() const {
-    return hpLimit;
-}
-
 void PlayerState::hit(int damage) {
     if (shield > 0) {
         int obsorbed = std::min(damage, shield);
@@ -65,9 +61,9 @@ void PlayerState::heal(float amount) {
     int actuall_amount = int(acc.heal);
     acc.heal -= actuall_amount;
 
-    int heal = std::min(actuall_amount, getHpLimit() - hp);
+    int heal = std::min(actuall_amount, hpLimit - hp);
     hp += heal;
-    hp = std::min(hp, getHpLimit());
+    hp = std::min(hp, hpLimit);
     actuall_amount -= heal;
     if (actuall_amount > 0) 
         addShield(buff.overheal.apply((float)actuall_amount));
@@ -86,8 +82,8 @@ void PlayerState::addXp(int amount) {
     updateLevel();
 }
 
-void PlayerState::addCoin(int amount) {
-    coin += amount;
+void PlayerState::addCoin(int64_t amount) {
+     coin += amount;
 }
 
 void PlayerState::updateLevel() {
@@ -102,19 +98,27 @@ void PlayerState::updateLevel() {
 void PlayerState::update() {
     updateLevel();
 
-    hp = std::min(hp, getHpLimit());
-    shield = std::min(shield, hp);
-    buff = {};
-    buffManager = {};
+    hp = std::min(hp, hpLimit);
+    shield = std::max(0, std::min(shield, hp));
+
+    hpLimit = (int)buff.health.apply((float)originalHpLimit);
+    if (hpLimit != prevHpLimit) {
+        double hpPrecent = (double)hp / prevHpLimit;
+        double shieldPrecent = (double)shield / prevHpLimit;
+        hp = int(hpLimit * hpPrecent);
+        shield = int(hpLimit * shieldPrecent);
+        prevHpLimit = hpLimit;
+    }
 }
 
-void PlayerState::applyHealBuff(sf::Time dt) {
-    heal(buff.heal.apply(0) * dt.asSeconds());
+void PlayerState::applyHealValueBuff(sf::Time dt) {
+    heal(buff.healValue.apply(0) * dt.asSeconds());
 }
 
 // Input
 void InputInfo::update() {
     mouseLeftButton = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
+    mouseRightButton = sf::Mouse::isButtonPressed(sf::Mouse::Button::Right);
     keyG = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::G);
     keyH = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::H);
     keyShift = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) ||

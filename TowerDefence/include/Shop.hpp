@@ -14,7 +14,7 @@ public:
 	void setCard(const CardInfo& card);
 	void setCount(int count);
 
-	int getPrice() const { return m_price; }
+	int64_t getPrice() const { return m_price; }
 	int getCount() const { return m_stack.getCount(); }
 	CardStackInfo getCardStackInfo() const { return m_stack.getInfo(); }
 
@@ -28,7 +28,7 @@ private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 private:
-	int m_price = 0;
+	int64_t m_price = 0;
 	sf::RoundRect m_background;
 	CardStack m_stack;
 	sf::Vector2f m_size;
@@ -48,7 +48,6 @@ public:
 	const std::map<std::string, int>& getCache() const { return m_productCountCache; }
 	sf::Time getElapsedTime(sf::Time now) const;
 	sf::Time getRemainingTime(sf::Time now) const;
-	
 
 private:
 	void refresh();
@@ -84,6 +83,8 @@ private:
 	inline static const float productHeight = productWidth * (7.f / 6.f);
 	inline static const float productSpacing = 20.f;
 	inline static const sf::FloatRect subWindowRect = sf::FloatRect({ startX, startY - 10.f }, { width, endY - startY - 10.f });
+
+	inline static const int64_t towerLimit = 100000000;
 
 private:
 	SharedInfo& m_info;
