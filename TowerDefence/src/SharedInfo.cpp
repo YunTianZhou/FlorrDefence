@@ -123,6 +123,8 @@ void InputInfo::update() {
     keyH = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::H);
     keyShift = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) ||
                sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RShift);
+    keyCtrl = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LControl) ||
+              sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RControl);
 }
 
 // SharedInfo

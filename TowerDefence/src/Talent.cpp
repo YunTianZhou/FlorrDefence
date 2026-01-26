@@ -215,16 +215,23 @@ sf::Vector2f Talent::getOffset() const {
 			 subWindowRect.position.y - m_scrollBar.getOffset() };
 }
 
-void Talent::buyTalent(int id) {
+void Talent::buyTalent(int id, bool free) {
 	TalentNode& node = m_nodes[id];
 
-	if (node.isActive() || node.getPrice() > m_info.playerState.talent)
+	if (node.isActive())
 		return;
 
-	m_info.playerState.talent -= node.getPrice();
+	if (!free) {
+		if (node.getPrice() > m_info.playerState.talent)
+			return;
+		m_info.playerState.talent -= node.getPrice();
+	}
+
 	int i = id;
 	while (!m_nodes[i].isActive()) {
 		m_nodes[i].activate();
+		m_activatedNodes.push_back(i);
+
 		Buff& buff = m_info.playerState.talentBuff.get(m_nodes[i].getAttribs().buff_type);
 		buff.add(m_nodes[i].getAttribs().buff_value);
 

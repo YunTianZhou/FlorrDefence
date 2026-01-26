@@ -4,6 +4,7 @@
 #include <map>
 #include <set>
 #include <SFML/Graphics.hpp>
+#include <nlohmann/json.hpp>
 
 inline const sf::Vector2f VIEW_SIZE(1700.f, 1100.f);
 inline const sf::Vector2u WINDOW_INIT_SIZE(850u, 550u);
@@ -20,6 +21,18 @@ struct CardInfo {
 		return std::tie(rarity, type) < std::tie(other.rarity, other.type);
 	}
 };
+
+inline void to_json(nlohmann::json& j, const CardInfo& c) {
+	j = {
+		{"rarity", c.rarity},
+		{"type", c.type}
+	};
+}
+
+inline void from_json(const nlohmann::json& j, CardInfo& c) {
+	j.at("rarity").get_to(c.rarity);
+	j.at("type").get_to(c.type);
+}
 
 using MobInfo = CardInfo;
 

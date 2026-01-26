@@ -413,7 +413,7 @@ int LaserPetal::getArmor() const {
 }
 
 int LaserPetal::getDamage() const {
-	int damage = getBuffedAttrib("damage");
+	int damage = (int)getBuffedAttrib("damage");
 
 	if (m_target.has_value()) {
 		float elapsed = m_clock.getElapsedTime().asSeconds();

@@ -4,6 +4,7 @@
 #include "SharedInfo.hpp"
 #include "Map.hpp"
 #include "UI.hpp"
+#include "Record.hpp"
 
 class Game {
 public:
@@ -25,4 +26,5 @@ private:
     SharedInfo m_info;
     Map m_map;
     UI m_ui;
+    Record m_record;
 };

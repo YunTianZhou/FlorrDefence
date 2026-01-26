@@ -1,6 +1,7 @@
 #pragma once
 #include <list>
 #include <SFML/Graphics.hpp>
+#include <nlohmann/json.hpp>
 #include "Mob.hpp"
 #include "Tower.hpp"
 #include "Petal.hpp"
@@ -53,6 +54,40 @@ private:
 	bool m_buffUpdated = false;
 };
 
+inline void to_json(json& j, const MapInfo& m) {
+    j["towers"] = json::array();
+
+    for (int x = 0; x < 11; x++) {
+        for (int y = 0; y < 10; y++) {
+            sf::Vector2i square{x, y};
+            const Tower* tower = m.getTower(square);
+            if (!tower) continue;
+
+            j["towers"].push_back({
+                { "x", x },
+                { "y", y },
+                { "card", tower->getCard() }
+            });
+        }
+    }
+}
+
+inline void from_json(const json& j, MapInfo& m) {
+	m.clear();
+
+	if (!j.contains("towers"))
+		return;
+
+	for (const auto& e : j["towers"]) {
+		sf::Vector2i square{
+			e.at("x").get<int>(),
+			e.at("y").get<int>()
+		};
+
+		CardInfo card = e.at("card").get<CardInfo>();
+		m.setCard(square, card);
+	}
+}
 
 class Map : public sf::Drawable {
 public:

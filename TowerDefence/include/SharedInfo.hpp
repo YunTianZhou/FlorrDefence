@@ -4,9 +4,12 @@
 #include <set>
 #include <array>
 #include <SFML/Graphics.hpp>
+#include <nlohmann/json.hpp>
 #include "DraggedCard.hpp"
 #include "Buff.hpp"
 #include "Constants.hpp"
+
+using nlohmann::json;
 
 class DefencePetal;
 
@@ -16,6 +19,9 @@ public:
     int getRarityCount(const std::string& rarity) const;
     int getTypeCount(const std::string& type) const;
     void add(const CardStackInfo& stack);
+
+    friend void to_json(json& j, const BackpackInfo& b);
+    friend void from_json(const json& j, BackpackInfo& b);
 
 private:
     std::map<CardInfo, int> m_count;
@@ -28,6 +34,27 @@ struct Counter {
     std::map<CardInfo, int> petal;
     std::map<MobInfo, int> mob;
 };
+
+inline void to_json(json& j, const BackpackInfo& b) {
+    j["cards"] = json::array();
+
+    for (const auto& [card, count] : b.m_count) {
+        j["cards"].push_back({
+            {"card", card},
+            {"count", count}
+        });
+    }
+}
+
+inline void from_json(const json& j, BackpackInfo& b) {
+    b = {}; // reset
+
+    for (const auto& e : j.at("cards")) {
+        CardInfo card = e.at("card").get<CardInfo>();
+        int count = e.at("count").get<int>();
+        b.add({ card, count });
+    }
+}
 
 struct PlayerState {
     struct Accum {
@@ -69,6 +96,47 @@ struct PlayerState {
     void applyHealValueBuff(sf::Time dt);
 };
 
+inline void to_json(json& j, const PlayerState& p) {
+    j = {
+        { "hpLimit",        p.hpLimit },
+        { "hp",             p.hp },
+        { "shield",         p.shield },
+        { "xp",             p.xp },
+        { "bodyDamage",     p.bodyDamage },
+        { "level",          p.level },
+        { "coin",           p.coin },
+        { "talent",         p.talent },
+        { "backpack",       p.backpack },
+        { "bought_uniques", p.boughtUniques }
+    };
+}
+
+inline void from_json(const json& j, PlayerState& p) {
+    p.init();
+
+    p.hpLimit = j.value("hpLimit", 0);
+    p.hp = j.value("hp", 0);
+    p.shield = j.value("shield", 0);
+    p.xp = j.value("xp", 0);
+    p.bodyDamage = j.value("bodyDamage", 0);
+    p.level = j.value("level", 0);
+    p.coin = j.value("coin", int64_t{ 0 });
+    p.talent = j.value("talent", 0);
+
+    if (j.contains("backpack"))
+        p.backpack = j.at("backpack").get<BackpackInfo>();
+    else
+        p.backpack = BackpackInfo{};
+
+    if (j.contains("bought_uniques"))
+        p.boughtUniques = j.at("bought_uniques").get<std::set<std::string>>();
+    else
+        p.boughtUniques.clear();
+
+    p.prevHpLimit = p.hpLimit;
+    p.hp = std::clamp(p.hp, 0, p.hpLimit);
+}
+
 struct InputInfo {
     bool mouseLeftButton = false;
     bool mouseRightButton = false;
@@ -76,6 +144,7 @@ struct InputInfo {
     bool keyG = false;
     bool keyH = false;
     bool keyShift = false;
+    bool keyCtrl = false;
 
     void update();
 };

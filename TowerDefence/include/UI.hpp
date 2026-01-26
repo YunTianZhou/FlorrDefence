@@ -17,6 +17,8 @@ public:
 	void onEvent(const sf::Event& event);
 	void updateComponents();
 
+	friend class Game;
+
 private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void initComponents();

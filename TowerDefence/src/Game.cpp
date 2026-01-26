@@ -1,12 +1,10 @@
 #include <iostream>
 #include "Game.hpp"
 #include "Constants.hpp"
-#include "AssetManager.hpp"
-#include "SpriteCollisionManager.hpp"
 
 Game::Game()
-    : m_viewManager(VIEW_SIZE), m_map(m_info), m_ui(m_info) {
-    m_info.init();
+    : m_viewManager(VIEW_SIZE), m_map(m_info), m_ui(m_info), m_record(m_info, m_map.getMapInfo(), m_ui.m_talent) {
+    m_record.try_load("TowerDefence.json");
 
     sf::ContextSettings settings;
     settings.antiAliasingLevel = 5;
@@ -33,6 +31,8 @@ void Game::run() {
             m_elapsedTime = 0.f;
         }
     }
+
+    m_record.save("TowerDefence.json");
 }
 
 void Game::handleEvents() {
@@ -45,8 +45,12 @@ void Game::handleEvents() {
             m_window.setView(m_viewManager.getView());
         }
         else {
-            // TEST
             if (const auto* keyEvent = event->getIf<sf::Event::KeyReleased>()) {
+                if (keyEvent->code == sf::Keyboard::Key::S && m_info.input.keyCtrl) {
+                    m_record.save("TowerDefence.json");
+                }
+
+                // TEST
                 if (keyEvent->code == sf::Keyboard::Key::W) {
                     m_info.playerState.level++;
                 }

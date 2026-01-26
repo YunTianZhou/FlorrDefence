@@ -74,9 +74,13 @@ public:
 	void onEvent(const sf::Event& event);
 	void updateComponents();
 
+	const std::vector<int>& getActivatedNodes() const { return m_activatedNodes; }
+
+	friend void from_json(const json& j, Talent& t);
+
 private:
 	sf::Vector2f getOffset() const;
-	void buyTalent(int id);
+	void buyTalent(int id, bool free = false);
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void initComponents();
@@ -97,7 +101,23 @@ private:
 	std::vector<TalentEdge> m_edges;
 	std::vector<int> m_starts;
 	std::vector<std::vector<int>> m_graph;
+	std::vector<int> m_activatedNodes;
 
 	int prevTalent = 0;
 	bool m_updated = false;
 };
+
+inline void to_json(json& j, const Talent& t) {
+	j = {
+		{ "activated_nodes", t.getActivatedNodes() }
+	};
+}
+
+inline void from_json(const json& j, Talent& t) {
+	if (!j.contains("activated_nodes"))
+		return;
+
+	std::vector<int> nodes = j.value<std::vector<int>>("activated_nodes", {});
+	for (int node : nodes)
+		t.buyTalent(node, true);
+}
