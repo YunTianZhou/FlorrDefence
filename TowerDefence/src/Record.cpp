@@ -4,10 +4,11 @@
 #include <fstream>
 #include "SharedInfo.hpp"
 #include "Map.hpp"
+#include "Shop.hpp"
 #include "Talent.hpp"
 
-Record::Record(SharedInfo& info, MapInfo& map, Talent& talent)
-	: m_info(info), m_map(map), m_talent(talent) {
+Record::Record(SharedInfo& info, Map& map, Shop& shop, Talent& talent)
+	: m_info(info), m_map(map), m_shop(shop), m_talent(talent) {
 
 }
 
@@ -30,9 +31,11 @@ bool Record::try_load(std::filesystem::path path) {
 
 	m_data["player"].get_to(m_info.playerState);
 	m_data["map"].get_to(m_map);
+	m_data["shop"].get_to(m_shop);
 	m_data["talent"].get_to(m_talent);
 
-	std::cout << "Game loaded successfully!" << std::endl;;
+	ifs.close();
+	std::cout << "Game loaded successfully!" << std::endl;
 	return true;
 }
 
@@ -47,6 +50,7 @@ void Record::save(std::filesystem::path path) {
 	m_data.clear();
 	m_data["player"] = m_info.playerState;
 	m_data["map"] = m_map;
+	m_data["shop"] = m_shop;
 	m_data["talent"] = m_talent;
 
 	std::ofstream ofs(path);
@@ -58,5 +62,6 @@ void Record::save(std::filesystem::path path) {
 
 	ofs << m_data.dump(4);
 	ofs.close();
+
 	std::cout << std::format("Game successfully save to '{}'", path.string()) << std::endl;
 }

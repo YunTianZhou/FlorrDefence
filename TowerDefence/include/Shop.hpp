@@ -40,24 +40,39 @@ private:
 
 class ShopInfo {
 public:
-	ShopInfo(const std::string& type);
-	bool update(sf::Time now);
+	ShopInfo(const SharedInfo& info, const std::string& type);
+	bool update();
 
 	const std::vector<std::string>& getProducts() const { return m_products; }
-	std::map<std::string, int>& getCache() { return m_productCountCache; }
-	const std::map<std::string, int>& getCache() const { return m_productCountCache; }
-	sf::Time getElapsedTime(sf::Time now) const;
-	sf::Time getRemainingTime(sf::Time now) const;
+	std::unordered_map<std::string, int>& getCache() { return m_productCountCache; }
+	const std::unordered_map<std::string, int>& getCache() const { return m_productCountCache; }
+	sf::Time getRemainingTime() const;
+
+	friend void to_json(json& j, const ShopInfo& s);
+	friend void from_json(const json& j, ShopInfo& s);
 
 private:
 	void refresh();
 
 private:
+	const SharedInfo& m_info;
 	std::string m_type;
 	std::vector<std::string> m_products;
-	std::map<std::string, int> m_productCountCache;
-	sf::Time m_lastRefreshTime;
+	std::unordered_map<std::string, int> m_productCountCache;
+	sf::Time m_refreshTimer;
 };
+
+inline void to_json(json& j, const ShopInfo& s) {
+	j["products"] = s.m_products;
+	j["product_count_cache"] = s.m_productCountCache;
+	j["refresh_timer"] = s.m_refreshTimer.asSeconds();
+}
+
+inline void from_json(const json& j, ShopInfo& s) {
+	j["products"].get_to(s.m_products);
+	j["product_count_cache"].get_to(s.m_productCountCache);
+	s.m_refreshTimer = sf::seconds(j["refresh_timer"].get<float>());
+}
 
 class Shop : public sf::Drawable {
 public:
@@ -69,6 +84,9 @@ public:
 	void onEvent(const sf::Event& event);
 
 	void updateComponents() const;
+
+	friend void to_json(json& j, const Shop& s);
+	friend void from_json(const json& j, Shop& s);
 
 private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -90,9 +108,19 @@ private:
 	SharedInfo& m_info;
 	RadioButtonGroup m_menu;
 	sf::Text m_elapsedRefreshTimeText;
-	std::map<std::string, ShopInfo> m_shops;
+	std::unordered_map<std::string, ShopInfo> m_shops;
 	mutable ScrollBar m_scrollBar;
 	mutable float m_contentHeight = 0.f;
 	mutable std::vector<Product> m_products;
 	mutable bool m_updated = false;
 };
+
+inline void to_json(json& j, const Shop& s) {
+	for (const auto& [rarity, shop] : s.m_shops)
+		j[rarity] = shop;
+}
+
+inline void from_json(const json& j, Shop& s) {
+	for (auto& [rarity, shop] : s.m_shops)
+		j[rarity].get_to(shop);
+}

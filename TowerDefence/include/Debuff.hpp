@@ -11,8 +11,12 @@ struct DurationDebuff {
         : value(value_), level(RARITIE_LEVELS.at(rarity)), duration(duration_) {
     }
 
+    void update(sf::Time dt) {
+        timer += dt;
+    }
+
     bool is_active() const {
-        return clock.getElapsedTime() < duration;
+        return timer < duration;
     }
 
     void swap(const DurationDebuff& other) {
@@ -21,10 +25,11 @@ struct DurationDebuff {
     }
 
     virtual float apply(float value, float resistance) const { return 0.f; };
+
     float value = 0.f;
     int level = 0;
     sf::Time duration;
-    sf::Clock clock;
+    sf::Time timer;
 };
 
 struct ValueDebuff {
@@ -79,4 +84,10 @@ struct Debuff {
     SpeedDebuff pincerSpeed;
     ValueDebuff knockback;
     ArmorDebuff armor;
+
+    void update(sf::Time dt) {
+        webSpeed.update(dt);
+        pincerSpeed.update(dt);
+        armor.update(dt);
+    }
 };

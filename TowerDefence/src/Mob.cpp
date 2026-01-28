@@ -51,6 +51,9 @@ void Mob::update() {
 
     // Position
     updatePosition();
+
+    // Debuff
+    m_debuff.update(m_info.dt);
 }
 
 void Mob::tick() {
@@ -59,7 +62,7 @@ void Mob::tick() {
     // Hit player logic
     if (m_position >= 39.f) {
         player.hit(getAttribs().damage);
-        hit(player.getBodyDamage());
+        hit(player.getBodyDamage(), DamageType::Lightning);
     }
 }
 
@@ -133,11 +136,12 @@ HornetMob::HornetMob(SharedInfo& info, const MobInfo& mob, std::list<std::unique
 }
 
 void HornetMob::update() {
+    m_timer += m_info.dt;
+    const float elapsed = m_timer.asSeconds();
+
     switch (m_state) {
     case State::Moving: {
-        if (m_position < 36.f &&
-            m_clock.getElapsedTime().asSeconds() >= m_currShootInterval)
-        {
+        if (m_position < 36.f && elapsed >= m_currShootInterval) {
             m_state = State::TurningBack;
         }
         break;
@@ -153,13 +157,13 @@ void HornetMob::update() {
         }
         else {
             m_state = State::WaitingBeforeShoot;
-            m_clock.restart();
+            m_timer = sf::Time::Zero;
         }
         break;
     }
 
     case State::WaitingBeforeShoot: {
-        if (m_clock.getElapsedTime().asSeconds() >= getAttrib("pre_shoot_delay")) {
+        if (elapsed >= getAttrib("pre_shoot_delay")) {
             m_state = State::Shooting;
         }
         break;
@@ -167,13 +171,13 @@ void HornetMob::update() {
 
     case State::Shooting: {
         shoot();
-        m_clock.restart();
+        m_timer = sf::Time::Zero;
         m_state = State::WaitingAfterShoot;
         break;
     }
 
     case State::WaitingAfterShoot: {
-        if (m_clock.getElapsedTime().asSeconds() >= getAttrib("post_shoot_delay")) {
+        if (elapsed >= getAttrib("post_shoot_delay")) {
             m_state = State::TurningFront;
         }
         break;
@@ -189,7 +193,7 @@ void HornetMob::update() {
         }
         else {
             m_state = State::Moving;
-            m_clock.restart();
+            m_timer = sf::Time::Zero;
 
             nextShootInterval();
         }
@@ -236,14 +240,16 @@ void RoachMob::update() {
     const float runningSpeed = getAttrib("running_speed");
     const float speedUpDur = getAttrib("speed_up_duration");
     const float slowDownDur = getAttrib("slow_down_duration");
-    const float elapsed = m_clock.getElapsedTime().asSeconds();
+
+    m_timer += m_info.dt;
+    const float elapsed = m_timer.asSeconds();
 
     switch (m_state) {
     case State::Moving:
         m_speed = baseSpeed;
         if (elapsed >= m_currRestTime) {
             m_state = State::SpeedUp;
-            m_clock.restart();
+            m_timer = sf::Time::Zero;
         }
         break;
 
@@ -252,7 +258,7 @@ void RoachMob::update() {
         if (t >= 1.f) {
             m_speed = runningSpeed;
             m_state = State::Running;
-            m_clock.restart();
+            m_timer = sf::Time::Zero;
         }
         else {
             m_speed = lerp(baseSpeed, runningSpeed, t);
@@ -264,7 +270,7 @@ void RoachMob::update() {
         m_speed = runningSpeed;
         if (elapsed >= m_currRunningTime) {
             m_state = State::SlowDown;
-            m_clock.restart();
+            m_timer = sf::Time::Zero;
         }
         break;
 
@@ -273,7 +279,7 @@ void RoachMob::update() {
         if (t >= 1.f) {
             m_speed = baseSpeed;
             m_state = State::Moving;
-            m_clock.restart();
+            m_timer = sf::Time::Zero;
 
             nextPeriod();
         }

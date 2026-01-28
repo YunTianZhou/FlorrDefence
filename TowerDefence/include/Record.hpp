@@ -5,12 +5,13 @@
 using nlohmann::json;
 
 struct SharedInfo;
-class MapInfo;
+class Map;
+class Shop;
 class Talent;
 
 class Record {
 public:
-	Record(SharedInfo& info, MapInfo& map, Talent& talent);
+	Record(SharedInfo& info, Map& map, Shop& shop, Talent& talent);
 
 	bool try_load(std::filesystem::path path);
 
@@ -18,7 +19,8 @@ public:
 
 private:
 	SharedInfo& m_info;
-	MapInfo& m_map;
+	Map& m_map;
+	Shop& m_shop;
 	Talent& m_talent;
 	json m_data;
 };

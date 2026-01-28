@@ -1020,30 +1020,35 @@
     "rarities": {
       "common": {
         "price": 3,
+        "coin": 1,
         "attribs": {
           "reload": 5.0
         }
       },
       "unusual": {
         "price": 21,
+        "coin": 3,
         "attribs": {
           "reload": 5.0
         }
       },
       "rare": {
         "price": 252,
+        "coin": 9,
         "attribs": {
           "reload": 5.0
         }
       },
       "epic": {
         "price": 4536,
+        "coin": 27,
         "attribs": {
           "reload": 5.0
         }
       },
       "legendary": {
         "price": 167832,
+        "coin": 81,
         "attribs": {
           "reload": 5.0
         }
@@ -1170,36 +1175,36 @@
     "rarities": {
       "common": {
         "price": 20,
+        "coin": 2,
         "attribs": {
-          "coin": 2,
           "reload": 1
         }
       },
       "unusual": {
         "price": 140,
+        "coin": 6,
         "attribs": {
-          "coin": 6,
           "reload": 1
         }
       },
       "rare": {
         "price": 1680,
+        "coin": 18,
         "attribs": {
-          "coin": 18,
           "reload": 1
         }
       },
       "epic": {
         "price": 30240,
+        "coin": 54,
         "attribs": {
-          "coin": 54,
           "reload": 1
         }
       },
       "legendary": {
         "price": 1118880,
+        "coin": 162,
         "attribs": {
-          "coin": 162,
           "reload": 1
         }
       }

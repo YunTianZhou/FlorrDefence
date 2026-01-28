@@ -16,13 +16,16 @@ public:
 	Tower(SharedInfo& info, const CardInfo& card);
 	virtual ~Tower();
 
-	virtual void update();
-	virtual void tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs);
+	virtual void update() {}
+	virtual void tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {}
 
 	void setLength(float length) { m_card.setLength(length); }
 	CardInfo getCard() const { return m_card.getCard(); };
 	float getAttrib(const std::string& name) const { return m_attribs.attribs.at(name); }
 	float getBuffedAttrib(const std::string& name) const { return m_info.playerState.buff.get(name).apply(getAttrib(name)); }
+
+	friend void to_json(json& j, const Tower& t);
+	friend void from_json(const json& j, Tower& t);
 
 private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -31,7 +34,18 @@ protected:
 	SharedInfo& m_info;
 	const TowerAttribs::RarityEntry& m_attribs;
 	TowerCard m_card;
+	sf::Time m_reloadTimer;
 };
+
+inline void to_json(json& j, const Tower& t) {
+	j["card"] = t.getCard();
+	j["reload_timer"] = t.m_reloadTimer.asSeconds();
+}
+
+inline void from_json(const json& j, Tower& t) {
+	assert(t.getCard() == j.value("card", MobInfo{}));
+	t.m_reloadTimer = sf::seconds(j.value("reload_timer", 0.f));
+}
 
 class ShootTower : public Tower {
 public:
@@ -42,9 +56,6 @@ public:
 
 protected:
 	std::optional<std::list<std::unique_ptr<Mob>>::const_iterator> getNearestMob(const std::list<std::unique_ptr<Mob>>& mobs) const;
-
-protected:
-	sf::Clock m_reloadClock;
 };
 
 class DefenceTower : public Tower {
@@ -56,7 +67,6 @@ public:
 
 protected:
 	sf::Vector2i m_square;
-	sf::Clock m_reloadClock;
 };
 
 class SummonTower : public Tower {
@@ -68,9 +78,6 @@ public:
 
 protected:
 	bool ableToSummon();
-
-protected:
-	sf::Clock m_reloadClock;
 };
 
 class BuffTower : public Tower {
@@ -119,9 +126,6 @@ public:
 
 	void update() override;
 	void tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) override;
-
-public:
-	static const std::unordered_map<std::string, int64_t> coinReward;
 };
 
 class RoseTower : public BuffTower {
@@ -131,9 +135,6 @@ public:
 	void update() override;
 
 	void tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) override;
-
-protected:
-	sf::Clock m_reloadClock;
 };
 
 class CoinTower : public BuffTower {
@@ -143,9 +144,6 @@ public:
 	void update() override;
 
 	void tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) override;
-
-protected:
-	sf::Clock m_reloadClock;
 };
 
 class TriangleTower : public ShootTower {
@@ -168,7 +166,7 @@ public:
 
 	void update() override;
 
-	void tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) override;
+	void tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) override {}
 
 private:
 	sf::Vector2i m_square;

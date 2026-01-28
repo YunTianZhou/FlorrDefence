@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <map>
+#include <unordered_map>
 #include <set>
 #include <array>
 #include <SFML/Graphics.hpp>
@@ -25,8 +26,8 @@ public:
 
 private:
     std::map<CardInfo, int> m_count;
-    std::map<std::string, int> m_rarityCount;
-    std::map<std::string, int> m_typeCount;
+    std::unordered_map<std::string, int> m_rarityCount;
+    std::unordered_map<std::string, int> m_typeCount;
 };
 
 struct Counter {
@@ -152,7 +153,6 @@ struct InputInfo {
 struct SharedInfo {
     sf::Vector2f mouseWorldPosition;
     InputInfo input;
-    sf::Time time;
     sf::Time dt;
     PlayerState playerState;
     std::array<std::array<DefencePetal*, 10>, 11> defencePetalMap = {};
@@ -161,9 +161,8 @@ struct SharedInfo {
     
     std::optional<DraggedCard> draggedCard;
     std::optional<CardStackInfo> placeRequest;
-    sf::Clock timeClock;
     sf::Clock dtClock;
-
+    
     void init();
     bool update(const sf::RenderWindow& window);
 };

@@ -26,6 +26,9 @@ public:
     Debuff& getDebuff() { return m_debuff; }
     float getPathPosition() const { return m_position; }
 
+    friend void to_json(json& j, const Mob& m);
+    friend void from_json(const json& j, Mob& m);
+
 protected:
     inline static const float knockbackThreshold = 0.05f;
     inline static const float knockbackDecayFactor = 0.08f;
@@ -44,6 +47,18 @@ protected:
     float m_knockback = 0.f;
     Debuff m_debuff;
 };
+
+inline void to_json(json& j, const Mob& m) {
+    j["card"] = m.getMob();
+    j["hp"] = m.m_hp;
+    j["position"] = m.m_position;
+}
+
+inline void from_json(const json& j, Mob& m) {
+    assert(m.getMob() == j.value("card", MobInfo{}));
+    m.m_hp = j.value("hp", 0);
+    m.m_position = j.value("position", 0.f);
+}
 
 class SpiderMob : public Mob {
 public:
@@ -77,7 +92,7 @@ private:
 
 private:
     std::list<std::unique_ptr<Mob>>& m_mobs;
-    sf::Clock m_clock;
+    sf::Time m_timer;
     float m_currShootInterval = 0.f;
     State m_state = State::Moving;
 };
@@ -103,7 +118,7 @@ private:
 
 private:
     float m_speed;
-    sf::Clock m_clock;
+    sf::Time m_timer;
     float m_currRestTime = 0.f;
     float m_currRunningTime = 0.f;
     State m_state = State::Moving;

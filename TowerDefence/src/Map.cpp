@@ -215,8 +215,7 @@ sf::Vector2f MapInfo::getSquareCenter(sf::Vector2i square) {
 
 // Map
 Map::Map(SharedInfo& info)
-    : m_info(info), m_map(info, *this), m_spawner(info)
-{
+    : m_info(info), m_map(info, *this), m_spawner(info) {
     initComponents();
 }
 
@@ -255,9 +254,10 @@ bool Map::update() {
         effect->update();
 
     // Tick
-    if (m_tickClock.getElapsedTime() >= TICK) {
+    m_tickTimer += m_info.dt;
+    if (m_tickTimer >= TICK) {
         tick();
-        m_tickClock.restart();
+        m_tickTimer = sf::Time::Zero;
     }
 
     // Put card request

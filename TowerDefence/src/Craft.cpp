@@ -12,7 +12,6 @@ void CraftInfo::reset(const std::string& rarity) {
 	elapsedTime = sf::seconds(0.f);
 	successCount = 0;
 	remaningCount = 0;
-	clock.restart();
 }
 
 Craft::Craft(SharedInfo& info) 
@@ -24,8 +23,7 @@ Craft::Craft(SharedInfo& info)
 void Craft::update() {
 	// Craft
 	if (m_craftState == "crafting") {
-		sf::Time dt = m_craftInfo.clock.restart();
-		m_craftInfo.elapsedTime += dt;
+		m_craftInfo.elapsedTime += m_info.dt;
 
 		if (m_craftInfo.elapsedTime >= m_craftInfo.processTime) {
 			endCraft();
@@ -35,7 +33,7 @@ void Craft::update() {
 			float startSpeed = 360.f;
 			float spinSpeed = startSpeed + 3.f * elapsedSec * elapsedSec;
 
-			m_craftTableAngle += sf::degrees(spinSpeed * dt.asSeconds());
+			m_craftTableAngle += sf::degrees(spinSpeed * m_info.dt.asSeconds());
 
 			float frequency = 1.0f + 0.03f * elapsedSec; // slower acceleration
 			float phase = elapsedSec * frequency * 2.f * 3.14159265f + 3.14159265f / 2.f;

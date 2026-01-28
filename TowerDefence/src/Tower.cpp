@@ -52,10 +52,6 @@ Tower::~Tower() {
     m_info.counter.tower[getCard()]--;
 }
 
-void Tower::update() {}
-
-void Tower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {}
-
 void Tower::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	states.transform *= getTransform();
 
@@ -69,16 +65,17 @@ ShootTower::ShootTower(SharedInfo& info, const CardInfo& card)
 }
 
 void ShootTower::update() {
-    float elapsedTime = m_reloadClock.getElapsedTime().asSeconds();
+    m_reloadTimer += m_info.dt;
+    float elapsedTime = m_reloadTimer.asSeconds();
     m_card.setReload(std::min(1.0f, (elapsedTime / getBuffedAttrib("reload"))), false);
 }
 
 void ShootTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {
-	if (m_reloadClock.getElapsedTime().asSeconds() > getBuffedAttrib("reload")) {
+	if (m_reloadTimer.asSeconds() > getBuffedAttrib("reload")) {
         std::optional nearestMob = getNearestMob(mobs);
         if (nearestMob) {
             petals.push_back(ShootPetal::create(m_info, m_card.getCard(), getPosition(), *nearestMob));
-            m_reloadClock.restart();
+            m_reloadTimer = sf::Time::Zero;
         }
 	}
 }
@@ -109,7 +106,7 @@ DefenceTower::DefenceTower(SharedInfo& info, const CardInfo& card, sf::Vector2i 
 
 void DefenceTower::update() {
     if (auto defence = m_info.defencePetalMap[m_square.x][m_square.y]) {
-        m_reloadClock.restart();
+        m_reloadTimer = sf::Time::Zero;
         if (defence->getCard() == getCard()) {
             int hp = defence->getHp();
             int totalHp = int(getAttrib("hp"));
@@ -120,16 +117,17 @@ void DefenceTower::update() {
         }
     }
     else {
-        float elapsedTime = m_reloadClock.getElapsedTime().asSeconds();
+        m_reloadTimer += m_info.dt;
+        float elapsedTime = m_reloadTimer.asSeconds();
         m_card.setReload(std::min(1.0f, (elapsedTime / getBuffedAttrib("reload"))), false);
     }
 }
 
 void DefenceTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {
-    if (m_reloadClock.getElapsedTime().asSeconds() > getBuffedAttrib("reload")) {
+    if (m_reloadTimer.asSeconds() > getBuffedAttrib("reload")) {
         if (!m_info.defencePetalMap[m_square.x][m_square.y]) {
             petals.push_back(DefencePetal::create(m_info, m_card.getCard(), m_square));
-            m_reloadClock.restart();
+            m_reloadTimer = sf::Time::Zero;
         }
     }
 }
@@ -140,21 +138,21 @@ SummonTower::SummonTower(SharedInfo& info, const CardInfo& card)
 
 void SummonTower::update() {
     if (!ableToSummon()) {
-        m_reloadClock.stop();
+        m_reloadTimer = sf::Time::Zero;
         m_card.setReload(0.f, true);
     }
     else {
-        m_reloadClock.start();
-        float elapsedTime = m_reloadClock.getElapsedTime().asSeconds();
+        m_reloadTimer += m_info.dt;
+        float elapsedTime = m_reloadTimer.asSeconds();
         m_card.setReload(std::min(1.0f, (elapsedTime / getBuffedAttrib("reload"))), false);
     }
 }
 
 void SummonTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {
-    if (m_reloadClock.getElapsedTime().asSeconds() > getBuffedAttrib("reload")) {
+    if (m_reloadTimer.asSeconds() > getBuffedAttrib("reload")) {
         if (ableToSummon()) {
             petals.push_back(MobPetal::create(m_info, getCard()));
-            m_reloadClock.restart();
+            m_reloadTimer = sf::Time::Zero;
         }
     }
 }
@@ -237,7 +235,7 @@ MultiShotTower::getTargets(const std::list<std::unique_ptr<Mob>>& mobs) const {
 
 void MultiShotTower::tick(std::list<std::unique_ptr<Petal>>& petals,
     const std::list<std::unique_ptr<Mob>>& mobs) {
-    if (m_reloadClock.getElapsedTime().asSeconds() > getBuffedAttrib("reload")) {
+    if (m_reloadTimer.asSeconds() > getBuffedAttrib("reload")) {
         auto targets = getTargets(mobs);
         if (!targets.empty()) {
             for (auto it : targets) {
@@ -245,7 +243,7 @@ void MultiShotTower::tick(std::list<std::unique_ptr<Petal>>& petals,
                     ShootPetal::create(m_info, m_card.getCard(),
                         getPosition(), it));
             }
-            m_reloadClock.restart();
+            m_reloadTimer = sf::Time::Zero;
         }
     }
 }
@@ -257,7 +255,7 @@ WebTower::WebTower(SharedInfo& info, const CardInfo& card, sf::Vector2i square)
 
 void WebTower::update() {
     if (auto defence = m_info.defencePetalMap[m_square.x][m_square.y]) {
-        m_reloadClock.restart();
+        m_reloadTimer = sf::Time::Zero;
         if (defence->getCard() == getCard()) {
             auto web = dynamic_cast<const WebPetal*>(defence);
             m_card.setReload(web->getDelta(), true);
@@ -267,19 +265,20 @@ void WebTower::update() {
         }
     }
     else {
-        float elapsedTime = m_reloadClock.getElapsedTime().asSeconds();
+        float elapsedTime = m_reloadTimer.asSeconds();
         m_card.setReload(std::min(1.0f, (elapsedTime / getBuffedAttrib("reload"))), false);
     }
 }
 
 // Pollen Tower (Shoot Tower)
 void PollenTower::update() {
-    float elapsedTime = m_reloadClock.getElapsedTime().asSeconds();
+    m_reloadTimer += m_info.dt;
+    float elapsedTime = m_reloadTimer.asSeconds();
     m_card.setReload(std::min(1.0f, (elapsedTime / getBuffedAttrib("reload"))), false);
 }
 
 void PollenTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {
-    if (m_reloadClock.getElapsedTime().asSeconds() < getBuffedAttrib("reload"))
+    if (m_reloadTimer.asSeconds() < getBuffedAttrib("reload"))
         return;
     
     int index = 0;
@@ -308,48 +307,38 @@ void PollenTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::lis
         right++;
     }
 
-    m_reloadClock.restart();
+    m_reloadTimer = sf::Time::Zero;
 }
 
 // Shovel Tower (Defence Tower)
-const std::unordered_map<std::string, int64_t> ShovelTower::coinReward = {
-    {"common", 100 },
-    {"unusual", 100 },
-    {"rare", 100 },
-    {"epic", 100 },
-    {"legendary", 1000000 },
-    {"mythic", 100 },
-    {"ultra", 100 },
-    {"super", 100 },
-    {"unique", 100 }
-};
-
 void ShovelTower::update() {
     if (auto defence = m_info.defencePetalMap[m_square.x][m_square.y]) {
         int rarity = RARITIE_LEVELS.at(m_card.getCard().rarity);
         int petalRarity = RARITIE_LEVELS.at(defence->getCard().rarity);
         if (rarity >= petalRarity) {
-            float elapsedTime = m_reloadClock.getElapsedTime().asSeconds();
+            m_reloadTimer += m_info.dt;
+            float elapsedTime = m_reloadTimer.asSeconds();
             m_card.setReload(std::min(1.0f, (elapsedTime / getBuffedAttrib("reload"))), false);
             return;
         }
     }
 
-    m_reloadClock.restart();
+    m_reloadTimer = sf::Time::Zero;
     m_card.setReload(0.f, true);
 }
 
 void ShovelTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {
-    if (m_reloadClock.getElapsedTime().asSeconds() > getBuffedAttrib("reload")) {
+    if (m_reloadTimer.asSeconds() > getBuffedAttrib("reload")) {
         if (auto defence = m_info.defencePetalMap[m_square.x][m_square.y]) {
             int rarity = RARITIE_LEVELS.at(m_card.getCard().rarity);
             int petalRarity = RARITIE_LEVELS.at(defence->getCard().rarity);
             if (rarity >= petalRarity) {
                 defence->kill();
-                m_info.playerState.addCoin(coinReward.at(m_card.getCard().rarity));
+                int64_t coin = TOWER_ATTRIBS["shovel"].rarities[defence->getCard().rarity].coin;
+                m_info.playerState.addCoin(coin);
             }
         }
-        m_reloadClock.restart();
+        m_reloadTimer = sf::Time::Zero;
     }
 }
 
@@ -360,19 +349,20 @@ RoseTower::RoseTower(SharedInfo& info, const CardInfo& card, sf::Vector2i square
 
 void RoseTower::update() {
     if (isActive()) {
-        float elapseTime = m_reloadClock.getElapsedTime().asSeconds();
+        m_reloadTimer += m_info.dt;
+        float elapseTime = m_reloadTimer.asSeconds();
         m_card.setReload(std::min(1.0f, (elapseTime / getBuffedAttrib("reload"))), false);
     }
     else {
         m_card.setReload(0.f, true);
-        m_reloadClock.restart();
+        m_reloadTimer = sf::Time::Zero;
     }
 }
 
 void RoseTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {
-    if (m_reloadClock.getElapsedTime().asSeconds() > getBuffedAttrib("reload")) {
+    if (m_reloadTimer.asSeconds() > getBuffedAttrib("reload")) {
         m_info.playerState.heal(getAttrib("heal"));
-        m_reloadClock.restart();
+        m_reloadTimer = sf::Time::Zero;
     }
 }
 
@@ -383,19 +373,20 @@ CoinTower::CoinTower(SharedInfo& info, const CardInfo& card, sf::Vector2i square
 
 void CoinTower::update() {
     if (isActive()) {
-        float elapseTime = m_reloadClock.getElapsedTime().asSeconds();
+        m_reloadTimer += m_info.dt;
+        float elapseTime = m_reloadTimer.asSeconds();
         m_card.setReload(std::min(1.0f, (elapseTime / getBuffedAttrib("reload"))), false);
     }
     else {
         m_card.setReload(0.f, true);
-        m_reloadClock.restart();
+        m_reloadTimer = sf::Time::Zero;
     }
 }
 
 void CoinTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {
-    if (m_reloadClock.getElapsedTime().asSeconds() > getBuffedAttrib("reload")) {
-        m_info.playerState.addCoin((int64_t)getAttrib("coin"));
-        m_reloadClock.restart();
+    if (m_reloadTimer.asSeconds() > getBuffedAttrib("reload")) {
+        m_info.playerState.addCoin(m_attribs.coin);
+        m_reloadTimer = sf::Time::Zero;
     }
 }
 
@@ -404,11 +395,11 @@ TriangleTower::TriangleTower(SharedInfo& info, const CardInfo& card, sf::Vector2
     : ShootTower(info, card), m_square(square), m_map(map) {}
 
 void TriangleTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {
-    if (m_reloadClock.getElapsedTime().asSeconds() > getBuffedAttrib("reload")) {
+    if (m_reloadTimer.asSeconds() > getBuffedAttrib("reload")) {
         std::optional nearestMob = getNearestMob(mobs);
         if (nearestMob) {
             petals.push_back(std::make_unique<TrianglePetal>(m_info, m_card.getCard(), getPosition(), *nearestMob, countAdjacentSameType()));
-            m_reloadClock.restart();
+            m_reloadTimer = sf::Time::Zero;
         }
     }
 }
@@ -441,5 +432,3 @@ void LaserTower::update() {
     if (!m_info.laserMap[m_square.x][m_square.y])
         m_map.getPetals().push_back(std::make_unique<LaserPetal>(m_info, m_card.getCard(), m_square, m_map.getMapInfo(), m_map.getMobs()));
 }
-
-void LaserTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {}

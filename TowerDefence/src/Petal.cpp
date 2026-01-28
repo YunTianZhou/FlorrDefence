@@ -52,7 +52,7 @@ std::unique_ptr<ShootPetal> ShootPetal::create(SharedInfo& info, const CardInfo&
 	return std::make_unique<ShootPetal>(info, card, startPosition, target);
 }
 
-const std::map<std::string, sf::Angle> ShootPetal::petalTilt = {
+const std::unordered_map<std::string, sf::Angle> ShootPetal::petalTilt = {
 	{"basic", sf::degrees(0.f)},
 	{"bone", sf::degrees(-32.f)},
 	{"corn", sf::degrees(40.f)},
@@ -252,6 +252,7 @@ WebPetal::WebPetal(SharedInfo& info, const CardInfo& card, sf::Vector2i square)
 void WebPetal::update() {
 	DefencePetal::update();
 
+	m_timer += m_info.dt;
 	float delta = getDelta();
 	if (delta == 0.f)
 		kill();
@@ -273,7 +274,7 @@ void WebPetal::applyDebuff(Debuff& debuff) const {
 }
 
 float WebPetal::getDelta() const {
-	float elapsed = m_clock.getElapsedTime().asSeconds();
+	float elapsed = m_timer.asSeconds();
 	float delta = std::max(0.f, 1.f - elapsed / getAttrib("duration"));
 	return delta;
 }
@@ -416,7 +417,7 @@ int LaserPetal::getDamage() const {
 	int damage = (int)getBuffedAttrib("damage");
 
 	if (m_target.has_value()) {
-		float elapsed = m_clock.getElapsedTime().asSeconds();
+		float elapsed = m_timer.asSeconds();
 		float maxRate = getAttrib("max_damage_rate");
 		float increaseRate = std::min(maxRate, 1.f + getAttrib("damage_increase_rate") * elapsed);
 		damage = int(damage * increaseRate);
@@ -432,6 +433,8 @@ void LaserPetal::onDead() {
 }
 
 void LaserPetal::update() {
+	m_timer += m_info.dt;
+
 	// If dead
 	const Tower* tower = m_map.getTower(m_square);
 	if (tower == nullptr || tower->getCard() != getCard()) {
@@ -479,7 +482,7 @@ void LaserPetal::updateTarget() {
 
 	if (nearestMob.has_value()) {
 		m_target = nearestMob;
-		m_clock.restart();
+		m_timer = sf::Time::Zero;
 	}
 }
 

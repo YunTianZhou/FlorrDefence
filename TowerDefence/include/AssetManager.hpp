@@ -9,7 +9,7 @@
 struct TexEntry {
     bool isTexture = false;
     std::unique_ptr<sf::Texture> tex;
-    std::map<std::string, std::unique_ptr<TexEntry>> subs;
+    std::unordered_map<std::string, std::unique_ptr<TexEntry>> subs;
 
     operator const sf::Texture& () const;
     const TexEntry& operator[](const std::string& name) const;
@@ -91,5 +91,5 @@ private:
 private:
     TexEntry m_entry;
     sf::Font m_font;
-    std::map<std::string, sf::Shader> m_shaders;
+    std::unordered_map<std::string, sf::Shader> m_shaders;
 };

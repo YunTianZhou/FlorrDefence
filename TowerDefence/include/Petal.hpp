@@ -54,7 +54,7 @@ protected:
 	void updateDirection(float trunSpeed);
 
 protected:
-	static const std::map<std::string, sf::Angle> petalTilt;
+	static const std::unordered_map<std::string, sf::Angle> petalTilt;
 
 protected:
 	sf::Vector2f m_startPosition;
@@ -112,7 +112,7 @@ public:
 	float getDelta() const;
 
 private:
-	sf::Clock m_clock;
+	sf::Time m_timer;
 };
 
 class TrianglePetal : public ShootPetal {
@@ -189,7 +189,7 @@ private:
 	const std::list<std::unique_ptr<Mob>>& m_mobs;
 	MapInfo& m_map;
 	sf::Vector2i m_square;
-	sf::Clock m_clock;
+	sf::Time m_timer;
 };
 
 class ChipPetal : public ShootPetal {

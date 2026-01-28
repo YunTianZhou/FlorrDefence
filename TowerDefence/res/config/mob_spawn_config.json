@@ -1,5 +1,5 @@
 {
-  "max_mob": 200,
+  "max_mob": 100,
   "global": {
     "min_interval": 0.5,
     "max_interval": 10.0,

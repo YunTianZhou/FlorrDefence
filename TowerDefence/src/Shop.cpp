@@ -94,38 +94,34 @@ void Product::updateCB() const {
 	m_cbUpdated = true;
 }
 
-ShopInfo::ShopInfo(const std::string& type) 
-	: m_type(type) {
+ShopInfo::ShopInfo(const SharedInfo& info, const std::string& type)
+	: m_info(info), m_type(type) {
 	refresh();
 }
 
-bool ShopInfo::update(sf::Time now) {
-	if (getElapsedTime(now) >= SHOP_REFRESH_TIMES.at(m_type)) {
-		refresh();
+bool ShopInfo::update() {
+	m_refreshTimer += m_info.dt;
 
-		m_lastRefreshTime = now;
+	if (m_refreshTimer >= SHOP_ATTRIBS[m_type].refreshInterval) {
+		refresh();
+		m_refreshTimer = sf::Time::Zero;
 		return true;
 	}
 
 	return false;
 }
 
-sf::Time ShopInfo::getElapsedTime(sf::Time now) const {
-	return now - m_lastRefreshTime;
-}
+sf::Time ShopInfo::getRemainingTime() const {
+	sf::Time interval = SHOP_ATTRIBS[m_type].refreshInterval;
 
-sf::Time ShopInfo::getRemainingTime(sf::Time now) const {
-	auto elapsed = now - m_lastRefreshTime;
-	auto interval = SHOP_REFRESH_TIMES.at(m_type);
+	if (m_refreshTimer >= interval)
+		return sf::seconds(0);  // Already expired
 
-	if (elapsed >= interval)
-		return sf::seconds(0); // Already expired
-
-	return interval - elapsed;
+	return interval - m_refreshTimer;
 }
 
 void ShopInfo::refresh() {
-	m_products = randomSample(TOWER_TYPES, SHOP_PRODUCT_COUNTS.at(m_type));
+	m_products = randomSample(TOWER_TYPES, SHOP_ATTRIBS[m_type].productCount);
 }
 
 void Product::draw(sf::RenderTarget& target, sf::RenderStates states) const {
@@ -148,20 +144,19 @@ Shop::Shop(SharedInfo& info)
 }
 
 void Shop::update() {
-	// Menu
+	// Menu &  ShopInfo
 	for (int i = 0; i < m_menu.getSize(); i++) {
 		bool disable = i > m_info.playerState.buff.shop.apply(0);
 		m_menu.getButton(i).setDisabled(disable);
+
+		if (!disable)
+			m_shops.at(SHOP_RARITIES[i]).update();
 	}
 	m_menu.update(m_info.mouseWorldPosition);
 
-	// ShopInfo
-	ShopInfo& shop = m_shops.at(m_menu.getVar());
-	if (shop.update(m_info.time))
-		m_updated = false;
-
 	// Elapsed Refresh Time Text
-	sf::Time remain = shop.getRemainingTime(m_info.time);
+	ShopInfo& shop = m_shops.at(m_menu.getVar());
+	sf::Time remain = shop.getRemainingTime();
 	float remSec = remain.asSeconds();
 	if (remSec < 1.f) {
 		m_elapsedRefreshTimeText.setString("Changing store...");
@@ -322,7 +317,7 @@ void Shop::initComponents() {
 	menuRB.setCharactorSize(18);
 
 	m_menu.setVar("common");
-	for (const std::string& shopType : SHOP_TYPES) {
+	for (const std::string& shopType : SHOP_RARITIES) {
 		menuRB.setFillColor(LIGHT_COLORS.at(shopType));
 		menuRB.setOutline(DARK_COLORS.at(shopType), menuRBOutline);
 		menuRB.setString(shopType);
@@ -330,7 +325,7 @@ void Shop::initComponents() {
 		m_menu.addButton(menuRB);
 		menuRB.move({ menuRBWidth + menuSpacing, 0.f });
 
-		m_shops.emplace(shopType, ShopInfo(shopType));
+		m_shops.emplace(shopType, ShopInfo(m_info, shopType));
 	}
 
 	// Elapsed time text

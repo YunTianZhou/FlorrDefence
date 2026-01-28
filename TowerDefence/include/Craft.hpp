@@ -11,7 +11,6 @@ struct CraftInfo {
 	int remaningCount = 0;
 	sf::Time processTime;
 	sf::Time elapsedTime = sf::seconds(0);
-	sf::Clock clock;
 
 	void reset(const std::string& rarity);
 };

@@ -23,12 +23,11 @@ LightningEffect::LightningEffect(const SharedInfo& info, sf::Vector2f root, int 
 	buildLine(root, positions[rootConnected]);
 	for (int i = 1; i < positions.size(); i++)
 		buildLine(positions[i - 1], positions[i]);
-
-	m_clock.restart();
 }
 
 void LightningEffect::update() {
-	float t = m_clock.getElapsedTime().asSeconds();
+	m_timer += m_info.dt;
+	float t = m_timer.asSeconds();
 
 	float ratio = std::min(t / duration, 1.f);
 	unsigned char alpha = (unsigned char)(255 * (1.f - ratio));
@@ -41,7 +40,7 @@ void LightningEffect::update() {
 }
 
 bool LightningEffect::isDone() {
-	return m_clock.getElapsedTime().asSeconds() >= duration;
+	return m_timer.asSeconds() >= duration;
 }
 
 void LightningEffect::buildLine(sf::Vector2f start, sf::Vector2f end) {

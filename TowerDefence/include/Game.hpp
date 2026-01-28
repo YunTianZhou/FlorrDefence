@@ -18,7 +18,6 @@ private:
 
 private:
     sf::RenderWindow m_window;
-    sf::Clock m_fpsClock;
     int m_frameCount = 0;
     float m_elapsedTime = 0.f;
 

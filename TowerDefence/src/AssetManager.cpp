@@ -29,7 +29,7 @@ static void buildEntries(TexEntry& node, const std::filesystem::path& path) {
     }
 }
 
-static void loadShaders(std::map<std::string, sf::Shader>& shaders, const std::filesystem::path& path) {
+static void loadShaders(std::unordered_map<std::string, sf::Shader>& shaders, const std::filesystem::path& path) {
     for (auto& entry : std::filesystem::directory_iterator(path)) {
         if (!entry.is_regular_file()) continue;
         std::string name = entry.path().filename().string();

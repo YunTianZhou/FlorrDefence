@@ -9,7 +9,7 @@ public:
 	virtual void update() = 0;
 	virtual bool isDone() = 0;
 
-private:
+protected:
 	const SharedInfo& m_info;
 
 };
@@ -32,5 +32,5 @@ private:
 
 private:
 	std::vector<sf::RectangleShape> m_lines;
-	sf::Clock m_clock;
+	sf::Time m_timer;
 };

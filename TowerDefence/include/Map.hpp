@@ -66,7 +66,7 @@ inline void to_json(json& j, const MapInfo& m) {
             j["towers"].push_back({
                 { "x", x },
                 { "y", y },
-                { "card", tower->getCard() }
+                { "tower", *tower },
             });
         }
     }
@@ -84,8 +84,9 @@ inline void from_json(const json& j, MapInfo& m) {
 			e.at("y").get<int>()
 		};
 
-		CardInfo card = e.at("card").get<CardInfo>();
+		CardInfo card = e.at("tower").at("card").get<CardInfo>();
 		m.setCard(square, card);
+		e.at("tower").get_to(*m.getTower(square));
 	}
 }
 
@@ -107,6 +108,8 @@ public:
 
 	const std::list<std::unique_ptr<Petal>>& getPetals() const { return m_petals; }
 	std::list<std::unique_ptr<Petal>>& getPetals() { return m_petals; }
+
+	friend void from_json(const json& j, Map& m);
 
 private:
 	void handlePress(const sf::Vector2i& square);
@@ -132,7 +135,28 @@ private:
 	std::list<std::unique_ptr<Petal>> m_petals;
 	std::list<std::unique_ptr<Entity>> m_deadEntities;
 	std::list<std::unique_ptr<Effect>> m_effects;
-	sf::Clock m_tickClock;
+	sf::Time m_tickTimer;
 
 	SpawnManager m_spawner;
 };
+
+
+inline void to_json(json& j, const Map& m) {
+	j["info"] = m.getMapInfo();
+	j["mobs"] = json::array();
+	for (const std::unique_ptr<Mob>& mob : m.getMobs())
+		j["mobs"].push_back(*mob);
+}
+
+inline void from_json(const json& j, Map& m) {
+	if (j.contains("info"))
+		j["info"].get_to(m.getMapInfo());
+
+	if (j.contains("mobs")) {
+		for (const json& info : j["mobs"]) {
+			auto mob = Mob::create(m.m_info, info["card"], m.getMobs());
+			info.get_to(*mob);
+			m.getMobs().push_back(move(mob));
+		}
+	}
+}

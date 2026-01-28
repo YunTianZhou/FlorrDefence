@@ -55,11 +55,12 @@ DamageType stringToDamageType(const std::string& str);
 struct TowerAttribs {
 	struct RarityEntry {
 		int64_t price = 0;
-		std::map<std::string, float> attribs;
+		int64_t coin = 0;
+		std::unordered_map<std::string, float> attribs;
 	};
 	std::string type;
 	DamageType damageType = DamageType::Normal;
-	std::map<std::string, RarityEntry> rarities;
+	std::unordered_map<std::string, RarityEntry> rarities;
 
 	const RarityEntry& operator[](const std::string& rarity) const {
 		return rarities.at(rarity);
@@ -74,13 +75,18 @@ struct MobAttribs {
 		int armor = 0;
 		int64_t coinDrop = 0;
 		int xpDrop = 0;
-		std::map<std::string, float> attribs;
+		std::unordered_map<std::string, float> attribs;
 	};
-	std::map<std::string, RarityEntry> rarities;
+	std::unordered_map<std::string, RarityEntry> rarities;
 
 	const RarityEntry& operator[](const std::string& rarity) const {
 		return rarities.at(rarity);
 	}
+};
+
+struct ShopAttribs {
+	int productCount = 0;
+	sf::Time refreshInterval;
 };
 
 struct TalentAttribs {
@@ -113,29 +119,28 @@ const int INF = 1 << 30;
 const sf::Time TICK = sf::milliseconds(125);
 
 extern const std::vector<std::string> RARITIES;
-extern const std::map<std::string, int> RARITIE_LEVELS;
-
-extern const std::vector<std::string> SHOP_TYPES;
-extern const std::map<std::string, int> SHOP_PRODUCT_COUNTS;
-extern const std::map<std::string, sf::Time> SHOP_REFRESH_TIMES;
+extern const std::vector<std::string> SHOP_RARITIES;
+extern const std::unordered_map<std::string, int> RARITIE_LEVELS;
 
 extern const std::vector<std::string> TOWER_TYPES;
 extern const std::map<CardInfo, MobInfo> TOWER_SUMMON_MOBS;
 extern const std::set<std::string> LIGHTNING_TOWERS;
 
-extern const std::map<std::string, float> MOB_RARITY_SCALES;
+extern const std::unordered_map<std::string, float> MOB_RARITY_SCALES;
 
-extern const std::map<std::string, float> CRAFT_PROBS;
-extern const std::map<std::string, TimeRange> CRAFT_TIME_RANGES;
+extern const std::unordered_map<std::string, float> CRAFT_PROBS;
+extern const std::unordered_map<std::string, TimeRange> CRAFT_TIME_RANGES;
 
 extern const std::vector<sf::Vector2i> PATH_SQUARES;
 
-extern const std::map<std::string, sf::Color> LIGHT_COLORS;
-extern const std::map<std::string, sf::Color> DARK_COLORS;
+extern const std::unordered_map<std::string, sf::Color> LIGHT_COLORS;
+extern const std::unordered_map<std::string, sf::Color> DARK_COLORS;
 
+// Loaded fron config files
 extern InitStates INIT_STATES;
-extern std::map<std::string, TowerAttribs> TOWER_ATTRIBS;
-extern std::map<std::string, MobAttribs> MOB_ATTRIBS;
+extern std::unordered_map<std::string, TowerAttribs> TOWER_ATTRIBS;
+extern std::unordered_map<std::string, MobAttribs> MOB_ATTRIBS;
+extern std::unordered_map<std::string, ShopAttribs> SHOP_ATTRIBS;
 extern std::vector<TalentAttribs> TALENT_ATTRIBS;
 extern std::unordered_map<std::string, int> TALENT_ID_TO_INDEX;
 

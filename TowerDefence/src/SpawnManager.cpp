@@ -16,7 +16,8 @@ SpawnManager::SpawnManager(SharedInfo& info)
 
 void SpawnManager::load() {
     std::ifstream ifs("res/config/mob_spawn_config.json");
-    assert(ifs.is_open());
+    if (!ifs.is_open())
+        throw std::runtime_error("Failed to open mob_spawn_config.json");
 
     nlohmann::json j;
     ifs >> j;
@@ -61,8 +62,6 @@ void SpawnManager::load() {
     }
 
     // init timing vars
-    m_globalClock.restart();
-    m_spawnClock.restart();
     if (!m_stages.empty()) {
         m_nextInterval = m_stages.front().base_interval;
         m_prevInterval = m_nextInterval;
@@ -95,11 +94,12 @@ const MobTypeEntry* SpawnManager::chooseMobType(const Stage& s) {
 }
 
 void SpawnManager::update(std::list<std::unique_ptr<Mob>>& mobList) {
+    m_spawnTimer += m_info.dt;
+    m_globalTimer += m_info.dt;
+
     if (mobList.size() >= m_maxMob) return;
-
-    if (m_spawnClock.getElapsedTime().asSeconds() < m_nextInterval) return;
-
-    m_spawnClock.restart();
+    if (m_spawnTimer.asSeconds() < m_nextInterval) return;
+    m_spawnTimer = sf::Time::Zero;
 
     int playerLevel = m_info.playerState.level;
     const Stage* stage = findStage(playerLevel);
@@ -117,7 +117,7 @@ void SpawnManager::update(std::list<std::unique_ptr<Mob>>& mobList) {
 }
 
 double SpawnManager::computeNextInterval(const Stage& s, int level) {
-    double t = m_globalClock.getElapsedTime().asSeconds();
+    double t = m_globalTimer.asSeconds();
     double raw = s.base_interval;
 
     // Apply linear decrease per level (scale_per_level usually negative)

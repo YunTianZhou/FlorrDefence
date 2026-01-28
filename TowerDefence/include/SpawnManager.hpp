@@ -52,8 +52,8 @@ private:
     size_t m_maxMob = 200;
 
     // timing
-    sf::Clock m_spawnClock;
-    sf::Clock m_globalClock;
+    sf::Time m_spawnTimer;
+    sf::Time m_globalTimer;
     double m_nextInterval = 2.5;
     double m_prevInterval = 2.5;
 

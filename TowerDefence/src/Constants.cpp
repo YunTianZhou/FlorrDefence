@@ -9,7 +9,11 @@ const std::vector<std::string> RARITIES = {
 	"mythic", "ultra", "super", "unique"
 };
 
-const std::map<std::string, int> RARITIE_LEVELS = {
+const std::vector<std::string> SHOP_RARITIES{
+	"common", "rare", "legendary", "ultra", "unique"
+};
+
+const std::unordered_map<std::string, int> RARITIE_LEVELS = {
 	{"common", 1},
 	{"unusual", 2},
 	{"rare", 3},
@@ -19,22 +23,6 @@ const std::map<std::string, int> RARITIE_LEVELS = {
 	{"ultra", 7},
 	{"super", 8},
 	{"unique", 9}
-};
-
-const std::vector<std::string> SHOP_TYPES = {
-	"common", "rare", "legendary", "ultra", "unique"
-};
-
-const std::map<std::string, int> SHOP_PRODUCT_COUNTS = {
-	{"common", 20}, {"rare", 15}, {"legendary", 10}, {"ultra", 5}, {"unique", 3}
-};
-
-const std::map<std::string, sf::Time> SHOP_REFRESH_TIMES = {
-	{"common", sf::seconds(120)},
-	{"rare", sf::seconds(180)},
-	{"legendary", sf::seconds(300)},
-	{"ultra", sf::seconds(600)},
-	{"unique", sf::seconds(1200)}
 };
 
 const std::vector<std::string> TOWER_TYPES = {
@@ -70,11 +58,7 @@ const std::map<CardInfo, MobInfo> TOWER_SUMMON_MOBS = {
 	{ {"unique", "beetle_egg" }, { "ultra", "beetle" } },
 };
 
-const std::set<std::string> LIGHTNING_TOWERS = {
-	"lightning", "laser"
-};
-
-const std::map<std::string, float> MOB_RARITY_SCALES = {
+const std::unordered_map<std::string, float> MOB_RARITY_SCALES = {
 	{"common", 0.12f},
 	{"unusual", 0.2f},
 	{"rare", 0.28f},
@@ -85,7 +69,7 @@ const std::map<std::string, float> MOB_RARITY_SCALES = {
 	{"super", 1.f},
 };
 
-const std::map<std::string, float> CRAFT_PROBS = {  // curr => next
+const std::unordered_map<std::string, float> CRAFT_PROBS = {  // curr => next
 	{"common", 0.64f},
 	{"unusual", 0.32f},
 	{"rare", 0.16f},
@@ -95,7 +79,7 @@ const std::map<std::string, float> CRAFT_PROBS = {  // curr => next
 	{"ultra", 0.01f},
 };
 
-const std::map<std::string, TimeRange> CRAFT_TIME_RANGES = {
+const std::unordered_map<std::string, TimeRange> CRAFT_TIME_RANGES = {
 	{"common", { sf::seconds(0.1f), sf::seconds(1.f) }},
 	{"unusual", { sf::seconds(0.5f), sf::seconds(3.f) }},
 	{"rare", { sf::seconds(1.f), sf::seconds(5.f) }},
@@ -112,7 +96,7 @@ const std::vector<sf::Vector2i> PATH_SQUARES = {
 	{6, 7}, {6, 6}, {5, 6}, {4, 6}, {3, 6}, {2, 6}, {2, 7}, {2, 8}, {2, 9}
 };
 
-const std::map<std::string, sf::Color> LIGHT_COLORS = {
+const std::unordered_map<std::string, sf::Color> LIGHT_COLORS = {
 	{"wood", { 219, 157, 90 } },
 	{"gold", { 252, 223, 3 } },
 	{"disabled", { 119, 119, 119 } },
@@ -129,7 +113,7 @@ const std::map<std::string, sf::Color> LIGHT_COLORS = {
 	{"unique", { 85, 85, 85 } }
 };
 
-const std::map<std::string, sf::Color> DARK_COLORS = {
+const std::unordered_map<std::string, sf::Color> DARK_COLORS = {
 	{"wood", { 177, 127, 73 } },
 	{"gold", { 204, 181, 2 } },
 	{"disabled", { 96, 96, 96 } },
@@ -146,9 +130,11 @@ const std::map<std::string, sf::Color> DARK_COLORS = {
 	{"unique", { 69, 69, 69 } }
 };
 
+// Loaded fron config files
 InitStates INIT_STATES;
-std::map<std::string, TowerAttribs> TOWER_ATTRIBS;
-std::map<std::string, MobAttribs> MOB_ATTRIBS;
+std::unordered_map<std::string, TowerAttribs> TOWER_ATTRIBS;
+std::unordered_map<std::string, MobAttribs> MOB_ATTRIBS;
+std::unordered_map<std::string, ShopAttribs> SHOP_ATTRIBS;
 std::vector<TalentAttribs> TALENT_ATTRIBS;
 std::unordered_map<std::string, int> TALENT_ID_TO_INDEX;
 
@@ -162,7 +148,8 @@ DamageType stringToDamageType(const std::string& str) {
 
 static void loadInitSupplies() {
 	std::ifstream ifs("res/config/init_states.json");
-	assert(ifs.is_open());
+	if (!ifs.is_open())
+		throw std::runtime_error("Failed to open init_states.json");
 
 	nlohmann::json j;
 	ifs >> j;
@@ -179,7 +166,8 @@ static void loadInitSupplies() {
 
 static void loadTowerAttribs() {
 	std::ifstream ifs("res/config/tower_attribs.json");
-	assert(ifs.is_open());
+	if (!ifs.is_open())
+		throw std::runtime_error("Failed to open tower_attribs.json");
 
 	nlohmann::json j;
 	ifs >> j;
@@ -199,6 +187,7 @@ static void loadTowerAttribs() {
 		for (auto& [rarity, entry] : obj["rarities"].items()) {
 			TowerAttribs::RarityEntry& e = ta.rarities[rarity];
 			e.price = entry["price"].get<int>();
+			e.coin = entry.value("coin", 0ll);
 			for (auto& [key, val] : entry["attribs"].items()) {
 				e.attribs[key] = val.get<float>();
 			}
@@ -217,9 +206,27 @@ static void loadTowerAttribs() {
 	}
 }
 
+static void loadShopAttribs() {
+	std::ifstream ifs("res/config/shop_attribs.json");
+	if (!ifs.is_open())
+		throw std::runtime_error("Failed to open shop_attribs.json");
+
+	nlohmann::json j;
+	ifs >> j;
+
+	for (auto& [type, entry] : j.items()) {
+		ShopAttribs sa;
+		sa.productCount = entry["product_count"].get<int>();
+		sa.refreshInterval = sf::seconds(entry["refresh_interval"].get<float>());
+
+		SHOP_ATTRIBS[type] = std::move(sa);
+	}
+}
+
 static void loadTalentAttribs() {
 	std::ifstream ifs("res/config/talent_attribs.json");
-	assert(ifs.is_open());
+	if (!ifs.is_open())
+		throw std::runtime_error("Failed to open talent_attribs.json");
 
 	nlohmann::json j;
 	ifs >> j;
@@ -247,7 +254,8 @@ static void loadTalentAttribs() {
 
 void loadMobAttribs() {
 	std::ifstream ifs("res/config/mob_attribs.json");
-	assert(ifs.is_open());
+	if (!ifs.is_open())
+		throw std::runtime_error("Failed to open mob_attribs.json");
 
 	nlohmann::json j;
 	ifs >> j;
@@ -274,5 +282,6 @@ void loadConstants() {
 	loadInitSupplies();
 	loadTowerAttribs();
 	loadMobAttribs();
+	loadShopAttribs();
 	loadTalentAttribs();
 }

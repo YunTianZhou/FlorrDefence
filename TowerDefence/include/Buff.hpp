@@ -50,7 +50,7 @@ struct BuffGroup {
 	Buff shop;
 	Buff antennae;
 
-	std::map<std::string, Buff*> buffs;
+	std::unordered_map<std::string, Buff*> buffs;
 
 	BuffGroup()
 		: speed(Buff::Add, Buff::AddFactor),
@@ -154,5 +154,5 @@ public:
 
 private:
 	int m_antennaeLevel = 0;
-	std::map<std::string, Entry> m_cards;
+	std::unordered_map<std::string, Entry> m_cards;
 };

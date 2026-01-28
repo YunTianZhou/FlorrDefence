@@ -130,16 +130,20 @@ void InputInfo::update() {
 // SharedInfo
 void SharedInfo::init() {
     playerState.init();
-    defencePetalMap = {};
+    dtClock.reset();
 }
 
 bool SharedInfo::update(const sf::RenderWindow& window) {
     sf::Vector2i mousePixelPos = sf::Mouse::getPosition(window);
     mouseWorldPosition = window.mapPixelToCoords(mousePixelPos);
     input.update();
-    time = timeClock.getElapsedTime();
-    dt = dtClock.restart();
     playerState.update();
+
+    dt = dtClock.restart();
+    if (dt > TICK)
+        // If a frame is so long, this is usually cause by dragging/resizing window
+        // To prevent from sudden movements, we clamp frame to a tick
+        dt = TICK;
 
     if (draggedCard.has_value()) {
         if (draggedCard->update(mouseWorldPosition, dt)) {

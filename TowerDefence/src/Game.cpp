@@ -3,7 +3,8 @@
 #include "Constants.hpp"
 
 Game::Game()
-    : m_viewManager(VIEW_SIZE), m_map(m_info), m_ui(m_info), m_record(m_info, m_map.getMapInfo(), m_ui.m_talent) {
+    : m_viewManager(VIEW_SIZE), m_map(m_info), m_ui(m_info), 
+      m_record(m_info, m_map, m_ui.m_shop, m_ui.m_talent) {
     m_record.try_load("TowerDefence.json");
 
     sf::ContextSettings settings;
@@ -14,15 +15,12 @@ Game::Game()
 }
 
 void Game::run() {
-    m_fpsClock.restart();
-
     while (m_window.isOpen()) {
         handleEvents();
         update();
         render();
 
-        float dt = m_fpsClock.restart().asSeconds();
-        m_elapsedTime += dt;
+        m_elapsedTime += m_info.dt.asSeconds();
         m_frameCount++;
 
         if (m_elapsedTime >= 1.f) {
@@ -46,33 +44,37 @@ void Game::handleEvents() {
         }
         else {
             if (const auto* keyEvent = event->getIf<sf::Event::KeyReleased>()) {
-                if (keyEvent->code == sf::Keyboard::Key::S && m_info.input.keyCtrl) {
-                    m_record.save("TowerDefence.json");
-                }
-
+                switch (keyEvent->code) {
+                case sf::Keyboard::Key::S:
+                    if(m_info.input.keyCtrl)
+                        m_record.save("TowerDefence.json");
+                    break;
                 // TEST
-                if (keyEvent->code == sf::Keyboard::Key::W) {
+                case sf::Keyboard::Key::W:
                     m_info.playerState.level++;
-                }
-                else if (keyEvent->code == sf::Keyboard::Key::Q) {
+                    break;
+                case sf::Keyboard::Key::Q:
                     m_info.playerState.level += 10;
-                }
-                else if (keyEvent->code == sf::Keyboard::Key::E) {
+                    break;
+                case sf::Keyboard::Key::E:
                     m_info.playerState.level--;
-                }
-                else if (keyEvent->code == sf::Keyboard::Key::R) {
+                    break;
+                case sf::Keyboard::Key::R:
                     m_info.playerState.level -= 10;
-                }
-                else if (keyEvent->code == sf::Keyboard::Key::T) {
+                    break;
+                case sf::Keyboard::Key::T:
                     m_info.playerState.level = 1;
+                    break;
                 }
             }
+            else if (const auto* releasedEvent = event->getIf<sf::Event::MouseButtonReleased>()) {
+                if (releasedEvent->button == sf::Mouse::Button::Left && m_info.draggedCard.has_value())
+                    m_info.draggedCard->startRetreat();
+            }
+
             if (m_map.onEvent(*event))
                 m_ui.updateComponents();
             m_ui.onEvent(*event);
-            if (const auto* releasedEvent = event->getIf<sf::Event::MouseButtonReleased>())
-                if (releasedEvent->button == sf::Mouse::Button::Left && m_info.draggedCard.has_value())
-                    m_info.draggedCard->startRetreat();
         }
     }
 }
