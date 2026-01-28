@@ -67,14 +67,16 @@ void Game::handleEvents() {
                     break;
                 }
             }
-            else if (const auto* releasedEvent = event->getIf<sf::Event::MouseButtonReleased>()) {
-                if (releasedEvent->button == sf::Mouse::Button::Left && m_info.draggedCard.has_value())
-                    m_info.draggedCard->startRetreat();
-            }
 
             if (m_map.onEvent(*event))
                 m_ui.updateComponents();
             m_ui.onEvent(*event);
+
+            // NOTE: This must run after map.onEvent()
+            if (const auto* releasedEvent = event->getIf<sf::Event::MouseButtonReleased>()) {
+                if (releasedEvent->button == sf::Mouse::Button::Left && m_info.draggedCard.has_value())
+                    m_info.draggedCard->startRetreat();
+            }
         }
     }
 }
