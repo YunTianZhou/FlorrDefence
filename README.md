@@ -28,5 +28,5 @@ cmake -G "Visual Studio 17 2022" -A x64 ..
 ### Generate
 
 ```bash
-cmake build --config Release
+cmake --build . --config Release
 ```
