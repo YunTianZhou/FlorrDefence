@@ -265,6 +265,7 @@ void WebTower::update() {
         }
     }
     else {
+        m_reloadTimer += m_info.dt;
         float elapsedTime = m_reloadTimer.asSeconds();
         m_card.setReload(std::min(1.0f, (elapsedTime / getBuffedAttrib("reload"))), false);
     }
