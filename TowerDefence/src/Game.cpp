@@ -8,7 +8,7 @@ Game::Game()
     m_record.try_load("TowerDefence.json");
 
     sf::ContextSettings settings;
-    settings.antiAliasingLevel = 5;
+    settings.antiAliasingLevel = 6;
     m_window.create(sf::VideoMode(WINDOW_INIT_SIZE), "Tower Defence", sf::Style::Default, sf::State::Windowed, settings);
     m_window.setView(m_viewManager.getView());
     m_window.setFramerateLimit(60); 
@@ -96,6 +96,8 @@ void Game::render() {
     m_window.draw(m_ui);
     if (m_info.draggedCard.has_value())
         m_window.draw(*m_info.draggedCard);
+    if (m_info.cardDescription.isVerified())
+        m_window.draw(m_info.cardDescription);
 
     m_window.display();
 }

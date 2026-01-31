@@ -1,6 +1,5 @@
 {
   "basic": {
-    "description": "It basically does nothing, but high rarity of it can unleash powerful energy...",
     "type": "shoot",
     "rarities": {
       "common": {
@@ -56,7 +55,6 @@
     }
   },
   "rock": {
-    "description": "Be careful not to trip over it while walking!",
     "type": "defence",
     "rarities": {
       "common": {
@@ -102,7 +100,6 @@
     }
   },
   "ant_egg": {
-    "description": "It seems like it could hatch something interesting...",
     "type": "summon",
     "rarities": {
       "common": {
@@ -143,7 +140,6 @@
     }
   },
   "faster": {
-    "description": "Faster, make everything faster!",
     "type": "buff",
     "rarities": {
       "common": {
@@ -179,7 +175,6 @@
     }
   },
   "antennae": {
-    "description": "Gives most of your functional petals functions",
     "type": "buff",
     "rarities": {
       "common": {
@@ -205,7 +200,6 @@
     }
   },
   "cutter": {
-    "description": "gives the flower extra body damage",
     "type": "buff",
     "rarities": {
       "common": {
@@ -241,7 +235,6 @@
     }
   },
   "corn": {
-    "description": "It has high durability, but requires a long time to reload.",
     "type": "shoot",
     "rarities": {
       "common": {
@@ -297,7 +290,6 @@
     }
   },
   "bone": {
-    "description": "Sturdy",
     "type": "shoot",
     "rarities": {
       "common": {
@@ -358,7 +350,6 @@
     }
   },
   "leaf": {
-    "description": "Heals you constantly",
     "type": "buff",
     "rarities": {
       "common": {
@@ -394,7 +385,6 @@
     }
   },
   "missile": {
-    "description": "It deals very high damage, but it will self-destruct if placed them too close.",
     "type": "shoot",
     "rarities": {
       "common": {
@@ -450,7 +440,6 @@
     }
   },
   "web": {
-    "description": "It is sticky",
     "type": "defence",
     "rarities": {
       "common": {
@@ -506,7 +495,6 @@
     }
   },
   "light": {
-    "description": "Please use me as a machine gun.",
     "type": "multi_shoot",
     "rarities": {
       "common": {
@@ -567,7 +555,6 @@
     }
   },
   "rose": {
-    "description": "Strange, why does it have thorns on it?",
     "type": "buff",
     "rarities": {
       "common": {
@@ -608,7 +595,6 @@
     }
   },
   "stinger": {
-    "description": "It stings and has a chance to crit on the mobs. Luck is affect by clover",
     "type": "shoot",
     "rarities": {
       "common": {
@@ -674,7 +660,6 @@
     }
   },
   "pollen": {
-    "description": "Actually you should put it on the ground.",
     "type": "defence",
     "rarities": {
       "common": {
@@ -725,7 +710,6 @@
     }
   },
   "amulet": {
-    "description": "It gives you shield.",
     "type": "buff",
     "rarities": {
       "common": {
@@ -761,7 +745,6 @@
     }
   },
   "dahlia": {
-    "description": "It heals you when it dies",
     "type": "defence",
     "rarities": {
       "common": {
@@ -812,7 +795,6 @@
     }
   },
   "golden_leaf": {
-    "description": "Shiny",
     "type": "buff",
     "rarities": {
       "common": {
@@ -848,7 +830,6 @@
     }
   },
   "triangle": {
-    "description": "Have you seen the power of unity before?",
     "type": "shoot",
     "rarities": {
       "common": {
@@ -909,7 +890,6 @@
     }
   },
   "beetle_egg": {
-    "description": "Something interesting might pop out from this...",
     "type": "summon",
     "rarities": {
       "common": {

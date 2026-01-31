@@ -77,6 +77,21 @@ static inline std::string toNiceTime(sf::Time duration) {
 	return result;
 }
 
+static inline std::string formatFloat(float value, int precision) {
+	std::stringstream ss;
+	ss << std::fixed << std::setprecision(precision) << value;
+	std::string str = ss.str();
+
+	if (str.find('.') != std::string::npos) {
+		str = str.substr(0, str.find_last_not_of('0') + 1);
+		if (str.back() == '.') {
+			str.pop_back();
+		}
+	}
+
+	return str;
+}
+
 static inline float getDistanceSquare(sf::Vector2f origin, sf::Vector2f target) {
 	float dx = target.x - origin.x;
 	float dy = target.y - origin.y;

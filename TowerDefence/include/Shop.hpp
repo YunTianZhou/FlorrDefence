@@ -8,7 +8,7 @@
 
 class Product : public sf::Drawable, public sf::Transformable {
 public:
-	Product();
+	Product(SharedInfo& info);
 
 	void setWidth(float width);
 	void setCard(const CardInfo& card);
@@ -18,7 +18,7 @@ public:
 	int getCount() const { return m_stack.getCount(); }
 	CardStackInfo getCardStackInfo() const { return m_stack.getInfo(); }
 
-	void update(const SharedInfo& info);
+	void update();
 	bool onMouseButtonPressed(const sf::Event::MouseButtonPressed& event);
 	bool onMouseButtonReleased(const sf::Event::MouseButtonReleased& event);
 
@@ -28,6 +28,7 @@ private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 private:
+	SharedInfo& m_info;
 	int64_t m_price = 0;
 	sf::RoundRect m_background;
 	CardStack m_stack;
@@ -103,6 +104,7 @@ private:
 	inline static const sf::FloatRect subWindowRect = sf::FloatRect({ startX, startY - 10.f }, { width, endY - startY - 10.f });
 
 	inline static const int64_t towerLimit = 100000000;
+	inline static sf::Time warningThreshold = sf::seconds(60.f);
 
 private:
 	SharedInfo& m_info;

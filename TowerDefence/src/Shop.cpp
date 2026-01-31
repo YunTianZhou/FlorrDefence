@@ -11,7 +11,8 @@ static inline sf::Color lerpColor(const sf::Color& a, const sf::Color& b, float 
 	};
 }
 
-Product::Product() {
+Product::Product(SharedInfo& info)
+	: m_info(info) {
 	m_background.setFillColor(DARK_COLORS.at("wood"));
 	m_buyCB.setFillColor(LIGHT_COLORS.at("gold"));
 	m_buyCB.setOutline(DARK_COLORS.at("gold"), 0.f);
@@ -27,7 +28,7 @@ void Product::setWidth(float width) {
 
 	m_stack.setLength(m_size.x * (2.f / 3.f));
 	m_stack.setPosition({ m_size.x / 6.f, m_size.y / 14.f });
-	
+
 	m_cbUpdated = false;
 }
 
@@ -44,11 +45,18 @@ void Product::setCount(int count) {
 	updatePrice();
 }
 
-void Product::update(const SharedInfo& info) {
-	m_mousePosition = getInverseTransform().transformPoint(info.mouseWorldPosition);
-	m_buyCB.setDisabled(m_price > info.playerState.coin || 
-		               (m_stack.getCard().rarity == "unique" && info.playerState.boughtUniques.count(m_stack.getCard().type)));
+void Product::update() {
+	m_mousePosition = getInverseTransform().transformPoint(m_info.mouseWorldPosition);
+	m_buyCB.setDisabled(m_price > m_info.playerState.coin ||
+		(m_stack.getCard().rarity == "unique" && m_info.playerState.boughtUniques.count(m_stack.getCard().type)));
 	m_buyCB.update(m_mousePosition);
+
+	if (!m_info.draggedCard.has_value() && m_stack.getRect().contains(m_mousePosition)) {
+		float length = m_stack.getLength();
+		sf::Vector2f pos = getTransform().transformPoint(m_stack.getPosition());
+		pos += sf::Vector2f(length, length) / 2.f;
+		m_info.cardDescription.set(m_stack.getCard(), pos, length);
+	}
 }
 
 bool Product::onMouseButtonPressed(const sf::Event::MouseButtonPressed& event) {
@@ -94,6 +102,21 @@ void Product::updateCB() const {
 	m_cbUpdated = true;
 }
 
+void Product::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+	states.transform = getTransform();
+
+	if (!m_cbUpdated)
+		updateCB();
+
+	target.draw(m_background, states);
+	target.draw(m_stack, states);
+	target.draw(m_buyCB, states);
+	if (m_buyCB.isDisabled())
+		states.shader = &AssetManager::getShader("grayscale.frag");
+	target.draw(m_icon, states);
+	states.shader = nullptr;
+}
+
 ShopInfo::ShopInfo(const SharedInfo& info, const std::string& type)
 	: m_info(info), m_type(type) {
 	refresh();
@@ -124,20 +147,6 @@ void ShopInfo::refresh() {
 	m_products = randomSample(TOWER_TYPES, SHOP_ATTRIBS[m_type].productCount);
 }
 
-void Product::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-	states.transform = getTransform();
-
-	if (!m_cbUpdated)
-		updateCB();
-
-	target.draw(m_background, states);
-	target.draw(m_stack, states);
-	target.draw(m_buyCB, states);
-	if (m_buyCB.isDisabled()) states.shader = &AssetManager::getShader("grayscale.frag");
-	target.draw(m_icon, states);
-	states.shader = nullptr;
-}
-
 Shop::Shop(SharedInfo& info)
 	: m_info(info), m_elapsedRefreshTimeText(AssetManager::getFont()) {
 	initComponents();
@@ -165,14 +174,13 @@ void Shop::update() {
 		std::string remainingTime = toNiceTime(remain);
 		m_elapsedRefreshTimeText.setString("Store will change in " + remainingTime);
 	}
-	m_elapsedRefreshTimeText.setOrigin(m_elapsedRefreshTimeText.getGlobalBounds().size / 2.f + 
-		                               m_elapsedRefreshTimeText.getLocalBounds().position);
+	m_elapsedRefreshTimeText.setOrigin(m_elapsedRefreshTimeText.getGlobalBounds().size / 2.f +
+		m_elapsedRefreshTimeText.getLocalBounds().position);
 
-	constexpr float WARNING_THRESHOLD = 60.f; // last 60s
-	if (remSec < WARNING_THRESHOLD) {
-		float phase = std::fmod(WARNING_THRESHOLD - remSec, 1.0f);
+	if (remSec < warningThreshold.asSeconds()) {
+		float phase = std::fmod(warningThreshold.asSeconds() - remSec, 1.0f);
 		float t = phase < 0.5f
-			? (phase * 2.0f) 
+			? (phase * 2.0f)
 			: ((1.0f - phase) * 2.0f);
 		sf::Color c = lerpColor(sf::Color::White, sf::Color::Red, t);
 		m_elapsedRefreshTimeText.setFillColor(c);
@@ -186,7 +194,7 @@ void Shop::update() {
 	if (!subWindowRect.contains(mousePosition))
 		mousePosition = { -1.f, -1.f };  // Outside of sub window
 	for (Product& product : m_products)
-		product.update(m_info);
+		product.update();
 
 	// Scroll Bar
 	float prevOffset = m_scrollBar.getOffset();
@@ -202,7 +210,7 @@ void Shop::onEnter() {
 }
 
 void Shop::onExit() {
-	
+
 }
 
 void Shop::onEvent(const sf::Event& event) {
@@ -257,7 +265,7 @@ void Shop::updateComponents() const {
 	const std::vector<std::string>& productTypes = shopInfo.getProducts();
 	const auto& cache = shopInfo.getCache();
 
-	Product product;
+	Product product(m_info);
 	float y = startY - m_scrollBar.getOffset();
 	product.setWidth(productWidth);
 	for (int i = 0; i < productTypes.size(); i += 5) {
@@ -270,7 +278,7 @@ void Shop::updateComponents() const {
 				auto it = cache.find(productTypes[i + j]);
 				if (it != cache.end())
 					product.setCount(it->second);
-				product.update(m_info);
+				product.update();
 
 				m_products.push_back(product);
 				x += productWidth + productSpacing;
@@ -334,11 +342,10 @@ void Shop::initComponents() {
 	m_elapsedRefreshTimeText.setOutlineColor(sf::Color::Black);
 	m_elapsedRefreshTimeText.setOutlineThickness(1.f);
 	m_elapsedRefreshTimeText.setPosition({ 1350.f, 305.f });
-	
+
 	// Scroll bar
 	m_scrollBar.setPosition({ 1640.f + 20.f, subWindowRect.position.y });
 	m_scrollBar.setSize({ 10.f, subWindowRect.size.y });
 	m_scrollBar.setFillColor(DARK_COLORS.at("wood"));
 	m_scrollBar.setViewHeight(subWindowRect.size.y - 10.f);
 }
-

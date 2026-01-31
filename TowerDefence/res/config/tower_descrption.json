@@ -1,0 +1,66 @@
+{
+  "colors": {
+    "white": [ 255, 255, 255 ],
+    "green": [ 102, 255, 102 ],
+    "red": [ 253, 101, 102 ],
+    "yellow": [ 255, 231, 99 ],
+    "pink": [ 255, 148, 201 ],
+    "blue": [ 102, 102, 255 ],
+    "light_blue": [ 54, 255, 231 ],
+    "common": [  126, 239, 109 ],
+	  "unusual": [ 255, 230, 93 ],
+	  "rare": [ 77, 82, 227 ],
+	  "epic": [ 134, 31, 222 ],
+	  "legendary": [ 222, 31, 31 ],
+	  "mythic": [ 31, 219, 222 ],
+	  "ultra": [ 255, 43, 117 ],
+	  "super": [ 43, 255, 163 ],
+	  "unique": [ 85, 85, 85 ]
+  },
+  "cards": {
+    "basic": {
+      "name": "Basic",
+      "type": "Shoot",
+      "description": "It is so basic.\nIt is not basic.",
+      "labels": [
+        {
+          "label": "Health",
+          "label_color": "green",
+          "value": "hp",
+          "value_type": "int"
+        },
+        {
+          "label": "Damage",
+          "label_color": "red",
+          "value": "damage",
+          "value_type": "int"
+        },
+        {
+          "label": "Reload",
+          "label_color": "blue",
+          "value": "reload",
+          "value_type": "sceconds"
+        },
+        {
+          "label": "Range",
+          "label_color": "yellow",
+          "value": "range",
+          "value_type": "range"
+        }
+      ]
+    },
+    "antennae": {
+      "name": "Antennae",
+      "type": "Buff",
+      "description": "It seems it does nothing...",
+      "labels": [
+        {
+          "label": "Max Rarity",
+          "label_color": "yellow",
+          "value": "",
+          "value_type": "rarity"
+        }
+      ]
+    }
+  }
+}

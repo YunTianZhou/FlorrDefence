@@ -253,6 +253,16 @@ bool Map::update() {
     for (auto& effect : m_effects)
         effect->update();
 
+    // Card description
+    if (!m_info.draggedCard.has_value() && isInside(m_info.mouseWorldPosition)) {
+        sf::Vector2i square = m_map.getSquare(m_info.mouseWorldPosition);
+        if (Tower* tower = m_map.getTower(square)) {
+            CardInfo card = tower->getCard();
+            sf::Vector2f pos = MapInfo::getSquareCenter(square);
+            m_info.cardDescription.set(card, pos, MapInfo::squareSize.x);
+        }
+    }
+
     // Tick
     m_tickTimer += m_info.dt;
     if (m_tickTimer >= TICK) {
