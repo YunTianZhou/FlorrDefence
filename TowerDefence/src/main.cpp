@@ -15,7 +15,7 @@ int main() {
     sf::Clock clock;
     load();
     std::cout << "Loading took " << clock.getElapsedTime().asMilliseconds() << "ms" << std::endl;
-
+    
     Game game;
     game.run();
 }

@@ -5,7 +5,7 @@
 
 BreakLine::BreakLine() 
 	: m_text(AssetManager::getFont()) {
-	m_line.setFillColor(DARK_COLORS.at("wood"));
+	m_line.setFillColor(DARK_COLORS.at("wood")); 
 	m_text.setCharacterSize(20);
 	m_text.setOutlineColor(sf::Color::Black);
 	m_text.setOutlineThickness(1.f);
