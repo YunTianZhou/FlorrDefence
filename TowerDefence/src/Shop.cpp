@@ -153,15 +153,19 @@ Shop::Shop(SharedInfo& info)
 }
 
 void Shop::update() {
-	// Menu &  ShopInfo
+	// Menu
 	for (int i = 0; i < m_menu.getSize(); i++) {
 		bool disable = i > m_info.playerState.buff.shop.apply(0);
 		m_menu.getButton(i).setDisabled(disable);
 
 		if (!disable)
-			m_shops.at(SHOP_RARITIES[i]).update();
+			if (m_shops.at(SHOP_RARITIES[i]).update())
+				m_updated = false;
 	}
 	m_menu.update(m_info.mouseWorldPosition);
+
+	// ShopInfo
+	updateShopInfo();
 
 	// Elapsed Refresh Time Text
 	ShopInfo& shop = m_shops.at(m_menu.getVar());
@@ -201,6 +205,15 @@ void Shop::update() {
 	m_scrollBar.update(m_info.mouseWorldPosition);
 	if (prevOffset != m_scrollBar.getOffset())
 		m_updated = false;
+}
+
+void Shop::updateShopInfo() {
+	for (int i = 0; i < m_menu.getSize(); i++) {
+		bool disable = i > m_info.playerState.buff.shop.apply(0);
+		if (!disable)
+			if (m_shops.at(SHOP_RARITIES[i]).update())
+				m_updated = false;
+	}
 }
 
 void Shop::onEnter() {

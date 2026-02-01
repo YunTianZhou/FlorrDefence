@@ -1,22 +1,22 @@
 {
   "common": {
-    "product_count": 20,
-    "refresh_interval": 120
+    "product_count": 5,
+    "refresh_interval": 15
   },
   "rare": {
-    "product_count": 15,
-    "refresh_interval": 180
+    "product_count": 5,
+    "refresh_interval": 60
   },
   "legendary": {
-    "product_count": 10,
-    "refresh_interval": 300
+    "product_count": 4,
+    "refresh_interval": 100
   },
   "ultra": {
-    "product_count": 5,
+    "product_count": 3,
     "refresh_interval": 600
   },
   "unique": {
-    "product_count": 3,
-    "refresh_interval": 300
+    "product_count": 2,
+    "refresh_interval": 3600
   }
 }

@@ -80,6 +80,7 @@ public:
 	Shop(SharedInfo& info);
 
 	void update();
+	void updateShopInfo();
 	void onEnter();
 	void onExit();
 	void onEvent(const sf::Event& event);
