@@ -157,10 +157,6 @@ void Shop::update() {
 	for (int i = 0; i < m_menu.getSize(); i++) {
 		bool disable = i > m_info.playerState.buff.shop.apply(0);
 		m_menu.getButton(i).setDisabled(disable);
-
-		if (!disable)
-			if (m_shops.at(SHOP_RARITIES[i]).update())
-				m_updated = false;
 	}
 	m_menu.update(m_info.mouseWorldPosition);
 
