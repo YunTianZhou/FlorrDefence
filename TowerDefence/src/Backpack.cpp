@@ -53,6 +53,17 @@ Backpack::Backpack(SharedInfo& info)
 }
 
 void Backpack::update() {
+	// Card description
+	if (!m_info.draggedCard.has_value() &&
+		subWindowRect.contains(m_info.mouseWorldPosition)) {
+		for (const Card& card : m_cards) {
+			if (card.getRect().contains(m_info.mouseWorldPosition)) {
+				sf::Vector2f center = card.getPosition() + sf::Vector2f(cardLength, cardLength) / 2.f;
+				m_info.cardDescription.set(card.getCard(), center, cardLength);
+			}
+		}
+	}
+
 	// Scroll bar
 	float prevOffset = m_scrollBar.getOffset();
 	m_scrollBar.update(m_info.mouseWorldPosition);

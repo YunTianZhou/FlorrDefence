@@ -20,6 +20,9 @@ void UI::update() {
 	else if (m_menu.getVar() == "Craft") m_craft.update();
 	else if (m_menu.getVar() == "Talents") m_talent.update();
 	else throw;
+
+	if (m_menu.getVar() != "Shop")
+		m_shop.updateShopInfo();
 }
 
 void UI::onEvent(const sf::Event& event) {

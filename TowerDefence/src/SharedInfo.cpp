@@ -152,5 +152,8 @@ bool SharedInfo::update(const sf::RenderWindow& window) {
             return true;
         }
     }
+
+    cardDescription.reset();
+
     return false;
 }

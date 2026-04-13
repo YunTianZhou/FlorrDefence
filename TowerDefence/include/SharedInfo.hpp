@@ -7,6 +7,7 @@
 #include <SFML/Graphics.hpp>
 #include <nlohmann/json.hpp>
 #include "DraggedCard.hpp"
+#include "CardDescription.hpp"
 #include "Buff.hpp"
 #include "Constants.hpp"
 
@@ -160,6 +161,7 @@ struct SharedInfo {
     Counter counter;
     
     std::optional<DraggedCard> draggedCard;
+    CardDescription cardDescription;
     std::optional<CardStackInfo> placeRequest;
     sf::Clock dtClock;
     
