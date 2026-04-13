@@ -185,7 +185,7 @@ static void loadTowerAttribs() {
 
 		for (auto& [rarity, entry] : obj["rarities"].items()) {
 			TowerAttribs::RarityEntry& e = ta.rarities[rarity];
-			e.price = entry["price"].get<int>();
+			e.price = entry["price"].get<int64_t>();
 			e.coin = entry.value("coin", 0ll);
 			for (auto& [key, val] : entry["attribs"].items()) {
 				e.attribs[key] = val.get<float>();
