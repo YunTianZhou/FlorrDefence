@@ -1,4 +1,3 @@
-#include <cassert>
 #include <fstream>
 #include <chrono>
 #include <nlohmann/json.hpp>

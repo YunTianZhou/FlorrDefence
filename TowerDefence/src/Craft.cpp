@@ -8,7 +8,7 @@ void CraftInfo::reset(const std::string& rarity) {
 	successCount = successCount;
 	remaningCount = remaningCount;
 	processTime = sf::seconds(randomUniform(craftTimeRange.lower.asSeconds(),
-		craftTimeRange.upper.asSeconds()));
+		                                    craftTimeRange.upper.asSeconds()));
 	elapsedTime = sf::seconds(0.f);
 	successCount = 0;
 	remaningCount = 0;

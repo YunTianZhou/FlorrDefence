@@ -27,7 +27,7 @@ bool Record::try_load(std::filesystem::path path) {
 	std::cout << "Loading game record..." << std::endl;
 
 	m_data.clear();
-	m_data << ifs;
+	ifs >> m_data;
 
 	m_data["player"].get_to(m_info.playerState);
 	m_data["map"].get_to(m_map);
