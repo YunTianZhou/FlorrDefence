@@ -41,9 +41,9 @@ const std::map<CardInfo, MobInfo> TOWER_SUMMON_MOBS = {
 	{ {"rare", "ant_egg" }, { "rare", "ant_soldier" } },
 	{ {"epic", "ant_egg" }, { "epic", "ant_soldier" } },
 	{ {"legendary", "ant_egg" }, { "legendary", "ant_soldier" } },
-	{ {"mythic", "ant_egg" }, { "mythic", "ant_soldier" } },
+	{ {"mythic", "ant_egg" }, { "legendary", "ant_soldier" } },
 	{ {"ultra", "ant_egg" }, { "mythic", "ant_soldier" } },
-	{ {"super", "ant_egg" }, { "ultra", "ant_soldier" } },
+	{ {"super", "ant_egg" }, { "mythic", "ant_soldier" } },
 	{ {"unique", "ant_egg" }, { "ultra", "ant_soldier" } },
 
 	// Beetle Egg
@@ -52,9 +52,9 @@ const std::map<CardInfo, MobInfo> TOWER_SUMMON_MOBS = {
 	{ {"rare", "beetle_egg" }, { "rare", "beetle" } },
 	{ {"epic", "beetle_egg" }, { "epic", "beetle" } },
 	{ {"legendary", "beetle_egg" }, { "legendary", "beetle" } },
-	{ {"mythic", "beetle_egg" }, { "mythic", "beetle" } },
+	{ {"mythic", "beetle_egg" }, { "legendary", "beetle" } },
 	{ {"ultra", "beetle_egg" }, { "mythic", "beetle" } },
-	{ {"super", "beetle_egg" }, { "ultra", "beetle" } },
+	{ {"super", "beetle_egg" }, { "mythic", "beetle" } },
 	{ {"unique", "beetle_egg" }, { "ultra", "beetle" } },
 };
 
@@ -80,13 +80,13 @@ const std::unordered_map<std::string, float> CRAFT_PROBS = {  // curr => next
 };
 
 const std::unordered_map<std::string, TimeRange> CRAFT_TIME_RANGES = {
-	{"common", { sf::seconds(0.1f), sf::seconds(1.f) }},
-	{"unusual", { sf::seconds(0.5f), sf::seconds(3.f) }},
-	{"rare", { sf::seconds(1.f), sf::seconds(5.f) }},
-	{"epic", { sf::seconds(1.f), sf::seconds(8.f) }},
-	{"legendary", { sf::seconds(2.f), sf::seconds(10.f) }},
-	{"mythic", { sf::seconds(5.f), sf::seconds(20.f) }},
-	{"ultra", { sf::seconds(10.f), sf::seconds(30.f) }}
+	{"common", { sf::seconds(0.1f), sf::seconds(2.f) }},
+	{"unusual", { sf::seconds(0.3f), sf::seconds(3.f) }},
+	{"rare", { sf::seconds(0.5f), sf::seconds(4.f) }},
+	{"epic", { sf::seconds(0.6f), sf::seconds(5.f) }},
+	{"legendary", { sf::seconds(0.7f), sf::seconds(6.f) }},
+	{"mythic", { sf::seconds(0.8f), sf::seconds(7.f) }},
+	{"ultra", { sf::seconds(1.f), sf::seconds(8.f) }}
 };
 
 const std::vector<sf::Vector2i> PATH_SQUARES = {
