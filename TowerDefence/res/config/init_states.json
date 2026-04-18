@@ -6,6 +6,6 @@
   "coin": 10000000000000,
   "talent": 1000,
   "cards": [
-    [ "common", "basic", 6 ]
+    [ "common", "basic", 5 ]
   ]
 }
