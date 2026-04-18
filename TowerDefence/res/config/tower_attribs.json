@@ -1770,7 +1770,7 @@
         },
         "mythic": {
             "price": 39160800,
-            "a": {
+            "attribs": {
                 "hp": 1,
                 "damage": 729,
                 "reload": 3.0,
