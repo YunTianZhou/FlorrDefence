@@ -5,18 +5,18 @@
   },
   "rare": {
     "product_count": 5,
-    "refresh_interval": 60
+    "refresh_interval": 30
   },
   "legendary": {
     "product_count": 4,
-    "refresh_interval": 100
+    "refresh_interval": 45
   },
   "ultra": {
     "product_count": 3,
-    "refresh_interval": 600
+    "refresh_interval": 60
   },
   "unique": {
     "product_count": 2,
-    "refresh_interval": 3600
+    "refresh_interval": 300
   }
 }
