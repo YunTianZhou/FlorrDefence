@@ -100,6 +100,35 @@ int MapInfo::removeAll(const CardInfo& card) {
     return count;
 }
 
+bool MapInfo::findSquareAndPlace(const CardInfo& card) {
+    std::string towerType = TOWER_ATTRIBS.at(card.type).type;
+
+    if (towerType == "defence") {
+        for (sf::Vector2i square : PATH_SQUARES) {
+            if (isEmpty(square) && isPlaceable(square, card)) {
+                // Found a place to place that tower
+                setCard(square, card);
+                return true;
+            }
+        }
+    }
+    else {
+        for (int i = 0; i < 11; i++) {
+            for (int j = 0; j < 10; j++) {
+                sf::Vector2i square = { i, j };
+                if (isEmpty(square) && isPlaceable(square, card)) {
+                    // Found a place to place that tower
+                    setCard(square, card);
+                    return true;
+                }
+            }
+        }
+    }
+
+    // Unable to find a square to place that tower
+    return false;
+}
+
 void MapInfo::clear() {
     for (int i = 0; i < 11; i++) {
         for (int j = 0; j < 10; j++) {
@@ -176,32 +205,15 @@ bool MapInfo::isPlaceable(sf::Vector2i square, const CardInfo& card) const {
         return squareType == ST::Grass;
 }
 
-bool MapInfo::findSquareAndPlace(const CardInfo& card) {
-    std::string towerType = TOWER_ATTRIBS.at(card.type).type;
-
-    if (towerType == "defence") {
-        for (sf::Vector2i square : PATH_SQUARES) {
-            if (isEmpty(square) && isPlaceable(square, card)) {
-                // Found a place to place that tower
-                setCard(square, card);
-                return true;
-			}
-        }
-    }
-    else {
-        for (int i = 0; i < 11; i++) {
-            for (int j = 0; j < 10; j++) {
-                sf::Vector2i square = { i, j };
-                if (isEmpty(square) && isPlaceable(square, card)) {
-                    // Found a place to place that tower
-                    setCard(square, card);
+bool MapInfo::containsTower(const CardInfo& card) const {
+    for (int row = 0; row < 11; row++) {
+        for (int col = 0; col < 10; col++) {
+            if (auto tower = getTower({ row, col })) {
+                if (tower->getCard() == card)
                     return true;
-                }
             }
         }
     }
-    
-    // Unable to find a square to place that tower
     return false;
 }
 

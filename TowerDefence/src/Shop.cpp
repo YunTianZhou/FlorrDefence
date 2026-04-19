@@ -48,7 +48,7 @@ void Product::setCount(int count) {
 void Product::update() {
 	m_mousePosition = getInverseTransform().transformPoint(m_info.mouseWorldPosition);
 	m_buyCB.setDisabled(m_price > m_info.playerState.coin ||
-		(m_stack.getCard().rarity == "unique" && m_info.playerState.boughtUniques.count(m_stack.getCard().type)));
+		(m_stack.getCard().rarity == "unique" && m_info.playerState.aquiredUniques.count(m_stack.getCard().type)));
 	m_buyCB.update(m_mousePosition);
 
 	if (!m_info.draggedCard.has_value() && m_stack.getRect().contains(m_mousePosition)) {
@@ -254,7 +254,7 @@ void Shop::onEvent(const sf::Event& event) {
 
 				m_info.playerState.backpack.add(info);
 				if (product.getCardStackInfo().card.rarity == "unique")
-					m_info.playerState.boughtUniques.insert(product.getCardStackInfo().card.type);
+					m_info.playerState.aquiredUniques.insert(product.getCardStackInfo().card.type);
 			}
 		}
 	}

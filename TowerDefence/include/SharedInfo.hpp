@@ -41,6 +41,7 @@ inline void to_json(json& j, const BackpackInfo& b) {
     j["cards"] = json::array();
 
     for (const auto& [card, count] : b.m_count) {
+        if (count == 0) continue;
         j["cards"].push_back({
             {"card", card},
             {"count", count}
@@ -80,7 +81,7 @@ struct PlayerState {
     BuffGroup talentBuff;
     BuffGroup buff;
     BuffManager buffManager;
-    std::set<std::string> boughtUniques;
+    std::set<std::string> aquiredUniques;
 
     void init();
     int calcRequiredXp() const;
@@ -108,8 +109,7 @@ inline void to_json(json& j, const PlayerState& p) {
         { "level",          p.level },
         { "coin",           p.coin },
         { "talent",         p.talent },
-        { "backpack",       p.backpack },
-        { "bought_uniques", p.boughtUniques }
+        { "backpack",       p.backpack }
     };
 }
 
@@ -129,11 +129,6 @@ inline void from_json(const json& j, PlayerState& p) {
         p.backpack = j.at("backpack").get<BackpackInfo>();
     else
         p.backpack = BackpackInfo{};
-
-    if (j.contains("bought_uniques"))
-        p.boughtUniques = j.at("bought_uniques").get<std::set<std::string>>();
-    else
-        p.boughtUniques.clear();
 
     p.prevHpLimit = p.hpLimit;
     p.hp = std::clamp(p.hp, 0, p.hpLimit);

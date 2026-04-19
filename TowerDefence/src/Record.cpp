@@ -34,6 +34,14 @@ bool Record::try_load(std::filesystem::path path) {
 	m_data["shop"].get_to(m_shop);
 	m_data["talent"].get_to(m_talent);
 
+	auto& uniques = m_info.playerState.aquiredUniques;
+	for (const std::string& type : TOWER_TYPES) {
+		CardInfo card = { "unique", type };
+		if (m_info.playerState.backpack.getCount(card) > 0
+			|| m_map.getMapInfo().containsTower(card))
+			uniques.insert(type);
+	}
+
 	ifs.close();
 	std::cout << "Game loaded successfully!" << std::endl;
 	return true;

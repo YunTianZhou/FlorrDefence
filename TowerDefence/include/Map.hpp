@@ -20,6 +20,7 @@ public:
 	void removeCard(sf::Vector2i square);
 	int removeAll(const CardInfo& card);
 	void clear();
+	bool findSquareAndPlace(const CardInfo& card);
 	void updateTowerBuff();
 
 	void update();
@@ -28,7 +29,7 @@ public:
 	bool isValid(sf::Vector2i square) const;
 	bool isEmpty(sf::Vector2i square) const;
 	bool isPlaceable(sf::Vector2i square, const CardInfo& card) const;
-	bool findSquareAndPlace(const CardInfo& card);
+	bool containsTower(const CardInfo& card) const;
 
 public:
 	static sf::Vector2i getSquare(sf::Vector2f position);
