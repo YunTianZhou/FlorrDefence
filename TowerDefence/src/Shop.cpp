@@ -119,6 +119,10 @@ void Product::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
 ShopInfo::ShopInfo(const SharedInfo& info, const std::string& type)
 	: m_info(info), m_type(type) {
+	m_allProducts.clear();
+	for (const std::string& type : TOWER_TYPES)
+		if (!SHOP_ATTRIBS[m_type].bannedCards.contains(type))
+			m_allProducts.push_back(type);
 	refresh();
 }
 
@@ -144,7 +148,7 @@ sf::Time ShopInfo::getRemainingTime() const {
 }
 
 void ShopInfo::refresh() {
-	m_products = randomSample(TOWER_TYPES, SHOP_ATTRIBS[m_type].productCount);
+	m_products = randomSample(m_allProducts, SHOP_ATTRIBS[m_type].productCount);
 }
 
 Shop::Shop(SharedInfo& info)

@@ -217,6 +217,7 @@ static void loadShopAttribs() {
 		ShopAttribs sa;
 		sa.productCount = entry["product_count"].get<int>();
 		sa.refreshInterval = sf::seconds(entry["refresh_interval"].get<float>());
+		sa.bannedCards = entry.value("banned_cards", std::unordered_set<std::string>{});
 
 		SHOP_ATTRIBS[type] = std::move(sa);
 	}

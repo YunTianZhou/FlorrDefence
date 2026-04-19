@@ -58,6 +58,7 @@ private:
 private:
 	const SharedInfo& m_info;
 	std::string m_type;
+	std::vector<std::string> m_allProducts;
 	std::vector<std::string> m_products;
 	std::unordered_map<std::string, int> m_productCountCache;
 	sf::Time m_refreshTimer;

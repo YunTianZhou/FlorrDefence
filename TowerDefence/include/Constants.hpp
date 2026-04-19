@@ -3,6 +3,7 @@
 #include <vector>
 #include <map>
 #include <set>
+#include <unordered_set>
 #include <SFML/Graphics.hpp>
 #include <nlohmann/json.hpp>
 
@@ -87,6 +88,7 @@ struct MobAttribs {
 struct ShopAttribs {
 	int productCount = 0;
 	sf::Time refreshInterval;
+	std::unordered_set<std::string> bannedCards;
 };
 
 struct TalentAttribs {
