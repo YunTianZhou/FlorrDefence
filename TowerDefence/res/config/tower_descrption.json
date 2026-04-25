@@ -17,50 +17,94 @@
 	  "super": [ 43, 255, 163 ],
 	  "unique": [ 85, 85, 85 ]
   },
-  "cards": {
-    "basic": {
-      "name": "Basic",
-      "type": "Shoot",
-      "description": "It is so basic.\nIt is not basic.",
-      "labels": [
-        {
-          "label": "Health",
-          "label_color": "green",
-          "value": "hp",
-          "value_type": "int"
+    "cards": {
+        "basic": {
+            "name": "Basic",
+            "type": "Shoot",
+            "description": "It seems it does nothing... \n But does it actually do nothing?",
+            "labels": [
+                {
+                    "label": "Health",
+                    "label_color": "green",
+                    "value": "hp",
+                    "value_type": "int"
+                },
+                {
+                    "label": "Damage",
+                    "label_color": "red",
+                    "value": "damage",
+                    "value_type": "int"
+                },
+                {
+                    "label": "Reload",
+                    "label_color": "blue",
+                    "value": "reload",
+                    "value_type": "sceconds"
+                },
+                {
+                    "label": "Range",
+                    "label_color": "yellow",
+                    "value": "range",
+                    "value_type": "range"
+                }
+            ]
         },
-        {
-          "label": "Damage",
-          "label_color": "red",
-          "value": "damage",
-          "value_type": "int"
+        "antennae": {
+            "name": "Antennae",
+            "type": "Buff",
+            "description": "You see everything with it, maybe.",
+            "labels": [
+                {
+                    "label": "Max Rarity",
+                    "label_color": "yellow",
+                    "value": "",
+                    "value_type": "rarity"
+                }
+            ]
         },
-        {
-          "label": "Reload",
-          "label_color": "blue",
-          "value": "reload",
-          "value_type": "sceconds"
+        "rock": {
+            "name": "Rock",
+            "type": "Defence",
+            "description": "Be careful not to trip over it!",
+            "labels": [
+                {
+                    "label": "Health",
+                    "label_color": "green",
+                    "value": "hp",
+                    "value_type": "int"
+                },
+                {
+                    "label": "Damage",
+                    "label_color": "red",
+                    "value": "damage",
+                    "value_type": "int"
+                },
+                {
+                    "label": "Reload",
+                    "label_color": "blue",
+                    "value": "reload",
+                    "value_type": "sceconds"
+                }
+            ]
         },
-        {
-          "label": "Range",
-          "label_color": "yellow",
-          "value": "range",
-          "value_type": "range"
+        "ant_egg": {
+            "name": "Ant egg",
+            "type": "Summon",
+            "description": "Why is it rounded?",
+            "labels": [
+                {
+                    "label": "Reload",
+                    "label_color": "blue",
+                    "value": "reload",
+                    "value_type": "sceconds"
+                },
+                {
+                    "label": "Copy",
+                    "label_color": "yellow",
+                    "value": "copy",
+                    "value_type": "int"
+                }
+            ]
         }
-      ]
-    },
-    "antennae": {
-      "name": "Antennae",
-      "type": "Buff",
-      "description": "It seems it does nothing...",
-      "labels": [
-        {
-          "label": "Max Rarity",
-          "label_color": "yellow",
-          "value": "",
-          "value_type": "rarity"
-        }
-      ]
     }
-  }
 }

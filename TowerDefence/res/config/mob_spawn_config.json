@@ -664,7 +664,7 @@
             "min_level": 199,
             "max_level": 200,
             "base_interval": 60.0,
-            "scale_per_level": -0.00,
+            "scale_per_level": -0.5,
             "jitter": {
                 "range": 0.4,
                 "prob": 0.5
