@@ -7,6 +7,7 @@
     "pink": [ 255, 148, 201 ],
     "blue": [ 102, 102, 255 ],
     "light_blue": [ 54, 255, 231 ],
+    "gray": [ 102, 102, 102 ],
     "common": [  126, 239, 109 ],
 	  "unusual": [ 255, 230, 93 ],
 	  "rare": [ 77, 82, 227 ],
@@ -17,94 +18,474 @@
 	  "super": [ 43, 255, 163 ],
 	  "unique": [ 85, 85, 85 ]
   },
-    "cards": {
-        "basic": {
-            "name": "Basic",
-            "type": "Shoot",
-            "description": "It seems it does nothing... \n But does it actually do nothing?",
-            "labels": [
-                {
-                    "label": "Health",
-                    "label_color": "green",
-                    "value": "hp",
-                    "value_type": "int"
-                },
-                {
-                    "label": "Damage",
-                    "label_color": "red",
-                    "value": "damage",
-                    "value_type": "int"
-                },
-                {
-                    "label": "Reload",
-                    "label_color": "blue",
-                    "value": "reload",
-                    "value_type": "sceconds"
-                },
-                {
-                    "label": "Range",
-                    "label_color": "yellow",
-                    "value": "range",
-                    "value_type": "range"
-                }
-            ]
-        },
-        "antennae": {
-            "name": "Antennae",
-            "type": "Buff",
-            "description": "You see everything with it, maybe.",
-            "labels": [
-                {
-                    "label": "Max Rarity",
-                    "label_color": "yellow",
-                    "value": "",
-                    "value_type": "rarity"
-                }
-            ]
-        },
-        "rock": {
-            "name": "Rock",
-            "type": "Defence",
-            "description": "Be careful not to trip over it!",
-            "labels": [
-                {
-                    "label": "Health",
-                    "label_color": "green",
-                    "value": "hp",
-                    "value_type": "int"
-                },
-                {
-                    "label": "Damage",
-                    "label_color": "red",
-                    "value": "damage",
-                    "value_type": "int"
-                },
-                {
-                    "label": "Reload",
-                    "label_color": "blue",
-                    "value": "reload",
-                    "value_type": "sceconds"
-                }
-            ]
-        },
-        "ant_egg": {
-            "name": "Ant egg",
-            "type": "Summon",
-            "description": "Why is it rounded?",
-            "labels": [
-                {
-                    "label": "Reload",
-                    "label_color": "blue",
-                    "value": "reload",
-                    "value_type": "sceconds"
-                },
-                {
-                    "label": "Copy",
-                    "label_color": "yellow",
-                    "value": "copy",
-                    "value_type": "int"
-                }
-            ]
+  "cards": {
+    "amulet": {
+      "name": "Amulet",
+      "type": "Buff",
+      "description": "Convert a percentage of overheal into shields.",
+      "labels": [
+        {
+          "label": "Overheal Conversion",
+          "label_color": "yellow",
+          "value": "overheal_buff",
+          "value_type": "add_percent"
         }
+      ]
+    },
+    "ant_egg": {
+      "name": "Ant egg",
+      "type": "Summon",
+      "description": "Why is it rounded?",
+      "labels": [
+        {
+          "label": "Mob Rarity",
+          "label_color": "yellow",
+          "value": "mob_rarity",
+          "value_type": "rarity"
+        },
+        {
+          "label": "Max Mob",
+          "label_color": "yellow",
+          "value": "copy",
+          "value_type": "int"
+        },
+        {
+          "label": "Reload",
+          "label_color": "blue",
+          "value": "reload",
+          "value_type": "sceconds"
+        }
+      ]
+    },
+    "antennae": {
+      "name": "Antennae",
+      "type": "Buff",
+      "description": "You see everything with it, maybe.",
+      "labels": [
+        {
+          "label": "Max Rarity",
+          "label_color": "yellow",
+          "value": "",
+          "value_type": "rarity"
+        }
+      ]
+    },
+    "basic": {
+      "name": "Basic",
+      "type": "Shoot",
+      "description": "It seems it does nothing... \nBut does it actually do nothing?",
+      "labels": [
+        {
+          "label": "Health",
+          "label_color": "green",
+          "value": "hp",
+          "value_type": "int"
+        },
+        {
+          "label": "Damage",
+          "label_color": "red",
+          "value": "damage",
+          "value_type": "int"
+        },
+        {
+          "label": "Reload",
+          "label_color": "blue",
+          "value": "reload",
+          "value_type": "sceconds"
+        },
+        {
+          "label": "Range",
+          "label_color": "yellow",
+          "value": "range",
+          "value_type": "range"
+        }
+      ]
+    },
+    "beetle_egg": {
+      "name": "Beetle Egg",
+      "type": "Summon",
+      "description": "Something interesting will pop out from it...",
+      "labels": [
+        {
+          "label": "Mob Rarity",
+          "label_color": "yellow",
+          "value": "mob_rarity",
+          "value_type": "rarity"
+        },
+        {
+          "label": "Max Mob",
+          "label_color": "yellow",
+          "value": "copy",
+          "value_type": "int"
+        },
+        {
+          "label": "Reload",
+          "label_color": "blue",
+          "value": "reload",
+          "value_type": "sceconds"
+        }
+      ]
+    },
+    "bone": {
+      "name": "Bone",
+      "type": "Shoot",
+      "description": "Sturdy.",
+      "labels": [
+        {
+          "label": "Health",
+          "label_color": "green",
+          "value": "hp",
+          "value_type": "int"
+        },
+        {
+          "label": "Damage",
+          "label_color": "red",
+          "value": "damage",
+          "value_type": "int"
+        },
+        {
+          "label": "Armor",
+          "label_color": "gray",
+          "value": "armor",
+          "value_type": "int"
+        },
+        {
+          "label": "Reload",
+          "label_color": "blue",
+          "value": "reload",
+          "value_type": "sceconds"
+        },
+        {
+          "label": "Range",
+          "label_color": "yellow",
+          "value": "range",
+          "value_type": "range"
+        }
+      ]
+    },
+    "bur": {
+      "name": "Bur",
+      "type": "Shoot",
+      "description": "Reduce armor of the effected unit. Does not stack with itself.",
+      "labels": [
+        {
+          "label": "Health",
+          "label_color": "green",
+          "value": "hp",
+          "value_type": "int"
+        },
+        {
+          "label": "Damage",
+          "label_color": "red",
+          "value": "damage",
+          "value_type": "int"
+        },
+        {
+          "label": "Reload",
+          "label_color": "blue",
+          "value": "reload",
+          "value_type": "sceconds"
+        },
+        {
+          "label": "Range",
+          "label_color": "yellow",
+          "value": "range",
+          "value_type": "range"
+        },
+        {
+          "label": "Armor Debuff",
+          "label_color": "gray",
+          "value": "armor_debuff",
+          "value_type": "int_neg"
+        },
+        {
+          "label": "Duration",
+          "label_color": "blue",
+          "value": "armor_debuff_duration",
+          "value_type": "sceconds"
+        }
+      ]
+    },
+    "chip": {
+      "name": "Chip",
+      "type": "Shoot",
+      "description": "ALL IN.",
+      "labels": [
+        {
+          "label": "Health",
+          "label_color": "green",
+          "value": "hp",
+          "value_type": "int"
+        },
+        {
+          "label": "Damage",
+          "label_color": "red",
+          "value": "damage",
+          "value_type": "int"
+        },
+        {
+          "label": "Evation",
+          "label_color": "yellow",
+          "value": "evasion",
+          "value_type": "percent"
+        },
+        {
+          "label": "Reload",
+          "label_color": "blue",
+          "value": "reload",
+          "value_type": "sceconds"
+        },
+        {
+          "label": "Range",
+          "label_color": "yellow",
+          "value": "range",
+          "value_type": "range"
+        }
+      ]
+    },
+    "coin": {
+      "name": "Coin",
+      "type": "Buff",
+      "description": "Invest little for sustainable income...",
+      "labels": [
+        {
+          "label": "Coin",
+          "label_color": "yellow",
+          "value": "coin",
+          "value_type": "coin"
+        },
+        {
+          "label": "Reload",
+          "label_color": "blue",
+          "value": "reload",
+          "value_type": "sceconds"
+        }
+      ]
+    },
+    "corn": {
+      "name": "Corn",
+      "type": "Shoot",
+      "description": "Slow but tanky.",
+      "labels": [
+        {
+          "label": "Health",
+          "label_color": "green",
+          "value": "hp",
+          "value_type": "int"
+        },
+        {
+          "label": "Damage",
+          "label_color": "red",
+          "value": "damage",
+          "value_type": "int"
+        },
+        {
+          "label": "Reload",
+          "label_color": "blue",
+          "value": "reload",
+          "value_type": "sceconds"
+        },
+        {
+          "label": "Range",
+          "label_color": "yellow",
+          "value": "range",
+          "value_type": "range"
+        }
+      ]
+    },
+    "cutter": {
+      "name": "Cutter",
+      "type": "Buff",
+      "description": "Sharpen your body for stronger body damage.",
+      "labels": [
+        {
+          "label": "Body Damage",
+          "label_color": "red",
+          "value": "body_damage_buff",
+          "value_type": "int"
+        }
+      ]
+    },
+    "dahlia": {
+      "name": "Dahlia",
+      "type": "Defence",
+      "description": "Heal the flower when destroyed.",
+      "labels": [
+        {
+          "label": "Health",
+          "label_color": "green",
+          "value": "hp",
+          "value_type": "int"
+        },
+        {
+          "label": "Damage",
+          "label_color": "red",
+          "value": "damage",
+          "value_type": "int"
+        },
+        {
+          "label": "Reload",
+          "label_color": "blue",
+          "value": "reload",
+          "value_type": "sceconds"
+        },
+        {
+          "label": "Death Heal",
+          "label_color": "pink",
+          "value": "death_heal",
+          "value_type": "int"
+        }
+      ]
+    },
+    "dice": {
+      "name": "Dice",
+      "type": "Shoot",
+      "description": "Have a 5% chance of dealing 35x damage.",
+      "labels": [
+        {
+          "label": "Health",
+          "label_color": "green",
+          "value": "hp",
+          "value_type": "int"
+        },
+        {
+          "label": "Damage",
+          "label_color": "red",
+          "value": "damage",
+          "value_type": "int"
+        },
+        {
+          "label": "Reload",
+          "label_color": "blue",
+          "value": "reload",
+          "value_type": "sceconds"
+        },
+        {
+          "label": "Range",
+          "label_color": "yellow",
+          "value": "range",
+          "value_type": "range"
+        }
+      ]
+    },
+    "faster": {
+      "name": "Faster",
+      "type": "Buff",
+      "description": "Everything moves quicker.",
+      "labels": [
+        {
+          "label": "Speed Buff",
+          "label_color": "yellow",
+          "value": "speed_buff",
+          "value_type": "add_percent"
+        }
+      ]
+    },
+    "golden_leaf": {
+      "name": "Golden Leaf",
+      "type": "Buff",
+      "description": "A very special leaf, seems to allow you to use your other petals even more.",
+      "labels": [
+        {
+          "label": "Reload",
+          "label_color": "blue",
+          "value": "reload_buff",
+          "value_type": "percent"
+        }
+      ]
+    },
+    "jelly": {
+      "name": "Jelly",
+      "type": "Defence",
+      "description": "No one like touching this.",
+      "labels": [
+        {
+          "label": "Health",
+          "label_color": "green",
+          "value": "hp",
+          "value_type": "int"
+        },
+        {
+          "label": "Damage",
+          "label_color": "red",
+          "value": "damage",
+          "value_type": "int"
+        },
+        {
+          "label": "Reload",
+          "label_color": "blue",
+          "value": "reload",
+          "value_type": "sceconds"
+        },
+        {
+          "label": "Knockback",
+          "label_color": "yellow",
+          "value": "knockback",
+          "value_type": "float"
+        }
+      ]
+    },
+    "laser": {
+      "name": "Laser",
+      "type": "Shoot",
+      "description": "Damage increases the longer it stays on target.",
+      "labels": [
+        {
+          "label": "Health",
+          "label_color": "green",
+          "value": "hp",
+          "value_type": "int"
+        },
+        {
+          "label": "Lightning Damage",
+          "label_color": "light_blue",
+          "value": "damage",
+          "value_type": "int"
+        },
+        {
+          "label": "Damage Growth",
+          "label_color": "red",
+          "value": "damage_increase_rate",
+          "value_type": "add_percent_per_second"
+        },
+        {
+          "label": "Max Damage Rate",
+          "label_color": "red",
+          "value": "max_damage_rate",
+          "value_type": "percent"
+        },
+        {
+          "label": "Range",
+          "label_color": "yellow",
+          "value": "range",
+          "value_type": "range"
+        }
+      ]
+    },
+    "rock": {
+      "name": "Rock",
+      "type": "Defence",
+      "description": "Be careful not to trip over it!",
+      "labels": [
+        {
+          "label": "Health",
+          "label_color": "green",
+          "value": "hp",
+          "value_type": "int"
+        },
+        {
+          "label": "Damage",
+          "label_color": "red",
+          "value": "damage",
+          "value_type": "int"
+        },
+        {
+          "label": "Reload",
+          "label_color": "blue",
+          "value": "reload",
+          "value_type": "sceconds"
+        }
+      ]
     }
+  }
 }
