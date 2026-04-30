@@ -125,8 +125,7 @@ extern const std::vector<std::string> SHOP_RARITIES;
 extern const std::unordered_map<std::string, int> RARITIE_LEVELS;
 
 extern const std::vector<std::string> TOWER_TYPES;
-extern const std::map<CardInfo, MobInfo> TOWER_SUMMON_MOBS;
-extern const std::set<std::string> LIGHTNING_TOWERS;
+extern const std::unordered_map<std::string, std::string> TOWER_SUMMON_MOBS;
 
 extern const std::unordered_map<std::string, float> MOB_RARITY_SCALES;
 

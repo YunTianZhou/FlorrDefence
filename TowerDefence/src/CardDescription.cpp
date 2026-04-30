@@ -6,7 +6,7 @@
 
 LabelEntry::LabelEntry(
 	const std::string& labelText,
-	const std::string& valueText,
+	const std::string& valueText, 
 	unsigned int charSize,
 	sf::Color labelColor,
 	sf::Color valueColor
@@ -117,11 +117,17 @@ void CardDescription::load_data() {
 }
 
 std::string CardDescription::parseAttrib(const std::string& value, const std::string& type) {
-	const auto& entry = TOWER_ATTRIBS[m_card.type].rarities[m_card.rarity];
-	float attrib = entry.attribs.at(value);
+	auto& entry = TOWER_ATTRIBS[m_card.type].rarities[m_card.rarity];
+	float attrib = entry.attribs[value];
 
 	if (type == "int") {
 		return toNiceString((int64_t)attrib);
+	}
+	if (type == "int_neg") {
+		return toNiceString((int64_t)-attrib);
+	}
+	if (type == "float") {
+		return formatFloat(attrib, 1);
 	}
 	else if (type == "sceconds") {
 		return formatFloat(std::max(0.1f, attrib), 1) + " seconds";
@@ -134,6 +140,15 @@ std::string CardDescription::parseAttrib(const std::string& value, const std::st
 	}
 	else if (type == "percent") {
 		return toNiceString((int64_t)(attrib * 100)) + "%";
+	}
+	else if (type == "add_percent") {
+		return "+" + toNiceString((int64_t)(attrib * 100)) + "%";
+	}
+	else if (type == "add_percent_per_second") {
+		return "+" + toNiceString((int64_t)(attrib * 100)) + "%/s";
+	}
+	else if (type == "rarity") {
+		return RARITIES[(int)attrib];
 	}
 	else {
 		throw std::runtime_error(std::format("Unknown value type '{}'", type));
@@ -173,8 +188,12 @@ void CardDescription::updateText() {
 
 			}
 			else if (valueType == "rarity") {
-				value = capitalized(m_card.rarity);
-				valueColor = m_card.rarity;
+				std::string rarity = value == "" ? m_card.rarity : parseAttrib(value, "rarity");
+				value = capitalized(rarity);
+				valueColor = rarity;
+			}
+			else if (valueType == "coin") {
+				value = "+" + toNiceString(TOWER_ATTRIBS[m_card.type].rarities[m_card.rarity].coin);
 			}
 			else {
 				value = parseAttrib(value, valueType);

@@ -141,7 +141,7 @@ void MapInfo::updateTowerBuff() {
     PlayerState& player = m_info.playerState;
     player.towerBuff.reset();
 
-    int anteaneaLevel = (int)player.talentBuff.antennae.apply(0);
+    int anteaneaLevel = (int)player.talentBuff.antennae.apply(0) + 1;
     for (int row = 0; row < 11; row++) {
         for (int col = 0; col < 10; col++) {
             if (auto tower = getTower({ row, col }))

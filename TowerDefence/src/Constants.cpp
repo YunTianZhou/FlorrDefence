@@ -13,15 +13,15 @@ const std::vector<std::string> SHOP_RARITIES{
 };
 
 const std::unordered_map<std::string, int> RARITIE_LEVELS = {
-	{"common", 1},
-	{"unusual", 2},
-	{"rare", 3},
-	{"epic", 4},
-	{"legendary", 5},
-	{"mythic", 6},
-	{"ultra", 7},
-	{"super", 8},
-	{"unique", 9}
+	{"common", 0},
+	{"unusual", 1},
+	{"rare", 2},
+	{"epic", 3},
+	{"legendary", 4},
+	{"mythic", 5},
+	{"ultra", 6},
+	{"super", 7},
+	{"unique", 8}
 };
 
 const std::vector<std::string> TOWER_TYPES = {
@@ -33,28 +33,9 @@ const std::vector<std::string> TOWER_TYPES = {
 	"rose", "shovel", "stinger", "triangle", "web"
 };
 
-const std::map<CardInfo, MobInfo> TOWER_SUMMON_MOBS = {
-	// Ant Egg
-	{ {"common", "ant_egg" }, { "common", "ant_soldier" } },
-	{ {"unusual", "ant_egg" }, { "unusual", "ant_soldier" } },
-	{ {"rare", "ant_egg" }, { "rare", "ant_soldier" } },
-	{ {"epic", "ant_egg" }, { "epic", "ant_soldier" } },
-	{ {"legendary", "ant_egg" }, { "legendary", "ant_soldier" } },
-	{ {"mythic", "ant_egg" }, { "legendary", "ant_soldier" } },
-	{ {"ultra", "ant_egg" }, { "mythic", "ant_soldier" } },
-	{ {"super", "ant_egg" }, { "mythic", "ant_soldier" } },
-	{ {"unique", "ant_egg" }, { "ultra", "ant_soldier" } },
-
-	// Beetle Egg
-	{ {"common", "beetle_egg" }, { "common", "beetle" } },
-	{ {"unusual", "beetle_egg" }, { "unusual", "beetle" } },
-	{ {"rare", "beetle_egg" }, { "rare", "beetle" } },
-	{ {"epic", "beetle_egg" }, { "epic", "beetle" } },
-	{ {"legendary", "beetle_egg" }, { "legendary", "beetle" } },
-	{ {"mythic", "beetle_egg" }, { "legendary", "beetle" } },
-	{ {"ultra", "beetle_egg" }, { "mythic", "beetle" } },
-	{ {"super", "beetle_egg" }, { "mythic", "beetle" } },
-	{ {"unique", "beetle_egg" }, { "ultra", "beetle" } },
+const std::unordered_map<std::string, std::string> TOWER_SUMMON_MOBS = {
+	{ "ant_egg", "ant_soldier" },
+	{ "beetle_egg", "beetle" }
 };
 
 const std::unordered_map<std::string, float> MOB_RARITY_SCALES = {
