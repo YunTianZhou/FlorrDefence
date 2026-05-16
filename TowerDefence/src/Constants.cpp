@@ -13,15 +13,15 @@ const std::vector<std::string> SHOP_RARITIES{
 };
 
 const std::unordered_map<std::string, int> RARITIE_LEVELS = {
-	{"common", 0},
-	{"unusual", 1},
-	{"rare", 2},
-	{"epic", 3},
-	{"legendary", 4},
-	{"mythic", 5},
-	{"ultra", 6},
-	{"super", 7},
-	{"unique", 8}
+	{"common", 1},
+	{"unusual", 2},
+	{"rare", 3},
+	{"epic", 4},
+	{"legendary", 5},
+	{"mythic", 6},
+	{"ultra", 7},
+	{"super", 8},
+	{"unique", 9}
 };
 
 const std::vector<std::string> TOWER_TYPES = {
