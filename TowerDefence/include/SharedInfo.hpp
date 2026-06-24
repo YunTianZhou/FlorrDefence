@@ -82,12 +82,14 @@ struct PlayerState {
     BuffGroup buff;
     BuffManager buffManager;
     std::set<std::string> aquiredUniques;
+    MobInfo lastHitMob = MobInfo{};
 
     void init();
     int calcRequiredXp() const;
+    bool isAlive() const;
 
     int getBodyDamage() const;
-    void hit(int damage);
+    void hit(int damage, const MobInfo& mob);
     void heal(float amount);
     void addShield(float amount);
     void addXp(int amount);

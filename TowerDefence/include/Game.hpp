@@ -5,11 +5,12 @@
 #include "Map.hpp"
 #include "UI.hpp"
 #include "Record.hpp"
+#include "GameOver.hpp"
 
 class Game {
 public:
-    Game();
-    void run();
+    Game(sf::RenderWindow& window);
+    bool run();
 
 private:
     void handleEvents();
@@ -17,7 +18,7 @@ private:
     void render();
 
 private:
-    sf::RenderWindow m_window;
+    sf::RenderWindow& m_window;
     int m_frameCount = 0;
     float m_elapsedTime = 0.f;
 
@@ -26,4 +27,5 @@ private:
     Map m_map;
     UI m_ui;
     Record m_record;
+    GameOver m_gameOver;
 };

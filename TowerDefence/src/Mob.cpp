@@ -61,7 +61,7 @@ void Mob::tick() {
 
     // Hit player logic
     if (m_position >= 39.f) {
-        player.hit(getAttribs().damage);
+        player.hit(getAttribs().damage, getMob());
         hit(player.getBodyDamage(), DamageType::Lightning);
     }
 }

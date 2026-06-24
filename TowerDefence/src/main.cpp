@@ -16,6 +16,19 @@ int main() {
     load();
     std::cout << "Loading took " << clock.getElapsedTime().asMilliseconds() << "ms" << std::endl;
     
-    Game game;
-    game.run();
+    sf::RenderWindow window;
+
+    sf::ContextSettings settings;
+    settings.antiAliasingLevel = 6;
+    window.create(sf::VideoMode(WINDOW_INIT_SIZE), "Tower Defence", sf::Style::Default, sf::State::Windowed, settings);
+    window.setFramerateLimit(60);
+
+    while (true) {
+        std::cout << "Starting game..." << std::endl;
+
+        Game game(window);
+        bool restart = game.run();
+
+        if (!restart) break;
+    }
 }

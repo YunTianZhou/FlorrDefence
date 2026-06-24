@@ -108,10 +108,11 @@ void PlayerStateDisplayer::update() {
 	};
 
 	// Hp bar
-	float hpRatio = std::clamp(float(m_state.hp) / m_state.hpLimit, 0.f, 1.f);
+	int hp = std::max(0, m_state.hp);
+	float hpRatio = std::clamp(float(hp) / m_state.hpLimit, 0.f, 1.f);
 	sf::Vector2f hpSize = m_hpBarBackground.getSize() - 2.f * HP_BORDER_OFFSET;
 	updateBar(hpSize, hpRatio, m_hpBarFill, { 105, 210, 57 }, { 50, 100, 30 });
-	m_hpText.setString(toNiceString(m_state.hp) + "/" + toNiceString(m_state.hpLimit));
+	m_hpText.setString(toNiceString(hp) + "/" + toNiceString(m_state.hpLimit));
 	m_hpText.setOrigin(m_hpText.getGlobalBounds().size / 2.f + m_hpText.getLocalBounds().position);
 
 	// Xp bar

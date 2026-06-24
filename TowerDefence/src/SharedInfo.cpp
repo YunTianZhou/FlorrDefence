@@ -40,11 +40,15 @@ int PlayerState::calcRequiredXp() const {
     return 100 * (level + 1) * (level + 2) / 2;
 }
 
+bool PlayerState::isAlive() const {
+    return hp > 0;
+}
+
 int PlayerState::getBodyDamage() const {
     return (int)buff.bodyDamage.apply((float)bodyDamage);
 }
 
-void PlayerState::hit(int damage) {
+void PlayerState::hit(int damage, const MobInfo& mob) {
     if (shield > 0) {
         int obsorbed = std::min(damage, shield);
         shield -= obsorbed;
@@ -53,6 +57,7 @@ void PlayerState::hit(int damage) {
     if (damage > 0) {
         hp -= damage;
     }
+    lastHitMob = mob;
 }
 
 void PlayerState::heal(float amount) {

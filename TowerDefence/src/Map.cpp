@@ -394,7 +394,7 @@ bool Map::onEvent(const sf::Event& event) {
             handlePress(square);
         }
         else if (pressed->button == sf::Mouse::Button::Right) {
-            return handleRightPress(square);;
+            return handleRightPress(square);
         }
     }
     else if (auto released = event.getIf<sf::Event::MouseButtonReleased>()) {
