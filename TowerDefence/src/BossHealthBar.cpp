@@ -7,7 +7,7 @@ const sf::Vector2f barPosition = { 550.f, 100.f };
 const sf::Vector2f barSize = { 400.f, 50.f };
 const sf::Vector2f borderOffset = { 7.f, 7.f };
 const sf::Vector2f barFillSize = barSize - 2.f * borderOffset;
-const sf::Vector2f textOffset = { 0.f, barSize.y / 2.f };
+const sf::Vector2f textOffset = { 0.f, (barSize.y - borderOffset.y) / 2.f };
 
 BossHealthBar::BossHealthBar() 
 	: m_typeText(AssetManager::getFont()),
