@@ -29,6 +29,10 @@ public:
     friend void to_json(json& j, const Mob& m);
     friend void from_json(const json& j, Mob& m);
 
+public:
+    const MobAttribs::RarityEntry& getAttribs() const { return MOB_ATTRIBS[m_mob.type][m_mob.rarity]; }
+    const float getAttrib(const std::string& name) const { return getAttribs().attribs.at(name); }
+
 protected:
     inline static const float knockbackThreshold = 0.05f;
     inline static const float knockbackDecayFactor = 0.08f;
@@ -36,10 +40,6 @@ protected:
         
     static const std::unordered_map<std::string, float> raritySlowDownResistance;
     static const std::unordered_map<std::string, float> rarityKnockbackResistance;
-
-protected:
-    const MobAttribs::RarityEntry& getAttribs() const { return MOB_ATTRIBS[m_mob.type][m_mob.rarity]; }
-    const float getAttrib(const std::string& name) const { return getAttribs().attribs.at(name); }
 
 protected:
     MobInfo m_mob;

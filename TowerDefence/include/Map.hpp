@@ -1,5 +1,6 @@
 #pragma once
 #include <list>
+#include <optional>
 #include <SFML/Graphics.hpp>
 #include <nlohmann/json.hpp>
 #include "Mob.hpp"
@@ -8,6 +9,7 @@
 #include "SharedInfo.hpp"
 #include "SpawnManager.hpp"
 #include "Effect.hpp"
+#include "BossHealthBar.hpp"
 
 class Map;
 
@@ -139,6 +141,9 @@ private:
 	sf::Time m_tickTimer;
 
 	SpawnManager m_spawner;
+	
+	std::optional<Mob*> m_trackedBoss;
+	BossHealthBar m_bossHealthBar;
 };
 
 

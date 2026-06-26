@@ -848,6 +848,11 @@
                     "type": "spider",
                     "rarity": "ultra",
                     "weight": 0.2
+                },
+                {
+                    "type": "spider",
+                    "rarity": "super",
+                    "weight": 0.01
                 }
             ]
         }

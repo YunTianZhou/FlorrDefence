@@ -21,6 +21,7 @@ public:
     const sf::Sprite& getSprite() const { return m_sprite; }
     const sf::Texture& getTexture() const { return m_sprite.getTexture(); }
     sf::Vector2f getPosition() const { return m_sprite.getPosition(); }
+    int getHp() const { return m_hp; }
 
     sf::Angle getRotationOffset() const { return m_rotationOffset; }
     void setRotationOffset(sf::Angle offset) { m_rotationOffset = offset; }
@@ -41,6 +42,7 @@ public:
 protected:
     SharedInfo& m_info;
     int m_hp = 0;
+    int getHP() const { return m_hp; }
     mutable sf::Sprite m_sprite;
     sf::Angle m_rotation = sf::degrees(45.f);
     sf::Angle m_rotationOffset = sf::degrees(0.f);

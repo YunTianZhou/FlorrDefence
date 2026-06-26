@@ -282,6 +282,28 @@ bool Map::update() {
         m_tickTimer = sf::Time::Zero;
     }
 
+    // Boss health bar update
+    if (m_trackedBoss.has_value() && m_trackedBoss.value()) {
+        Mob* boss = m_trackedBoss.value();
+        if (boss->isDead()) {
+            m_trackedBoss.reset();
+        }
+        else {
+            float hpRatio = (float)boss->getHp() / (float)boss->getAttribs().hp;
+            m_bossHealthBar.update(boss->getMob(), hpRatio);
+        }
+    }
+    if (!m_trackedBoss.has_value()) {
+        for (auto& mob : m_mobs) {
+            if (!mob->isDead() && mob->getMob().rarity == "super") {
+                m_trackedBoss = mob.get();
+                float hpRatio = (float)mob->getHp() / (float)mob->getAttribs().hp;
+                m_bossHealthBar.update(mob->getMob(), hpRatio);
+                break;
+            }
+        }
+    }
+
     // Put card request
     return handlePlaceTowerRequest();
 }
@@ -347,6 +369,9 @@ void Map::tickDeadEntities() {
     // Mobs
     for (auto it = m_mobs.begin(); it != m_mobs.end();) {
         if (it->get()->isDead()) {
+            if (m_trackedBoss.has_value() && m_trackedBoss.value() == it->get()) {
+                m_trackedBoss.reset();
+            }
             it->get()->onDead();
 
             for (auto& petal : m_petals) {
@@ -373,7 +398,7 @@ void Map::tickDeadEntities() {
 
 void Map::collision(Petal& petal, Mob& mob) {
     if (petal.getCard().type == "web" && mob.getMob().type == "spider")
-        return;  // Web doesn't effect spider
+        return;  // Web doesn't effect spiders
     if (petal.getCard().type == "lightning") {
         LightningPetal& lightning = dynamic_cast<LightningPetal&>(petal);
         lightning.onHit(mob, m_mobs, m_effects);
@@ -562,6 +587,10 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     // Effects
     for (auto& effect : m_effects)
         target.draw(*effect, states);
+
+    // Boss health bar
+    if (m_trackedBoss.has_value())
+        target.draw(m_bossHealthBar, states);
 
     // Dragged card
     if (m_info.draggedCard.has_value() && !m_info.draggedCard->isRetreating()) {
