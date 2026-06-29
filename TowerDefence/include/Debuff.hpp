@@ -75,7 +75,7 @@ struct ArmorDebuff : public DurationDebuff {
     float apply(float armor, float resistance = 1.f) const override {
         if (!is_active())
             return armor;
-        return std::max(0.f, armor - value * resistance);
+        return armor - value * resistance;  // allow negative armor
     }
 };
 
