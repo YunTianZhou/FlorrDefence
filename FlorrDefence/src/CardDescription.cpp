@@ -52,8 +52,9 @@ void LabelEntry::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	target.draw(value, states);
 }
 
-CardDescription::CardDescription()
-	: m_title(AssetManager::getFont()),
+CardDescription::CardDescription(const BuffGroup& buff)
+	: m_buff(buff),
+	  m_title(AssetManager::getFont()),
 	  m_rarity(AssetManager::getFont()),
 	  m_content(AssetManager::getFont()),
 	  m_lineSpacing(AssetManager::getFont().getLineSpacing(contentCharSize)) {
@@ -102,12 +103,12 @@ void CardDescription::load_data() {
 	if (!ifs.is_open()) 
 		throw std::runtime_error("Failed to open tower_descrption.json");
 
-	ifs >> m_info;
+	ifs >> m_data;
 
 	// Color table
 	m_colorTable.clear();
 
-	for (auto& [color, j] : m_info["colors"].items()) {
+	for (auto& [color, j] : m_data["colors"].items()) {
 		unsigned char r = (unsigned char)(j.at(0).get<int>());
 		unsigned char g = (unsigned char)(j.at(1).get<int>());
 		unsigned char b = (unsigned char)(j.at(2).get<int>());
@@ -120,11 +121,19 @@ std::string CardDescription::parseAttrib(const std::string& value, const std::st
 	auto& entry = TOWER_ATTRIBS[m_card.type].rarities[m_card.rarity];
 	float attrib = entry.attribs[value];
 
+	// Looking for buff
+	if (value == "reload" || value == "damage") {
+		attrib = m_buff.get(value).apply(attrib);
+	}
+	else if (value == "range") {
+		attrib = m_buff.reach.apply(attrib);
+	}
+
 	if (type == "int") {
-		return toNiceString((int64_t)attrib);
+		return toNiceString((int64_t)round(attrib));
 	}
 	if (type == "int_neg") {
-		return toNiceString((int64_t)-attrib);
+		return toNiceString((int64_t)-round(attrib));
 	}
 	if (type == "float") {
 		return formatFloat(attrib, 1);
@@ -133,22 +142,22 @@ std::string CardDescription::parseAttrib(const std::string& value, const std::st
 		return formatFloat(std::max(0.1f, attrib), 1) + " seconds";
 	}
 	else if (type == "per_second") {
-		return toNiceString((int64_t)attrib) + "/s";
+		return toNiceString((int64_t)round(attrib)) + "/s";
 	}
 	else if (type == "range") {
 		return formatFloat(attrib, 1) + " squares";
 	}
 	else if (type == "percent") {
-		return toNiceString((int64_t)(attrib * 100)) + "%";
+		return toNiceString((int64_t)round(attrib * 100)) + "%";
 	}
 	else if (type == "add_percent") {
-		return "+" + toNiceString((int64_t)(attrib * 100)) + "%";
+		return "+" + toNiceString((int64_t)round(attrib * 100)) + "%";
 	}
 	else if (type == "add_percent_per_second") {
-		return "+" + toNiceString((int64_t)(attrib * 100)) + "%/s";
+		return "+" + toNiceString((int64_t)round(attrib * 100)) + "%/s";
 	}
 	else if (type == "rarity") {
-		return RARITIES[(int)attrib];
+		return RARITIES[(int)round(attrib)];
 	}
 	else {
 		throw std::runtime_error(std::format("Unknown value type '{}'", type));
@@ -156,10 +165,10 @@ std::string CardDescription::parseAttrib(const std::string& value, const std::st
 }
 
 void CardDescription::updateText() {
-	if (!m_info["cards"].contains(m_card.type))
+	if (!m_data["cards"].contains(m_card.type))
 		return;
 
-	const nlohmann::json& j = m_info["cards"][m_card.type];
+	const nlohmann::json& j = m_data["cards"][m_card.type];
 
 	// Title 
 	std::string name = j.value("name", "Undefined");

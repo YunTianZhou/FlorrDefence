@@ -161,6 +161,8 @@ struct SharedInfo {
     CardDescription cardDescription;
     std::optional<CardStackInfo> placeRequest;
     sf::Clock dtClock;
+
+    SharedInfo();
     
     void init();
     bool update(const sf::RenderWindow& window);

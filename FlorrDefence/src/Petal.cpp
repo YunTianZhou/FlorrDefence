@@ -27,7 +27,7 @@ int Petal::getArmor() const {
 }
 
 int Petal::getDamage() const {
-	return int(getBuffedAttrib("damage"));
+	return int(round(getBuffedAttrib("damage")));
 }
 
 void Petal::onDead() {
@@ -240,7 +240,7 @@ int MobPetal::getArmor() const {
 }
 
 int MobPetal::getDamage() const {
-	return getMobAttribs().damage;
+	return (int)round(m_info.playerState.buff.damage.apply((float)getMobAttribs().damage));
 }
 
 // Web (Defence)

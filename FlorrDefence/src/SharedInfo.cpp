@@ -139,6 +139,11 @@ void InputInfo::update() {
 }
 
 // SharedInfo
+SharedInfo::SharedInfo()
+    : cardDescription(playerState.buff) {
+    init();
+}
+
 void SharedInfo::init() {
     playerState.init();
     dtClock.reset();

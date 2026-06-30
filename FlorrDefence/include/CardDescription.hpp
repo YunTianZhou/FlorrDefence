@@ -4,6 +4,7 @@
 #include <nlohmann/json.hpp>
 #include "RoundRect.hpp"
 #include "Constants.hpp"
+#include "Buff.hpp"
 
 class LabelEntry : public sf::Drawable, public sf::Transformable {
 public:
@@ -29,11 +30,11 @@ private:
 
 class CardDescription : public sf::Drawable {
 public:
-	CardDescription();
+	CardDescription(const BuffGroup& buff);
 
 	void set(const CardInfo& card, sf::Vector2f cardCenter, float cardSize);
 
-	void reset() { m_isVerified = false; }
+	void reset() { m_isVerified = false; m_card = {}; }
 	bool isVerified() const { return m_isVerified; }
 
 private:
@@ -63,6 +64,8 @@ private:
 	static inline const float contentLineSpacing = 1.15f;
 
 private:
+	const BuffGroup& m_buff;
+
 	CardInfo m_card;
 	sf::Vector2f m_cardCenter;
 	float m_cardSize = 0.f;
@@ -78,6 +81,6 @@ private:
 	sf::Text m_content;
 	std::vector<LabelEntry> m_labels;
 
-	nlohmann::json m_info;
+	nlohmann::json m_data;
 	std::unordered_map<std::string, sf::Color> m_colorTable;
 };
