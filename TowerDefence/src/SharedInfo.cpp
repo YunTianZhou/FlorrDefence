@@ -1,4 +1,5 @@
 #include "SharedInfo.hpp"
+#include "Tools.hpp"
 
 // BackpackInfo
 int BackpackInfo::getCount(const CardInfo& card) const {
@@ -49,6 +50,11 @@ int PlayerState::getBodyDamage() const {
 }
 
 void PlayerState::hit(int damage, const MobInfo& mob) {
+    if (randomUniform(0.f, 1.f) <= buff.evasion.apply(1.f))
+        return;  // evasion
+
+    damage = (int)ceil(buff.damage_reduction.apply((float)damage));
+
     if (shield > 0) {
         int obsorbed = std::min(damage, shield);
         shield -= obsorbed;

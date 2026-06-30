@@ -10,7 +10,7 @@ Game::Game(sf::RenderWindow& window)
 }
 
 bool Game::run() {
-    m_record.try_load("TowerDefence.json");
+    m_record.try_load();
     m_info.dtClock.restart();
 
     while (m_window.isOpen() ) {
@@ -32,7 +32,7 @@ bool Game::run() {
     }
 
     if (m_info.playerState.isAlive())
-        m_record.save("TowerDefence.json");
+        m_record.save();
     return false;
 }
 
@@ -51,7 +51,7 @@ void Game::handleEvents() {
                     switch (keyEvent->code) {
                     case sf::Keyboard::Key::S:
                         if (m_info.input.keyCtrl)
-                            m_record.save("TowerDefence.json");
+                            m_record.save();
                         break;
                         // TEST
                     case sf::Keyboard::Key::W:

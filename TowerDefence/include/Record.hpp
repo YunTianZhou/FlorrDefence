@@ -13,9 +13,12 @@ class Record {
 public:
 	Record(SharedInfo& info, Map& map, Shop& shop, Talent& talent);
 
-	bool try_load(std::filesystem::path path);
+	bool try_load(std::filesystem::path path = defaultPath);
 
-	void save(std::filesystem::path path);
+	void save(std::filesystem::path path = defaultPath);
+
+public:
+	static const std::filesystem::path defaultPath;
 
 private:
 	SharedInfo& m_info;

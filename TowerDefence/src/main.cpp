@@ -11,7 +11,7 @@ void load() {
 }
 
 int main() {
-    std::cout << "--- Tower Defence ---" << std::endl;
+    std::cout << "--- Florr Defence ---" << std::endl;
     sf::Clock clock;
     load();
     std::cout << "Loading took " << clock.getElapsedTime().asMilliseconds() << "ms" << std::endl;
@@ -20,7 +20,7 @@ int main() {
 
     sf::ContextSettings settings;
     settings.antiAliasingLevel = 6;
-    window.create(sf::VideoMode(WINDOW_INIT_SIZE), "Tower Defence", sf::Style::Default, sf::State::Windowed, settings);
+    window.create(sf::VideoMode(WINDOW_INIT_SIZE), "Florr Defence", sf::Style::Default, sf::State::Windowed, settings);
     window.setFramerateLimit(60);
 
     while (true) {

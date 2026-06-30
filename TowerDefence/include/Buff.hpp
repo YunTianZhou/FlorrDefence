@@ -17,6 +17,8 @@ public:
 	inline static const Func Mul = [](float a, float b) { return a * b; };
 	inline static const Func AddFactor = [](float a, float b) { return a + a * b; };
 	inline static const Func AddFactor2 = [](float a, float b) { return a + (a + 1) * b; };
+	inline static const Func AddFactor3 = [](float a, float b) { return a + (1 - a) * b; };
+	inline static const Func SubFactor = [](float a, float b) { return a - a * b; };
 
 public:
 	Buff(const Func& addFunc, const Func& applyFunc)
@@ -46,7 +48,10 @@ struct BuffGroup {
 	Buff damage;
 	Buff summoner;
 	Buff reach;
+	Buff luck;
 	Buff health;
+	Buff evasion;
+	Buff damage_reduction;
 	Buff shop;
 	Buff antennae;
 
@@ -61,7 +66,10 @@ struct BuffGroup {
 		damage(Buff::Add, Buff::AddFactor),
 		summoner(Buff::Add, Buff::AddFactor),
 		reach(Buff::Add, Buff::AddFactor),
+		luck(Buff::Add, Buff::Add),
 		health(Buff::Add, Buff::AddFactor),
+		evasion(Buff::Max, Buff::Mul),
+		damage_reduction(Buff::Max, Buff::SubFactor),
 		shop(Buff::Max, Buff::Max),
 		antennae(Buff::Max, Buff::Max)
 	{
@@ -74,7 +82,10 @@ struct BuffGroup {
 			{"damage", &damage},
 			{"summoner", &summoner},
 			{"reach", &reach},
+			{"luck", &luck},
 			{"health", &health},
+			{"evasion", &evasion},
+			{"damage_reduction", &damage_reduction},
 			{"shop", &shop},
 			{"antennae", &antennae}
 		};
@@ -105,6 +116,8 @@ struct BuffGroup {
 			buff->add(group2.get(name).get());
 		}
 		reload.set(Buff::AddFactor2(group1.reload.get(), group2.reload.get()));
+		evasion.set(Buff::AddFactor3(group1.evasion.get(), group2.evasion.get()));
+		damage_reduction.set(Buff::AddFactor3(group1.damage_reduction.get(), group2.damage_reduction.get()));
 	}
 };
 
@@ -149,7 +162,7 @@ public:
 
 public:
 	inline static const std::set<std::string> flowerBuffCards = {
-		"cutter", "leaf", "rose", "amulet"
+		"cutter", "leaf", "rose", "amulet", "talisman", "disc", "shell"
 	};
 
 private:

@@ -1,6 +1,6 @@
 {
   "common": {
-    "product_count": 5,
+    "product_count": 100,
     "refresh_interval": 15,
     "banned_cards": []
   },

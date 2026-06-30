@@ -7,6 +7,8 @@
 #include "Shop.hpp"
 #include "Talent.hpp"
 
+const std::filesystem::path Record::defaultPath = "FlorrDefence.json";
+
 Record::Record(SharedInfo& info, Map& map, Shop& shop, Talent& talent)
 	: m_info(info), m_map(map), m_shop(shop), m_talent(talent) {
 

@@ -2042,5 +2042,146 @@
         }
       }
     }
+  },
+  "talisman": {
+    "type": "buff",
+    "rarities": {
+      "common": {
+        "price": 10,
+        "attribs": {
+          "evasion_buff": 0.05
+        }
+      },
+      "unusual": {
+        "price": 70,
+        "attribs": {
+          "evasion_buff": 0.1
+        }
+      },
+      "rare": {
+        "price": 840,
+        "attribs": {
+          "evasion_buff": 0.15
+        }
+      },
+      "epic": {
+        "price": 15120,
+        "attribs": {
+          "evasion_buff": 0.2
+        }
+      },
+      "legendary": {
+        "price": 559440,
+        "attribs": {
+          "evasion_buff": 0.3
+        }
+      },
+      "mythic": {
+        "price": 39160800,
+        "attribs": {
+          "evasion_buff": 0.35
+        }
+      },
+      "ultra": {
+        "price": 5090904000,
+        "attribs": {
+          "evasion_buff": 0.40
+        }
+      }
+    }
+  },
+  "disc": {
+    "type": "buff",
+    "rarities": {
+      "common": {
+        "price": 10,
+        "attribs": {
+          "damage_reduction_buff": 0.05
+        }
+      },
+      "unusual": {
+        "price": 70,
+        "attribs": {
+          "damage_reduction_buff": 0.1
+        }
+      },
+      "rare": {
+        "price": 840,
+        "attribs": {
+          "damage_reduction_buff": 0.15
+        }
+      },
+      "epic": {
+        "price": 15120,
+        "attribs": {
+          "damage_reduction_buff": 0.2
+        }
+      },
+      "legendary": {
+        "price": 559440,
+        "attribs": {
+          "damage_reduction_buff": 0.3
+        }
+      },
+      "mythic": {
+        "price": 39160800,
+        "attribs": {
+          "damage_reduction_buff": 0.35
+        }
+      },
+      "ultra": {
+        "price": 5090904000,
+        "attribs": {
+          "damage_reduction_buff": 0.40
+        }
+      }
+    }
+  },
+  "clover": {
+    "type": "buff",
+    "rarities": {
+      "common": {
+        "price": 10,
+        "attribs": {
+          "luck_buff": 0.05
+        }
+      },
+      "unusual": {
+        "price": 70,
+        "attribs": {
+          "luck_buff": 0.1
+        }
+      },
+      "rare": {
+        "price": 840,
+        "attribs": {
+          "luck_buff": 0.15
+        }
+      },
+      "epic": {
+        "price": 15120,
+        "attribs": {
+          "luck_buff": 0.2
+        }
+      },
+      "legendary": {
+        "price": 559440,
+        "attribs": {
+          "luck_buff": 0.3
+        }
+      },
+      "mythic": {
+        "price": 39160800,
+        "attribs": {
+          "luck_buff": 0.35
+        }
+      },
+      "ultra": {
+        "price": 5090904000,
+        "attribs": {
+          "luck_buff": 0.40
+        }
+      }
+    }
   }
 }

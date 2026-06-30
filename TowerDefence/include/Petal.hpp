@@ -157,7 +157,8 @@ public:
 	int getDamage() const override;
 
 private:
-	inline static const float boostProb = 0.05f;
+	inline static const float boostBaseProb = 0.05f;
+	inline static const float boostIncreasePerLuck = 0.04f;
 	inline static const int boostRate = 35;
 };
 

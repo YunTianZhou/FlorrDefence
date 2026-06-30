@@ -378,6 +378,7 @@ void JellyPetal::applyDebuff(Debuff& debuff) const {
 
 // Dice (Shoot)
 int DicePetal::getDamage() const {	
+	float boostProb = boostBaseProb + boostIncreasePerLuck * m_info.playerState.buff.luck.apply(0);
 	if (randomUniform(0.f, 1.f) <= boostProb)
 		return ShootPetal::getDamage() * boostRate;
 	else

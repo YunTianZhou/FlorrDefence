@@ -340,7 +340,7 @@
     "dice": {
       "name": "Dice",
       "type": "Shoot",
-      "description": "Have a 5% chance of dealing 35x damage.",
+      "description": "Have a 5% chance of dealing 35x damage.\nChance increases by 4% per point in luck.",
       "labels": [
         {
           "label": "Health",
