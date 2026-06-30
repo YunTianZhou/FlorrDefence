@@ -124,7 +124,6 @@ extern const std::vector<std::string> RARITIES;
 extern const std::vector<std::string> SHOP_RARITIES;
 extern const std::unordered_map<std::string, int> RARITIE_LEVELS;
 
-extern const std::vector<std::string> TOWER_TYPES;
 extern const std::unordered_map<std::string, std::string> TOWER_SUMMON_MOBS;
 
 extern const std::unordered_map<std::string, float> MOB_RARITY_SCALES;
@@ -139,6 +138,7 @@ extern const std::unordered_map<std::string, sf::Color> DARK_COLORS;
 
 // Loaded fron config files
 extern InitStates INIT_STATES;
+extern std::vector<std::string> TOWER_TYPES;
 extern std::unordered_map<std::string, TowerAttribs> TOWER_ATTRIBS;
 extern std::unordered_map<std::string, MobAttribs> MOB_ATTRIBS;
 extern std::unordered_map<std::string, ShopAttribs> SHOP_ATTRIBS;

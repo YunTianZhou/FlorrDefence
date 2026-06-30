@@ -24,18 +24,9 @@ const std::unordered_map<std::string, int> RARITIE_LEVELS = {
 	{"unique", 9}
 };
 
-const std::vector<std::string> TOWER_TYPES = {
-	"amulet", "ant_egg", "antennae", "basic", "beetle_egg", 
-	"bone", "bur", "chip", "coin", "corn", 
-	"cutter", "dahlia", "dice", "faster", "golden_leaf", 
-	"jelly", "laser", "leaf", "light", "lightning", 
-	"missile", "pincer", "pollen", "rice", "rock", 
-	"rose", "shovel", "stinger", "triangle", "web"
-};
-
 const std::unordered_map<std::string, std::string> TOWER_SUMMON_MOBS = {
-	{ "ant_egg", "ant_soldier" },
-	{ "beetle_egg", "beetle" }
+	{ "ant_egg", "ant_soldier_summoned" },
+	{ "beetle_egg", "beetle_summoned" }
 };
 
 const std::unordered_map<std::string, float> MOB_RARITY_SCALES = {
@@ -112,6 +103,7 @@ const std::unordered_map<std::string, sf::Color> DARK_COLORS = {
 
 // Loaded fron config files
 InitStates INIT_STATES;
+std::vector<std::string> TOWER_TYPES;
 std::unordered_map<std::string, TowerAttribs> TOWER_ATTRIBS;
 std::unordered_map<std::string, MobAttribs> MOB_ATTRIBS;
 std::unordered_map<std::string, ShopAttribs> SHOP_ATTRIBS;
@@ -153,27 +145,31 @@ static void loadTowerAttribs() {
 	ifs >> j;
 
 	for (auto& [type, obj] : j.items()) {
-		TowerAttribs ta;
-		ta.type = obj["type"].get<std::string>();
+		TOWER_TYPES.push_back(type);
+
+		TowerAttribs t;
+		t.type = obj["type"].get<std::string>();
 
 		if (obj.find("damage_type") != obj.end()) {
 			std::string damageType = obj["damage_type"];
-			ta.damageType = stringToDamageType(damageType);
+			t.damageType = stringToDamageType(damageType);
 		}
 		else {
-			ta.damageType = DamageType::Normal;
+			t.damageType = DamageType::Normal;
 		}
 
 		for (auto& [rarity, entry] : obj["rarities"].items()) {
-			TowerAttribs::RarityEntry& e = ta.rarities[rarity];
+			TowerAttribs::RarityEntry& e = t.rarities[rarity];
 			e.price = entry["price"].get<int64_t>();
 			e.coin = entry.value("coin", 0ll);
 			for (auto& [key, val] : entry["attribs"].items()) {
 				e.attribs[key] = val.get<float>();
 			}
 		}
-		TOWER_ATTRIBS[type] = std::move(ta);
+		TOWER_ATTRIBS[type] = std::move(t);
 	}
+
+	sort(TOWER_TYPES.begin(), TOWER_TYPES.end());
 
 	// TEST
 	for (auto& type : TOWER_TYPES) {

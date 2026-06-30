@@ -300,7 +300,7 @@ void LightningPetal::onHit(Mob& mob, std::list<std::unique_ptr<Mob>>& mobs, std:
 
 	std::sort(targets.begin(), targets.end(), [](const MobsIt& a, const MobsIt& b) {
 		return (*a)->getPathPosition() < (*b)->getPathPosition();
-		});
+	});
 
 	int connected = -1;
 	float connectedDst = 0.f;
