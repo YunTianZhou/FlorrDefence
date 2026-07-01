@@ -41,7 +41,7 @@ std::unique_ptr<Tower> Tower::create(SharedInfo& info, const CardInfo& card, sf:
             return std::make_unique<YuccaTower>(info, card, square);
         return std::make_unique<BuffTower>(info, card, square);
     }
-    else if (type == "multi_shoot") {
+    else if (type == "multishot") {
         return std::make_unique<MultiShotTower>(info, card);
     }
     else {

@@ -132,11 +132,20 @@ std::string CardDescription::parseAttrib(const std::string& value, const std::st
 	if (type == "int") {
 		return toNiceString((int64_t)round(attrib));
 	}
-	if (type == "int_neg") {
+	else if (type == "add_int") {
+		return "+" + toNiceString((int64_t)round(attrib));
+	}
+	else if (type == "neg_int") {
 		return toNiceString((int64_t)-round(attrib));
 	}
-	if (type == "float") {
+	else if (type == "float") {
 		return formatFloat(attrib, 1);
+	}
+	else if (type == "add_float") {
+		return "+" + formatFloat(attrib, 1);;
+	}
+	else if (type == "neg_float") {
+		return formatFloat(-attrib, 1);
 	}
 	else if (type == "seconds") {
 		return formatFloat(std::max(0.1f, attrib), 1) + " seconds";
@@ -155,6 +164,9 @@ std::string CardDescription::parseAttrib(const std::string& value, const std::st
 	}
 	else if (type == "add_percent") {
 		return "+" + toNiceString((int64_t)round(attrib * 100)) + "%";
+	}
+	else if (type == "sub_percent") {
+		return "-" + toNiceString((int64_t)round(attrib * 100)) + "%";
 	}
 	else if (type == "add_percent_per_second") {
 		return "+" + toNiceString((int64_t)round(attrib * 100)) + "%/s";
