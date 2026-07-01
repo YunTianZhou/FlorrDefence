@@ -52,26 +52,30 @@ struct BuffGroup {
 	Buff health;
 	Buff evasion;
 	Buff damage_reduction;
+	Buff mob_spawn_rate;
 	Buff shop;
 	Buff antennae;
+	Buff yin_yang;
 
 	std::unordered_map<std::string, Buff*> buffs;
 
 	BuffGroup()
 		: speed(Buff::Add, Buff::AddFactor),
-		bodyDamage(Buff::Add, Buff::Add),
-		healValue(Buff::Add, Buff::Add),
-		overheal(Buff::Add, Buff::Mul),
-		reload(Buff::Min, Buff::AddFactor),
-		damage(Buff::Add, Buff::AddFactor),
-		summoner(Buff::Add, Buff::AddFactor),
-		reach(Buff::Add, Buff::AddFactor),
-		luck(Buff::Add, Buff::Add),
-		health(Buff::Add, Buff::AddFactor),
-		evasion(Buff::Max, Buff::Mul),
-		damage_reduction(Buff::Max, Buff::SubFactor),
-		shop(Buff::Max, Buff::Max),
-		antennae(Buff::Max, Buff::Max)
+		  bodyDamage(Buff::Add, Buff::Add),
+		  healValue(Buff::Add, Buff::Add),
+		  overheal(Buff::Add, Buff::Mul),
+		  reload(Buff::Min, Buff::AddFactor),
+		  damage(Buff::Add, Buff::AddFactor),
+		  summoner(Buff::Add, Buff::AddFactor),
+		  reach(Buff::Add, Buff::AddFactor),
+		  luck(Buff::Add, Buff::Add),
+		  health(Buff::Add, Buff::AddFactor),
+		  evasion(Buff::AddFactor3, Buff::Mul),
+		  damage_reduction(Buff::AddFactor3, Buff::SubFactor),
+		  mob_spawn_rate(Buff::Add, Buff::AddFactor),
+		  shop(Buff::Max, Buff::Max),
+		  antennae(Buff::Max, Buff::Max),
+		  yin_yang(Buff::Max, Buff::Max)
 	{
 		buffs = {
 			{"speed", &speed},
@@ -86,8 +90,10 @@ struct BuffGroup {
 			{"health", &health},
 			{"evasion", &evasion},
 			{"damage_reduction", &damage_reduction},
+			{"mob_spawn_rate", &mob_spawn_rate},
 			{"shop", &shop},
-			{"antennae", &antennae}
+			{"antennae", &antennae},
+			{"yin_yang", &yin_yang}
 		};
 	}
 

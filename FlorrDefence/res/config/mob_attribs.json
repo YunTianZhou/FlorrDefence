@@ -92,170 +92,6 @@
       }
     }
   },
-  "ant_soldier_summoned": {
-    "description": "Ant! Ant!",
-    "rarities": {
-      "common": {
-        "hp": 33,
-        "speed": 1.0,
-        "damage": 30,
-        "armor": 1,
-        "coin_drop": 1,
-        "xp_drop": 30,
-        "attribs": {
-
-        }
-      },
-      "unusual": {
-        "hp": 125,
-        "speed": 1.0,
-        "damage": 90,
-        "armor": 2,
-        "coin_drop": 4,
-        "xp_drop": 90,
-        "attribs": {
-
-        }
-      },
-      "rare": {
-        "hp": 467,
-        "speed": 1.0,
-        "damage": 270,
-        "armor": 7,
-        "coin_drop": 32,
-        "xp_drop": 270,
-        "attribs": {
-
-        }
-      },
-      "epic": {
-        "hp": 1800,
-        "speed": 1.0,
-        "damage": 810,
-        "armor": 22,
-        "coin_drop": 384,
-        "xp_drop": 810,
-        "attribs": {
-
-        }
-      },
-      "legendary": {
-        "hp": 10800,
-        "speed": 1.0,
-        "damage": 2430,
-        "armor": 65,
-        "coin_drop": 8832,
-        "xp_drop": 2430,
-        "attribs": {
-
-        }
-      },
-      "mythic": {
-        "hp": 105300,
-        "speed": 1.0,
-        "damage": 7290,
-        "armor": 194,
-        "coin_drop": 441600,
-        "xp_drop": 7290,
-        "attribs": {
-
-        }
-      },
-      "ultra": {
-        "hp": 1000000,
-        "speed": 1.0,
-        "damage": 21870,
-        "armor": 582,
-        "coin_drop": 6000000,
-        "xp_drop": 21870,
-        "attribs": {
-
-        }
-      }
-    }
-  },
-  "beetle_summoned": {
-    "description": "It is fast and strong",
-    "rarities": {
-      "common": {
-        "hp": 33,
-        "speed": 1.5,
-        "damage": 90,
-        "armor": 1,
-        "coin_drop": 3,
-        "xp_drop": 100,
-        "attribs": {
-
-        }
-      },
-      "unusual": {
-        "hp": 125,
-        "speed": 1.5,
-        "damage": 270,
-        "armor": 2,
-        "coin_drop": 12,
-        "xp_drop": 300,
-        "attribs": {
-
-        }
-      },
-      "rare": {
-        "hp": 467,
-        "speed": 1.5,
-        "damage": 810,
-        "armor": 7,
-        "coin_drop": 60,
-        "xp_drop": 900,
-        "attribs": {
-
-        }
-      },
-      "epic": {
-        "hp": 1800,
-        "speed": 1.5,
-        "damage": 2430,
-        "armor": 22,
-        "coin_drop": 360,
-        "xp_drop": 2700,
-        "attribs": {
-
-        }
-      },
-      "legendary": {
-        "hp": 10800,
-        "speed": 1.5,
-        "damage": 7290,
-        "armor": 65,
-        "coin_drop": 3600,
-        "xp_drop": 8100,
-        "attribs": {
-
-        }
-      },
-      "mythic": {
-        "hp": 105300,
-        "speed": 1.5,
-        "damage": 21870,
-        "armor": 194,
-        "coin_drop": 72000,
-        "xp_drop": 24300,
-        "attribs": {
-
-        }
-      },
-      "ultra": {
-        "hp": 1000000,
-        "speed": 1.5,
-        "damage": 65610,
-        "armor": 194,
-        "coin_drop": 6000000,
-        "xp_drop": 72900,
-        "attribs": {
-
-        }
-      }
-    }
-  },
   "spider": {
     "description": "It is poisonous",
     "rarities": {
@@ -818,6 +654,252 @@
           "evasion": 0.9,
           "rotation_speed": 180,
           "rotation_range": 45
+        }
+      }
+    }
+  },
+  "ant_soldier_summoned": {
+    "description": "Ant! Ant!",
+    "rarities": {
+      "common": {
+        "hp": 33,
+        "speed": 1.0,
+        "damage": 30,
+        "armor": 1,
+        "coin_drop": 1,
+        "xp_drop": 30,
+        "attribs": {
+
+        }
+      },
+      "unusual": {
+        "hp": 125,
+        "speed": 1.0,
+        "damage": 90,
+        "armor": 2,
+        "coin_drop": 4,
+        "xp_drop": 90,
+        "attribs": {
+
+        }
+      },
+      "rare": {
+        "hp": 467,
+        "speed": 1.0,
+        "damage": 270,
+        "armor": 7,
+        "coin_drop": 32,
+        "xp_drop": 270,
+        "attribs": {
+
+        }
+      },
+      "epic": {
+        "hp": 1800,
+        "speed": 1.0,
+        "damage": 810,
+        "armor": 22,
+        "coin_drop": 384,
+        "xp_drop": 810,
+        "attribs": {
+
+        }
+      },
+      "legendary": {
+        "hp": 10800,
+        "speed": 1.0,
+        "damage": 2430,
+        "armor": 65,
+        "coin_drop": 8832,
+        "xp_drop": 2430,
+        "attribs": {
+
+        }
+      },
+      "mythic": {
+        "hp": 105300,
+        "speed": 1.0,
+        "damage": 7290,
+        "armor": 194,
+        "coin_drop": 441600,
+        "xp_drop": 7290,
+        "attribs": {
+
+        }
+      },
+      "ultra": {
+        "hp": 1000000,
+        "speed": 1.0,
+        "damage": 21870,
+        "armor": 582,
+        "coin_drop": 6000000,
+        "xp_drop": 21870,
+        "attribs": {
+
+        }
+      }
+    }
+  },
+  "beetle_summoned": {
+    "description": "It is fast and strong",
+    "rarities": {
+      "common": {
+        "hp": 33,
+        "speed": 1.5,
+        "damage": 90,
+        "armor": 1,
+        "coin_drop": 3,
+        "xp_drop": 100,
+        "attribs": {
+
+        }
+      },
+      "unusual": {
+        "hp": 125,
+        "speed": 1.5,
+        "damage": 270,
+        "armor": 2,
+        "coin_drop": 12,
+        "xp_drop": 300,
+        "attribs": {
+
+        }
+      },
+      "rare": {
+        "hp": 467,
+        "speed": 1.5,
+        "damage": 810,
+        "armor": 7,
+        "coin_drop": 60,
+        "xp_drop": 900,
+        "attribs": {
+
+        }
+      },
+      "epic": {
+        "hp": 1800,
+        "speed": 1.5,
+        "damage": 2430,
+        "armor": 22,
+        "coin_drop": 360,
+        "xp_drop": 2700,
+        "attribs": {
+
+        }
+      },
+      "legendary": {
+        "hp": 10800,
+        "speed": 1.5,
+        "damage": 7290,
+        "armor": 65,
+        "coin_drop": 3600,
+        "xp_drop": 8100,
+        "attribs": {
+
+        }
+      },
+      "mythic": {
+        "hp": 105300,
+        "speed": 1.5,
+        "damage": 21870,
+        "armor": 194,
+        "coin_drop": 72000,
+        "xp_drop": 24300,
+        "attribs": {
+
+        }
+      },
+      "ultra": {
+        "hp": 1000000,
+        "speed": 1.5,
+        "damage": 65610,
+        "armor": 194,
+        "coin_drop": 6000000,
+        "xp_drop": 72900,
+        "attribs": {
+
+        }
+      }
+    }
+  },
+  "sandstorm_summoned": {
+    "description": "Why does it even exist?",
+    "rarities": {
+      "common": {
+        "hp": 33,
+        "speed": 1.5,
+        "damage": 90,
+        "armor": 1,
+        "coin_drop": 3,
+        "xp_drop": 100,
+        "attribs": {
+          "rotation_speed": 240
+        }
+      },
+      "unusual": {
+        "hp": 125,
+        "speed": 1.5,
+        "damage": 270,
+        "armor": 2,
+        "coin_drop": 12,
+        "xp_drop": 300,
+        "attribs": {
+          "rotation_speed": 240
+        }
+      },
+      "rare": {
+        "hp": 467,
+        "speed": 1.5,
+        "damage": 810,
+        "armor": 7,
+        "coin_drop": 60,
+        "xp_drop": 900,
+        "attribs": {
+          "rotation_speed": 240
+        }
+      },
+      "epic": {
+        "hp": 1800,
+        "speed": 1.5,
+        "damage": 2430,
+        "armor": 22,
+        "coin_drop": 360,
+        "xp_drop": 2700,
+        "attribs": {
+          "rotation_speed": 240
+        }
+      },
+      "legendary": {
+        "hp": 10800,
+        "speed": 1.5,
+        "damage": 7290,
+        "armor": 65,
+        "coin_drop": 3600,
+        "xp_drop": 8100,
+        "attribs": {
+          "rotation_speed": 240
+        }
+      },
+      "mythic": {
+        "hp": 105300,
+        "speed": 1.5,
+        "damage": 21870,
+        "armor": 194,
+        "coin_drop": 72000,
+        "xp_drop": 24300,
+        "attribs": {
+          "rotation_speed": 240
+        }
+      },
+      "ultra": {
+        "hp": 1000000,
+        "speed": 1.5,
+        "damage": 65610,
+        "armor": 194,
+        "coin_drop": 6000000,
+        "xp_drop": 72900,
+        "attribs": {
+          "rotation_speed": 240
         }
       }
     }

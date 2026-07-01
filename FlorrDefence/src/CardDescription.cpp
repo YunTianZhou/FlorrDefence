@@ -138,11 +138,14 @@ std::string CardDescription::parseAttrib(const std::string& value, const std::st
 	if (type == "float") {
 		return formatFloat(attrib, 1);
 	}
-	else if (type == "sceconds") {
+	else if (type == "seconds") {
 		return formatFloat(std::max(0.1f, attrib), 1) + " seconds";
 	}
 	else if (type == "per_second") {
 		return toNiceString((int64_t)round(attrib)) + "/s";
+	}
+	else if (type == "per_tick") {
+		return toNiceString((int64_t)round(attrib / TICK.asSeconds())) + "/s";
 	}
 	else if (type == "range") {
 		return formatFloat(attrib, 1) + " squares";

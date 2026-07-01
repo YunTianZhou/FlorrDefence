@@ -61,7 +61,7 @@ private:
     std::mt19937 m_rng;
 
     // global clamp
-    double m_globalMinInterval = 0.5;
+    double m_globalMinInterval = 0.2;
     double m_globalMaxInterval = 10.0;
     double m_globalSmoothingAlpha = 0.2;
 };

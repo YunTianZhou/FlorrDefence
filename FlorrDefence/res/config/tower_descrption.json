@@ -53,7 +53,7 @@
           "label": "Reload",
           "label_color": "blue",
           "value": "reload",
-          "value_type": "sceconds"
+          "value_type": "seconds"
         }
       ]
     },
@@ -91,7 +91,7 @@
           "label": "Reload",
           "label_color": "blue",
           "value": "reload",
-          "value_type": "sceconds"
+          "value_type": "seconds"
         },
         {
           "label": "Range",
@@ -122,7 +122,7 @@
           "label": "Reload",
           "label_color": "blue",
           "value": "reload",
-          "value_type": "sceconds"
+          "value_type": "seconds"
         }
       ]
     },
@@ -153,7 +153,7 @@
           "label": "Reload",
           "label_color": "blue",
           "value": "reload",
-          "value_type": "sceconds"
+          "value_type": "seconds"
         },
         {
           "label": "Range",
@@ -184,7 +184,7 @@
           "label": "Reload",
           "label_color": "blue",
           "value": "reload",
-          "value_type": "sceconds"
+          "value_type": "seconds"
         },
         {
           "label": "Range",
@@ -202,7 +202,7 @@
           "label": "Duration",
           "label_color": "blue",
           "value": "armor_debuff_duration",
-          "value_type": "sceconds"
+          "value_type": "seconds"
         }
       ]
     },
@@ -233,7 +233,7 @@
           "label": "Reload",
           "label_color": "blue",
           "value": "reload",
-          "value_type": "sceconds"
+          "value_type": "seconds"
         },
         {
           "label": "Range",
@@ -258,7 +258,7 @@
           "label": "Reload",
           "label_color": "blue",
           "value": "reload",
-          "value_type": "sceconds"
+          "value_type": "seconds"
         }
       ]
     },
@@ -283,7 +283,7 @@
           "label": "Reload",
           "label_color": "blue",
           "value": "reload",
-          "value_type": "sceconds"
+          "value_type": "seconds"
         },
         {
           "label": "Range",
@@ -327,7 +327,7 @@
           "label": "Reload",
           "label_color": "blue",
           "value": "reload",
-          "value_type": "sceconds"
+          "value_type": "seconds"
         },
         {
           "label": "Death Heal",
@@ -358,7 +358,7 @@
           "label": "Reload",
           "label_color": "blue",
           "value": "reload",
-          "value_type": "sceconds"
+          "value_type": "seconds"
         },
         {
           "label": "Range",
@@ -415,7 +415,7 @@
           "label": "Reload",
           "label_color": "blue",
           "value": "reload",
-          "value_type": "sceconds"
+          "value_type": "seconds"
         },
         {
           "label": "Knockback",
@@ -427,7 +427,7 @@
     },
     "laser": {
       "name": "Laser",
-      "type": "Shoot",
+      "type": "Emit",
       "description": "Damage increases the longer it stays on target.",
       "labels": [
         {
@@ -440,7 +440,7 @@
           "label": "Lightning Damage",
           "label_color": "light_blue",
           "value": "damage",
-          "value_type": "int"
+          "value_type": "per_tick"
         },
         {
           "label": "Damage Growth",
@@ -455,9 +455,9 @@
           "value_type": "percent"
         },
         {
-          "label": "Range",
+          "label": "Radius",
           "label_color": "yellow",
-          "value": "range",
+          "value": "radius",
           "value_type": "range"
         }
       ]
@@ -483,7 +483,7 @@
           "label": "Reload",
           "label_color": "blue",
           "value": "reload",
-          "value_type": "sceconds"
+          "value_type": "seconds"
         }
       ]
     }

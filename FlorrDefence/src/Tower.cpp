@@ -12,6 +12,8 @@ std::unique_ptr<Tower> Tower::create(SharedInfo& info, const CardInfo& card, sf:
             return std::make_unique<TriangleTower>(info, card, square, map.getMapInfo());
         else if (card.type == "laser")
             return std::make_unique<LaserTower>(info, card, square, map);
+        else if (card.type == "uranium")
+            return std::make_unique<UraniumTower>(info, card);
         return std::make_unique<ShootTower>(info, card);
     }
     else if (type == "defence") {
@@ -21,6 +23,8 @@ std::unique_ptr<Tower> Tower::create(SharedInfo& info, const CardInfo& card, sf:
             return std::make_unique<PollenTower>(info, card, square);
         else if (card.type == "shovel")
             return std::make_unique<ShovelTower>(info, card, square);
+        else if (card.type == "glass")
+            return std::make_unique<GlassTower>(info, card, square, map.getMapInfo());
         return std::make_unique<DefenceTower>(info, card, square);
     }
     else if (type == "summon") {
@@ -29,8 +33,12 @@ std::unique_ptr<Tower> Tower::create(SharedInfo& info, const CardInfo& card, sf:
     else if (type == "buff") {
         if (card.type == "rose")
             return std::make_unique<RoseTower>(info, card, square);
+        else if (card.type == "shell")
+            return std::make_unique<ShellTower>(info, card, square);
         else if (card.type == "coin")
             return std::make_unique<CoinTower>(info, card, square);
+        else if (card.type == "yucca")
+            return std::make_unique<YuccaTower>(info, card, square);
         return std::make_unique<BuffTower>(info, card, square);
     }
     else if (type == "multi_shoot") {
@@ -344,10 +352,6 @@ void ShovelTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::lis
 }
 
 // Rose Tower (Buff Tower)
-RoseTower::RoseTower(SharedInfo& info, const CardInfo& card, sf::Vector2i square)
-    : BuffTower(info, card, square) {
-}
-
 void RoseTower::update() {
     if (isActive()) {
         m_reloadTimer += m_info.dt;
@@ -367,11 +371,27 @@ void RoseTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<
     }
 }
 
-// Coin Tower (Buff Tower)
-CoinTower::CoinTower(SharedInfo& info, const CardInfo& card, sf::Vector2i square)
-    : BuffTower(info, card, square) {
+// Shell Tower (Buff Tower)
+void ShellTower::update() {
+    if (isActive()) {
+        m_reloadTimer += m_info.dt;
+        float elapseTime = m_reloadTimer.asSeconds();
+        m_card.setReload(std::min(1.0f, (elapseTime / getBuffedAttrib("reload"))), false);
+    }
+    else {
+        m_card.setReload(0.f, true);
+        m_reloadTimer = sf::Time::Zero;
+    }
 }
 
+void ShellTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {
+    if (m_reloadTimer.asSeconds() > getBuffedAttrib("reload")) {
+        m_info.playerState.addShield(getAttrib("shield"));
+        m_reloadTimer = sf::Time::Zero;
+    }
+}
+
+// Coin Tower (Buff Tower)
 void CoinTower::update() {
     if (isActive()) {
         m_reloadTimer += m_info.dt;
@@ -432,4 +452,95 @@ LaserTower::LaserTower(SharedInfo& info, const CardInfo& card, sf::Vector2i squa
 void LaserTower::update() {
     if (!m_info.laserMap[m_square.x][m_square.y])
         m_map.getPetals().push_back(std::make_unique<LaserPetal>(m_info, m_card.getCard(), m_square, m_map.getMapInfo(), m_map.getMobs()));
+}
+
+// Glass Tower (Defence Tower)
+GlassTower::GlassTower(SharedInfo& info, const CardInfo& card, sf::Vector2i square, const MapInfo& map)
+    : DefenceTower(info, card, square), m_map(map) {}
+
+void GlassTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {
+    if (m_reloadTimer.asSeconds() > getBuffedAttrib("reload")) {
+        if (!m_info.defencePetalMap[m_square.x][m_square.y]) {
+            petals.push_back(std::make_unique<GlassPetal>(m_info, m_card.getCard(), m_square, m_map));
+            m_reloadTimer = sf::Time::Zero;
+        }
+    }
+}
+
+// Yucca Tower (Buff Tower)
+void YuccaTower::update() {
+    if (isActive()) {
+        m_reloadTimer += m_info.dt;
+        float elapseTime = m_reloadTimer.asSeconds();
+        m_card.setReload(std::min(1.0f, (elapseTime / getBuffedAttrib("reload"))), false);
+    }
+    else {
+        m_card.setReload(0.f, true);
+        m_reloadTimer = sf::Time::Zero;
+    }
+}
+
+void YuccaTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {
+    if (m_reloadTimer.asSeconds() > getBuffedAttrib("reload")) {
+        float percent = getAttrib("petal_heal");
+
+        for (std::unique_ptr<Petal>& petal : petals)
+            petal->heal(percent);
+
+        m_reloadTimer = sf::Time::Zero;
+    }
+}
+
+// Uranium Tower (Shoot Tower)
+UraniumTower::UraniumTower(SharedInfo& info, const CardInfo& card)
+    : ShootTower(info, card) {
+
+    // Circle
+    m_circle.setPosition(getPosition() + MapInfo::squareSize / 2.f);
+    m_circle.setFillColor(sf::Color(120, 180, 60, 80));
+
+    m_circle.setRadius(minRadius);
+    m_circle.setOrigin({ minRadius, minRadius });
+}
+
+void UraniumTower::update() {
+    m_card.setReload(1.f, true);
+    m_timer += m_info.dt;
+
+    // Update circle effect
+    m_pulseTimer += m_info.dt;
+
+    const float frequency = 0.5f;
+    float t = m_pulseTimer.asSeconds() * frequency;
+
+    float maxRadius = getAttrib("radius") * MapInfo::squareSize.x;
+    float radius = minRadius + (maxRadius - minRadius) * (1.f + std::cos(t * 2.f * 3.14159265f)) * 0.5f;
+    float scale = radius / minRadius;
+
+    m_circle.setScale({ scale, scale });
+}
+
+void UraniumTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {
+    float range = getAttrib("radius") * MapInfo::squareSize.x;
+    float rangeSquared = range * range;
+    auto towerPos = getPosition();
+
+    m_damageAcc += getBuffedAttrib("damage") * m_timer.asSeconds();
+    m_timer = sf::Time::Zero;
+
+    int damage = int(m_damageAcc);
+    m_damageAcc -= damage;
+
+    for (auto it = mobs.begin(); it != mobs.end(); it++) {
+        float distSquared = getDistanceSquare(towerPos, it->get()->getPosition());
+
+        if (distSquared <= rangeSquared) {
+            it->get()->hit(damage, TOWER_ATTRIBS.at(getCard().type).damageType);
+        }
+    }
+}
+
+void UraniumTower::drawAfterEntities(sf::RenderTarget& target, sf::RenderStates states) const {
+    states.transform *= getTransform();
+    target.draw(m_circle, states);
 }

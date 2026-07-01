@@ -31,6 +31,7 @@ public:
 
 public:
     const MobAttribs::RarityEntry& getAttribs() const { return MOB_ATTRIBS[m_mob.type][m_mob.rarity]; }
+    const bool hasAttrib(const std::string& name) const { return getAttribs().attribs.contains(name); }
     const float getAttrib(const std::string& name) const { return getAttribs().attribs.at(name); }
 
 protected:

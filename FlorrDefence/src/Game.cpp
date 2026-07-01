@@ -90,15 +90,17 @@ void Game::handleEvents() {
 }
 
 void Game::update() {
+    bool needUpdate = m_info.update(m_window);
+
     if (m_info.playerState.isAlive()) {
-        if (m_info.update(m_window))
+        if (needUpdate)
             m_ui.updateComponents();
         if (m_map.update())
             m_ui.updateComponents();
         m_ui.update();
     }
     else {
-        m_gameOver.update(m_window.mapPixelToCoords(sf::Mouse::getPosition(m_window)));
+        m_gameOver.update(m_info.mouseWorldPosition);
     }
 }
 

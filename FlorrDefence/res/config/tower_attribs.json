@@ -831,9 +831,7 @@
           "damage": 100,
           "reload": 10.0,
           "range": 5.0,
-          "speed": 4.0,
-          "crit_chance": 0.1,
-          "crit_damage_factor": 2.0
+          "speed": 4.0
         }
       },
       "unusual": {
@@ -843,9 +841,7 @@
           "damage": 300,
           "reload": 10.0,
           "range": 5.0,
-          "speed": 4.0,
-          "crit_chance": 0.1,
-          "crit_damage_factor": 2.0
+          "speed": 4.0
         }
       },
       "rare": {
@@ -855,9 +851,7 @@
           "damage": 900,
           "reload": 10.0,
           "range": 5.0,
-          "speed": 4.0,
-          "crit_chance": 0.1,
-          "crit_damage_factor": 2.0
+          "speed": 4.0
         }
       },
       "epic": {
@@ -867,9 +861,7 @@
           "damage": 3000,
           "reload": 10.0,
           "range": 5.0,
-          "speed": 4.0,
-          "crit_chance": 0.1,
-          "crit_damage_factor": 2.0
+          "speed": 4.0
         }
       },
       "legendary": {
@@ -879,9 +871,7 @@
           "damage": 9000,
           "reload": 10.0,
           "range": 5.0,
-          "speed": 4.0,
-          "crit_chance": 0.1,
-          "crit_damage_factor": 3.0
+          "speed": 4.0
         }
       },
       "mythic": {
@@ -891,9 +881,7 @@
           "damage": 27000,
           "reload": 10.0,
           "range": 5.0,
-          "speed": 4.0,
-          "crit_chance": 0.1,
-          "crit_damage_factor": 3.0
+          "speed": 4.0
         }
       },
       "ultra": {
@@ -903,9 +891,7 @@
           "damage": 81000,
           "reload": 10.0,
           "range": 5.0,
-          "speed": 4.0,
-          "crit_chance": 0.1,
-          "crit_damage_factor": 4.0
+          "speed": 4.0
         }
       }
     }
@@ -1819,7 +1805,7 @@
         "attribs": {
           "hp": 1,
           "damage": 1,
-          "range": 2.0,
+          "radius": 2.0,
           "damage_increase_rate": 0.3,
           "max_damage_rate": 4.0
         }
@@ -1829,7 +1815,7 @@
         "attribs": {
           "hp": 1,
           "damage": 3,
-          "range": 2.0,
+          "radius": 2.0,
           "damage_increase_rate": 0.3,
           "max_damage_rate": 4.0
         }
@@ -1839,7 +1825,7 @@
         "attribs": {
           "hp": 1,
           "damage": 9,
-          "range": 2.0,
+          "radius": 2.0,
           "damage_increase_rate": 0.3,
           "max_damage_rate": 4.0
         }
@@ -1849,7 +1835,7 @@
         "attribs": {
           "hp": 1,
           "damage": 27,
-          "range": 2.0,
+          "radius": 2.0,
           "damage_increase_rate": 0.3,
           "max_damage_rate": 4.0
         }
@@ -1859,7 +1845,7 @@
         "attribs": {
           "hp": 1,
           "damage": 81,
-          "range": 2.0,
+          "radius": 2.0,
           "damage_increase_rate": 0.3,
           "max_damage_rate": 4.0
         }
@@ -1869,7 +1855,7 @@
         "attribs": {
           "hp": 1,
           "damage": 243,
-          "range": 2.0,
+          "radius": 2.0,
           "damage_increase_rate": 0.3,
           "max_damage_rate": 4.0
         }
@@ -1879,7 +1865,7 @@
         "attribs": {
           "hp": 1,
           "damage": 729,
-          "range": 2.0,
+          "radius": 2.0,
           "damage_increase_rate": 0.3,
           "max_damage_rate": 4.0
         }
@@ -2180,6 +2166,393 @@
         "price": 5090904000,
         "attribs": {
           "luck_buff": 0.40
+        }
+      }
+    }
+  },
+  "shell": {
+    "type": "buff",
+    "rarities": {
+      "common": {
+        "price": 20,
+        "attribs": {
+          "shield": 5,
+          "reload": 1
+        }
+      },
+      "unusual": {
+        "price": 140,
+        "attribs": {
+          "shield": 15,
+          "reload": 1
+        }
+      },
+      "rare": {
+        "price": 1680,
+        "attribs": {
+          "shield": 45,
+          "reload": 1
+        }
+      },
+      "epic": {
+        "price": 30240,
+        "attribs": {
+          "shield": 135,
+          "reload": 1
+        }
+      },
+      "legendary": {
+        "price": 1118880,
+        "attribs": {
+          "shield": 405,
+          "reload": 1
+        }
+      },
+      "mythic": {
+        "price": 78321600,
+        "attribs": {
+          "shield": 1215,
+          "reload": 1
+        }
+      },
+      "ultra": {
+        "price": 10181808000,
+        "attribs": {
+          "shield": 3645,
+          "reload": 1
+        }
+      }
+    }
+  },
+  "stick": {
+    "type": "summon",
+    "rarities": {
+      "common": {
+        "price": 20,
+        "attribs": {
+          "reload": 8.0,
+          "copy": 4,
+          "mob_rarity": 0
+        }
+      },
+      "unusual": {
+        "price": 140,
+        "attribs": {
+          "reload": 12.0,
+          "copy": 4,
+          "mob_rarity": 1
+        }
+      },
+      "rare": {
+        "price": 1680,
+        "attribs": {
+          "reload": 16.0,
+          "copy": 4,
+          "mob_rarity": 2
+        }
+      },
+      "epic": {
+        "price": 30240,
+        "attribs": {
+          "reload": 20.0,
+          "copy": 4,
+          "mob_rarity": 3
+        }
+      },
+      "legendary": {
+        "price": 1118880,
+        "attribs": {
+          "reload": 25.0,
+          "copy": 4,
+          "mob_rarity": 4
+        }
+      },
+      "mythic": {
+        "price": 78321600,
+        "attribs": {
+          "reload": 8.0,
+          "copy": 4,
+          "mob_rarity": 4
+        }
+      },
+      "ultra": {
+        "price": 10181808000,
+        "attribs": {
+          "reload": 20.0,
+          "copy": 4,
+          "mob_rarity": 5
+        }
+      },
+      "super": {
+        "price": 2647270100000,
+        "attribs": {
+          "reload": 2.0,
+          "copy": 4,
+          "mob_rarity": 5
+        }
+      }
+    }
+  },
+  "glass": {
+    "type": "defence",
+    "rarities": {
+      "common": {
+        "price": 10,
+        "attribs": {
+          "hp": 1,
+          "damage": 5,
+          "reload": 2.0
+        }
+      },
+      "unusual": {
+        "price": 70,
+        "attribs": {
+          "hp": 1,
+          "damage": 15,
+          "reload": 2.0
+        }
+      },
+      "rare": {
+        "price": 840,
+        "attribs": {
+          "hp": 1,
+          "damage": 45,
+          "reload": 2.0
+        }
+      },
+      "epic": {
+        "price": 15120,
+        "attribs": {
+          "hp": 1,
+          "damage": 135,
+          "reload": 2.0
+        }
+      },
+      "legendary": {
+        "price": 559440,
+        "attribs": {
+          "hp": 1,
+          "damage": 405,
+          "reload": 2.0
+        }
+      },
+      "mythic": {
+        "price": 39160800,
+        "attribs": {
+          "hp": 1,
+          "damage": 1215,
+          "reload": 2.0
+        }
+      },
+      "ultra": {
+        "price": 5090904000,
+        "attribs": {
+          "hp": 1,
+          "damage": 3645,
+          "reload": 2.0
+        }
+      }
+    }
+  },
+  "bulb": {
+    "type": "buff",
+    "rarities": {
+      "common": {
+        "price": 20,
+        "attribs": {
+          "mob_spawn_rate_buff": 0.05
+        }
+      },
+      "unusual": {
+        "price": 140,
+        "attribs": {
+          "mob_spawn_rate_buff": 0.1
+        }
+      },
+      "rare": {
+        "price": 1680,
+        "attribs": {
+          "mob_spawn_rate_buff": 0.2
+        }
+      },
+      "epic": {
+        "price": 30240,
+        "attribs": {
+          "mob_spawn_rate_buff": 0.3
+        }
+      },
+      "legendary": {
+        "price": 1118880,
+        "attribs": {
+          "mob_spawn_rate_buff": 0.5
+        }
+      },
+      "mythic": {
+        "price": 78321600,
+        "attribs": {
+          "mob_spawn_rate_buff": 0.7
+        }
+      },
+      "ultra": {
+        "price": 10181808000,
+        "attribs": {
+          "mob_spawn_rate_buff": 1.0
+        }
+      }
+    }
+  },
+  "yin_yang": {
+    "type": "buff",
+    "rarities": {
+      "common": {
+        "price": 25,
+        "attribs": {
+          "yin_yang_buff": 1
+        }
+      },
+      "unusual": {
+        "price": 175,
+        "attribs": {
+          "yin_yang_buff": 2
+        }
+      },
+      "rare": {
+        "price": 2100,
+        "attribs": {
+          "yin_yang_buff": 3
+        }
+      },
+      "epic": {
+        "price": 37800,
+        "attribs": {
+          "yin_yang_buff": 4
+        }
+      },
+      "legendary": {
+        "price": 1398600,
+        "attribs": {
+          "yin_yang_buff": 5
+        }
+      },
+      "mythic": {
+        "price": 97902000,
+        "attribs": {
+          "yin_yang_buff": 6
+        }
+      },
+      "ultra": {
+        "price": 12727260000,
+        "attribs": {
+          "yin_yang_buff": 7
+        }
+      }
+    }
+  },
+  "yucca": {
+    "type": "buff",
+    "rarities": {
+      "common": {
+        "price": 20,
+        "attribs": {
+          "petal_heal": 0.1,
+          "reload": 4
+        }
+      },
+      "unusual": {
+        "price": 140,
+        "attribs": {
+          "petal_heal": 0.1,
+          "reload": 2
+        }
+      },
+      "rare": {
+        "price": 1680,
+        "attribs": {
+          "petal_heal": 0.2,
+          "reload": 2
+        }
+      },
+      "epic": {
+        "price": 30240,
+        "attribs": {
+          "petal_heal": 0.4,
+          "reload": 3
+        }
+      },
+      "legendary": {
+        "price": 1118880,
+        "attribs": {
+          "petal_heal": 0.4,
+          "reload": 2
+        }
+      },
+      "mythic": {
+        "price": 78321600,
+        "attribs": {
+          "petal_heal": 0.5,
+          "reload": 2
+        }
+      },
+      "ultra": {
+        "price": 10181808000,
+        "attribs": {
+          "petal_heal": 0.6,
+          "reload": 2
+        }
+      }
+    }
+  },
+  "uranium": {
+    "type": "shoot",
+    "damage_type": "lightning",
+    "rarities": {
+      "common": {
+        "price": 25,
+        "attribs": {
+          "damage": 8,
+          "radius": 1.6
+        }
+      },
+      "unusual": {
+        "price": 175,
+        "attribs": {
+          "damage": 24,
+          "radius": 1.6
+        }
+      },
+      "rare": {
+        "price": 2100,
+        "attribs": {
+          "damage": 72,
+          "radius": 1.6
+        }
+      },
+      "epic": {
+        "price": 37800,
+        "attribs": {
+          "damage": 216,
+          "radius": 1.6
+        }
+      },
+      "legendary": {
+        "price": 1398600,
+        "attribs": {
+          "damage": 648,
+          "radius": 1.6
+        }
+      },
+      "mythic": {
+        "price": 97902000,
+        "attribs": {
+          "damage": 1944,
+          "radius": 1.6
+        }
+      },
+      "ultra": {
+        "price": 12727260000,
+        "attribs": {
+          "damage": 5832,
+          "radius": 1.6
         }
       }
     }

@@ -9,7 +9,7 @@ Petal::Petal(SharedInfo& info, const CardInfo& card)
 	Entity(info, AssetManager::getPetalTexture(card.type)) {
 	setScale(0.32f);
 	setFlash(sf::Color(180, 0, 0), 0.4f);
-	m_hp = (int)getAttrib("hp");
+	m_hp = getFullHp();
 
 	m_info.counter.petal[card]++;
 }
@@ -20,6 +20,10 @@ Petal::Petal(SharedInfo& info, const CardInfo& card, const sf::Texture& texture)
 	setFlash(sf::Color(180, 0, 0), 0.4f);
 
 	m_info.counter.petal[card]++;
+}
+
+int Petal::getFullHp() const {
+	return (int)round(getAttrib("hp"));
 }
 
 int Petal::getArmor() const {
@@ -35,6 +39,11 @@ void Petal::onDead() {
 		m_info.playerState.heal(getAttrib("death_heal"));
 
 	m_info.counter.petal[getCard()]--;
+}
+
+void Petal::heal(float percent) {
+	int full = getFullHp();
+	m_hp = std::min(full, m_hp + (int)round(full * percent));
 }
 
 // ShootPetal
@@ -202,7 +211,7 @@ void DefencePetal::onDead() {
 
 // Mob petal
 std::unique_ptr<MobPetal> MobPetal::create(SharedInfo& info, const CardInfo& card) {
-	return std::make_unique<MobPetal>(info, card, 39.f + randomUniform(-0.3f, 0.f));
+	return std::make_unique<MobPetal>(info, card, 39.f + randomUniform(-0.4f, -0.05f));
 }
 
 MobPetal::MobPetal(SharedInfo& info, const CardInfo& card, float startPosition)
@@ -212,7 +221,11 @@ MobPetal::MobPetal(SharedInfo& info, const CardInfo& card, float startPosition)
 	float scale = MOB_RARITY_SCALES.at(m_mob.rarity) * 1.5f;
 	setScale(scale);
 
-	m_hp = (int)m_info.playerState.buff.summoner.apply((float)getMobAttribs().hp);
+	m_hp = getFullHp();
+
+	if (hasAttrib("rotation_speed"))
+		// Random initial direction
+		setRotationOffset(sf::degrees(randomUniform(0.f, 360.f)));
 }
 
 void MobPetal::update() {
@@ -230,17 +243,29 @@ void MobPetal::update() {
 void MobPetal::updatePosition() {
 	// Movement along path
 	float speed = m_info.playerState.buff.speed.apply(getMobAttribs().speed);
-	m_position = std::max(0.f, m_position - m_info.dt.asSeconds() * speed);
+	bool reverse = m_info.playerState.buff.yin_yang.apply(0) >= RARITIE_LEVELS.at(m_mob.rarity);
+	m_position += (reverse ? 1 : -1) * m_info.dt.asSeconds() * speed;
+	m_position = std::clamp(m_position, 0.f, 39.f);
+
 	updatePathPosition(m_position);
-	m_sprite.rotate(sf::degrees(180.f));
+	if (!reverse)
+		m_sprite.rotate(sf::degrees(180.f));
+
+	// Rotate
+	if (hasAttrib("rotation_speed"))
+		rotate(sf::degrees(getAttrib("rotation_speed") * m_info.dt.asSeconds()));
 }
 
-int MobPetal::getArmor() const {
-	return getMobAttribs().armor;
+int MobPetal::getFullHp() const {
+	return (int)round(m_info.playerState.buff.summoner.apply((float)getMobAttribs().hp));
 }
 
 int MobPetal::getDamage() const {
 	return (int)round(m_info.playerState.buff.damage.apply((float)getMobAttribs().damage));
+}
+
+int MobPetal::getArmor() const {
+	return getMobAttribs().armor;
 }
 
 // Web (Defence)
@@ -399,7 +424,7 @@ LaserPetal::LaserPetal(SharedInfo& info, const CardInfo& card, sf::Vector2i squa
 
 	float length = MapInfo::squareSize.x;
 	float half = texSize.y / 2;
-	float scale = length * (getAttrib("range") + 0.5f) / (texSize.x - half);
+	float scale = length * (getAttrib("radius") + 0.5f) / (texSize.x - half);
 	setScale(scale);
 
 	m_sprite.setOrigin({ half, half });
@@ -416,16 +441,16 @@ int LaserPetal::getArmor() const {
 }
 
 int LaserPetal::getDamage() const {
-	int damage = (int)getBuffedAttrib("damage");
+	float damage = getBuffedAttrib("damage");
 
 	if (m_target.has_value()) {
 		float elapsed = m_timer.asSeconds();
 		float maxRate = getAttrib("max_damage_rate");
 		float increaseRate = std::min(maxRate, 1.f + getAttrib("damage_increase_rate") * elapsed);
-		damage = int(damage * increaseRate);
+		damage = damage * increaseRate;
 	}
 
-	return damage;
+	return (int)round(damage);
 }
 
 void LaserPetal::onDead() {
@@ -437,7 +462,7 @@ void LaserPetal::onDead() {
 void LaserPetal::update() {
 	m_timer += m_info.dt;
 
-	// If dead
+	// If tower no longer exsit
 	const Tower* tower = m_map.getTower(m_square);
 	if (tower == nullptr || tower->getCard() != getCard()) {
 		kill();
@@ -459,7 +484,7 @@ void LaserPetal::update() {
 void LaserPetal::updatePosition() {}
 
 void LaserPetal::updateTarget() {
-	float range = getAttrib("range") * MapInfo::squareSize.x;
+	float range = getAttrib("radius") * MapInfo::squareSize.x;
 	float rangeSquared = range * range;
 	auto position = getPosition();
 
@@ -494,4 +519,25 @@ int ChipPetal::getArmor() const {
 		return INF;
 	else
 		return 0;
+}
+
+// Glass Petal
+GlassPetal::GlassPetal(SharedInfo& info, const CardInfo& card, sf::Vector2i square, const MapInfo& map) 
+	: DefencePetal(info, card, square), m_map(map) {
+
+}
+
+void GlassPetal::update() {
+	// If tower no longer exsit
+	const Tower* tower = m_map.getTower(m_square);
+	if (tower == nullptr || tower->getCard() != getCard()) {
+		kill();
+		return;
+	}
+
+	DefencePetal::update();
+}
+
+int GlassPetal::getArmor() const {
+	return INF;
 }

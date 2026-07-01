@@ -141,18 +141,18 @@ void MapInfo::updateTowerBuff() {
     PlayerState& player = m_info.playerState;
     player.towerBuff.reset();
 
-    int anteaneaLevel = (int)player.talentBuff.antennae.apply(0);
+    int antennaeLevel = (int)player.talentBuff.antennae.apply(0);
     for (int row = 0; row < 11; row++) {
         for (int col = 0; col < 10; col++) {
             if (auto tower = getTower({ row, col }))
                 if (tower->getCard().type == "antennae")
-                    anteaneaLevel = std::max(anteaneaLevel,
+                    antennaeLevel = std::max(antennaeLevel,
                         RARITIE_LEVELS.at(tower->getCard().rarity));
         }
     }
 
     BuffManager& buffManager = m_info.playerState.buffManager;
-    buffManager.setAntennaeLevel(anteaneaLevel);
+    buffManager.setAntennaeLevel(antennaeLevel);
 
     for (int row = 0; row < 11; row++) {
         for (int col = 0; col < 10; col++) {
@@ -568,6 +568,7 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const {
             target.draw(*petal, states);
         }
     }
+
     for (auto& petal : m_petals) {
         if (!dynamic_cast<MobPetal*>(petal.get()) &&
             !dynamic_cast<WebPetal*>(petal.get())) {
@@ -582,6 +583,15 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     for (auto& e : m_deadEntities) {
         if (dynamic_cast<Petal*>(e.get()))
             target.draw(*e, states);
+    }
+
+    // Tower after-entities effects
+    for (int row = 0; row < 11; row++) {
+        for (int col = 0; col < 10; col++) {
+            if (auto tower = m_map.getTower({ row, col })) {
+                tower->drawAfterEntities(target, states);
+            }
+        }
     }
 
     // Effects

@@ -161,7 +161,7 @@ bool SharedInfo::update(const sf::RenderWindow& window) {
         // To prevent from sudden movements, we clamp frame to a tick
         dt = TICK;
 
-    if (draggedCard.has_value()) {
+    if (playerState.isAlive() && draggedCard.has_value()) {
         if (draggedCard->update(mouseWorldPosition, dt)) {
             playerState.backpack.add({ draggedCard->getCard(), 1 });
             draggedCard.reset();

@@ -17,6 +17,7 @@ public:
 	virtual void update() {}
 	virtual void applyDebuff(Debuff& debuff) const {}
 
+	virtual int getFullHp() const;
 	virtual int getArmor() const override;
 	virtual int getDamage() const;
 	virtual void onDead() override;
@@ -25,10 +26,12 @@ public:
 	int getHp() const { return m_hp; }
 	DamageType getDamageType() const { return TOWER_ATTRIBS.at(m_card.type).damageType; }
 
+	void heal(float percent);
+
 protected:
-	bool hasAttrib(const std::string& name) const { return m_attribs.attribs.find(name) != m_attribs.attribs.end(); }
-	float getAttrib(const std::string& name) const { return m_attribs.attribs.at(name); }
-	float getBuffedAttrib(const std::string& name) const { return m_info.playerState.buff.get(name).apply(getAttrib(name)); }
+	virtual bool hasAttrib(const std::string& name) const { return m_attribs.attribs.find(name) != m_attribs.attribs.end(); }
+	virtual float getAttrib(const std::string& name) const { return m_attribs.attribs.at(name); }
+	virtual float getBuffedAttrib(const std::string& name) const { return m_info.playerState.buff.get(name).apply(getAttrib(name)); }
 
 protected:
 	const TowerAttribs::RarityEntry& m_attribs;
@@ -89,10 +92,16 @@ public:
 	virtual void update() override;
 	virtual void updatePosition() override;
 
-	virtual int getArmor() const override;
+	virtual int getFullHp() const override;
 	virtual int getDamage() const override;
+	virtual int getArmor() const override;
 
 	const MobAttribs::RarityEntry& getMobAttribs() const { return MOB_ATTRIBS[m_mob.type][m_mob.rarity]; }
+
+protected:
+	bool hasAttrib(const std::string& name) const override { return getMobAttribs().attribs.contains(name); }
+	float getAttrib(const std::string& name) const override { return getMobAttribs().attribs.at(name); }
+	float getBuffedAttrib(const std::string& name) const override { return m_info.playerState.buff.get(name).apply(getAttrib(name)); }
 
 private:
 	MobInfo m_mob;
@@ -198,4 +207,16 @@ public:
 	using ShootPetal::ShootPetal;
 
 	int getArmor() const override;
+};
+
+class GlassPetal : public DefencePetal {
+public:
+	GlassPetal(SharedInfo& info, const CardInfo& card, sf::Vector2i square, const MapInfo& map);
+
+	void update();
+
+	int getArmor() const override;
+
+private:
+	const MapInfo& m_map;
 };

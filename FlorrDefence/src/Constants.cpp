@@ -26,7 +26,8 @@ const std::unordered_map<std::string, int> RARITIE_LEVELS = {
 
 const std::unordered_map<std::string, std::string> TOWER_SUMMON_MOBS = {
 	{ "ant_egg", "ant_soldier_summoned" },
-	{ "beetle_egg", "beetle_summoned" }
+	{ "beetle_egg", "beetle_summoned" },
+	{ "stick", "sandstorm_summoned" },
 };
 
 const std::unordered_map<std::string, float> MOB_RARITY_SCALES = {

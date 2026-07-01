@@ -119,23 +119,28 @@ void SpawnManager::update(std::list<std::unique_ptr<Mob>>& mobList) {
 double SpawnManager::computeNextInterval(const Stage& s, int level) {
     double t = m_globalTimer.asSeconds();
     double raw = s.base_interval;
+    double rate = m_info.playerState.buff.mob_spawn_rate.apply(1.f);
 
     // Apply linear decrease per level (scale_per_level usually negative)
     int levelOffset = level - s.min_level;
     raw += s.scale_per_level * (double)(levelOffset);
 
-    // oscillator (sine)
+    // Oscillator (sine)
     if (s.oscillator.enabled && s.oscillator.period > 0.0) {
         double phase = (2.0 * 3.14159265358979323846 * t) / s.oscillator.period;
         raw += std::sin(phase) * s.oscillator.amplitude;
     }
 
-    // jitter (instant)
+    // Jitter (instant)
     if (s.jitter.range > 0.0) {
         std::uniform_real_distribution<double> ud(-s.jitter.range, s.jitter.range);
         std::uniform_real_distribution<double> probd(0.0, 1.0);
         if (probd(m_rng) <= s.jitter.prob) raw += ud(m_rng);
     }
+
+    // Apply spawn rate
+    if (rate > 0.0)
+        raw /= rate;
 
     // EMA smoothing
     double a = m_globalSmoothingAlpha;

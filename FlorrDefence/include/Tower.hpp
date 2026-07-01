@@ -18,6 +18,7 @@ public:
 
 	virtual void update() {}
 	virtual void tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {}
+	virtual void drawAfterEntities(sf::RenderTarget& target, sf::RenderStates states) const {}
 
 	void setLength(float length) { m_card.setLength(length); }
 	CardInfo getCard() const { return m_card.getCard(); };
@@ -130,7 +131,16 @@ public:
 
 class RoseTower : public BuffTower {
 public:
-	RoseTower(SharedInfo& info, const CardInfo& card, sf::Vector2i square);
+	using BuffTower::BuffTower;
+
+	void update() override;
+
+	void tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) override;
+};
+
+class ShellTower : public BuffTower {
+public:
+	using BuffTower::BuffTower;
 
 	void update() override;
 
@@ -139,7 +149,7 @@ public:
 
 class CoinTower : public BuffTower {
 public:
-	CoinTower(SharedInfo& info, const CardInfo& card, sf::Vector2i square);
+	using BuffTower::BuffTower;
 
 	void update() override;
 
@@ -171,4 +181,44 @@ public:
 private:
 	sf::Vector2i m_square;
 	Map& m_map;
+};
+
+class GlassTower : public DefenceTower {
+public:
+	GlassTower(SharedInfo& info, const CardInfo& card, sf::Vector2i square, const MapInfo& map);
+
+	void tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) override;
+
+private:
+	const MapInfo& m_map;
+};
+
+class YuccaTower : public BuffTower {
+public:
+	using BuffTower::BuffTower;
+
+	void update() override;
+
+	void tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) override;
+};
+
+class UraniumTower : public ShootTower {
+public:
+	UraniumTower(SharedInfo& info, const CardInfo& card);
+
+	void update() override;
+
+	void tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) override;
+
+	void drawAfterEntities(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+private:
+	static constexpr float minRadius = 60.f;
+
+private:
+	sf::Time m_timer;
+	float m_damageAcc = 0.f;
+
+	sf::Time m_pulseTimer;
+	sf::CircleShape m_circle;
 };
