@@ -112,6 +112,14 @@
           "copy": 4,
           "mob_rarity": 5
         }
+      },
+      "unique": {
+        "price": 0,
+        "attribs": {
+          "reload": 5.0,
+          "copy": 4,
+          "mob_rarity": 6
+        }
       }
     }
   },
@@ -144,6 +152,10 @@
       },
       "ultra": {
         "price": 12727260000,
+        "attribs": {}
+      },
+      "super": {
+        "price": 3245451300000,
         "attribs": {}
       }
     }
@@ -220,6 +232,16 @@
           "range": 5.0,
           "speed": 4.0
         }
+      },
+      "super": {
+        "price": 10000000000000000,
+        "attribs": {
+          "hp": 76540,
+          "damage": 76540,
+          "reload": 1.0,
+          "range": 5.0,
+          "speed": 4.0
+        }
       }
     }
   },
@@ -288,6 +310,14 @@
           "reload": 2.0,
           "copy": 1,
           "mob_rarity": 5
+        }
+      },
+      "unique": {
+        "price": 0,
+        "attribs": {
+          "reload": 5.0,
+          "copy": 1,
+          "mob_rarity": 6
         }
       }
     }
@@ -370,6 +400,17 @@
           "reload": 3.0,
           "range": 4.0,
           "speed": 3.0
+        }
+      },
+      "super": {
+        "price": 1038544416000,
+        "attribs": {
+          "hp": 21870,
+          "damage": 32805,
+          "armor": 7290,
+          "reload": 2.5,
+          "range": 4.0,
+          "speed": 2.0
         }
       }
     }
@@ -507,6 +548,18 @@
           "armor_debuff": 1458,
           "armor_debuff_duration": 2.5
         }
+      },
+      "super": {
+        "price": 1298180520000,
+        "attribs": {
+          "hp": 1,
+          "damage": 7000,
+          "reload": 2.8,
+          "range": 4.0,
+          "speed": 4.0,
+          "armor_debuff": 5000,
+          "armor_debuff_duration": 3
+        }
       }
     }
   },
@@ -582,12 +635,23 @@
       "ultra": {
         "price": 12727260000,
         "attribs": {
-          "hp": 729,
-          "damage": 5832,
+          "hp": 243,
+          "damage": 1944,
           "reload": 3.0,
           "range": 4.0,
           "speed": 2.0,
           "evasion": 0.9
+        }
+      },
+      "super": {
+        "price": 3245451300000,
+        "attribs": {
+          "hp": 3000,
+          "damage": 20000,
+          "reload": 2.9,
+          "range": 4.0,
+          "speed": 2.0,
+          "evasion": 0.91
         }
       }
     }
@@ -596,45 +660,51 @@
     "type": "buff",
     "rarities": {
       "common": {
-        "price": 10,
+        "price": 30,
         "attribs": {
-          "luck_buff": 0.05
+          "luck_buff": 0.08
         }
       },
       "unusual": {
-        "price": 70,
+        "price": 210,
         "attribs": {
-          "luck_buff": 0.1
+          "luck_buff": 0.11
         }
       },
       "rare": {
-        "price": 840,
+        "price": 2520,
         "attribs": {
-          "luck_buff": 0.15
+          "luck_buff": 0.14
         }
       },
       "epic": {
-        "price": 15120,
+        "price": 45360,
         "attribs": {
-          "luck_buff": 0.2
+          "luck_buff": 0.17
         }
       },
       "legendary": {
-        "price": 559440,
+        "price": 1587600,
         "attribs": {
-          "luck_buff": 0.3
+          "luck_buff": 0.20
         }
       },
       "mythic": {
-        "price": 39160800,
+        "price": 111132000,
         "attribs": {
-          "luck_buff": 0.35
+          "luck_buff": 0.23
         }
       },
       "ultra": {
-        "price": 5090904000,
+        "price": 14447160000,
         "attribs": {
-          "luck_buff": 0.40
+          "luck_buff": 0.26
+        }
+      },
+      "super": {
+        "price": 3684025800000,
+        "attribs": {
+          "luck_buff": 0.35
         }
       }
     }
@@ -757,11 +827,21 @@
         }
       },
       "ultra": {
-        "price": 117482400,
+        "price": 5874120000,
         "attribs": {
           "hp": 218700,
           "damage": 3645,
           "reload": 7.0,
+          "range": 5.0,
+          "speed": 3.0
+        }
+      },
+      "super": {
+        "price": 1497900600000,
+        "attribs": {
+          "hp": 656100,
+          "damage": 10935,
+          "reload": 6.0,
           "range": 5.0,
           "speed": 3.0
         }
@@ -811,6 +891,12 @@
         "price": 4072723200,
         "attribs": {
           "body_damage_buff": 19683
+        }
+      },
+      "super": {
+        "price": 1038544416000,
+        "attribs": {
+          "body_damage_buff": 65000
         }
       }
     }
@@ -890,7 +976,7 @@
         "price": 20,
         "attribs": {
           "hp": 10,
-          "damage": 10,
+          "damage": 15,
           "reload": 3.0,
           "range": 4.0,
           "speed": 4.0
@@ -900,7 +986,7 @@
         "price": 140,
         "attribs": {
           "hp": 30,
-          "damage": 30,
+          "damage": 45,
           "reload": 3.0,
           "range": 4.0,
           "speed": 4.0
@@ -910,7 +996,7 @@
         "price": 1680,
         "attribs": {
           "hp": 90,
-          "damage": 90,
+          "damage": 135,
           "reload": 3.0,
           "range": 4.0,
           "speed": 4.0
@@ -920,7 +1006,7 @@
         "price": 30240,
         "attribs": {
           "hp": 270,
-          "damage": 270,
+          "damage": 405,
           "reload": 3.0,
           "range": 4.0,
           "speed": 4.0
@@ -930,7 +1016,7 @@
         "price": 1118880,
         "attribs": {
           "hp": 810,
-          "damage": 810,
+          "damage": 1215,
           "reload": 3.0,
           "range": 4.0,
           "speed": 4.0
@@ -940,7 +1026,7 @@
         "price": 78321600,
         "attribs": {
           "hp": 2430,
-          "damage": 2430,
+          "damage": 3645,
           "reload": 3.0,
           "range": 4.0,
           "speed": 4.0
@@ -950,7 +1036,17 @@
         "price": 10181808000,
         "attribs": {
           "hp": 7290,
-          "damage": 7290,
+          "damage": 10935,
+          "reload": 3.0,
+          "range": 4.0,
+          "speed": 4.0
+        }
+      },
+      "super": {
+        "price": 2596361040000,
+        "attribs": {
+          "hp": 21870,
+          "damage": 32805,
           "reload": 3.0,
           "range": 4.0,
           "speed": 4.0
@@ -962,45 +1058,51 @@
     "type": "buff",
     "rarities": {
       "common": {
-        "price": 10,
-        "attribs": {
-          "damage_reduction_buff": 0.05
-        }
-      },
-      "unusual": {
-        "price": 70,
+        "price": 8,
         "attribs": {
           "damage_reduction_buff": 0.1
         }
       },
-      "rare": {
-        "price": 840,
-        "attribs": {
-          "damage_reduction_buff": 0.15
-        }
-      },
-      "epic": {
-        "price": 15120,
+      "unusual": {
+        "price": 56,
         "attribs": {
           "damage_reduction_buff": 0.2
         }
       },
-      "legendary": {
-        "price": 559440,
+      "rare": {
+        "price": 672,
         "attribs": {
           "damage_reduction_buff": 0.3
         }
       },
-      "mythic": {
-        "price": 39160800,
+      "epic": {
+        "price": 12096,
         "attribs": {
-          "damage_reduction_buff": 0.35
+          "damage_reduction_buff": 0.4
+        }
+      },
+      "legendary": {
+        "price": 423360,
+        "attribs": {
+          "damage_reduction_buff": 0.5
+        }
+      },
+      "mythic": {
+        "price": 29635200,
+        "attribs": {
+          "damage_reduction_buff": 0.6
         }
       },
       "ultra": {
-        "price": 5090904000,
+        "price": 3852576000,
         "attribs": {
-          "damage_reduction_buff": 0.40
+          "damage_reduction_buff": 0.7
+        }
+      },
+      "super": {
+        "price": 982406880000,
+        "attribs": {
+          "damage_reduction_buff": 0.8
         }
       }
     }
@@ -1048,6 +1150,12 @@
         "price": 1527271200,
         "attribs": {
           "speed_buff": 0.9
+        }
+      },
+      "super": {
+        "price": 389454156000,
+        "attribs": {
+          "speed_buff": 1.2
         }
       }
     }
@@ -1237,69 +1345,79 @@
         "attribs": {
           "hp": 1,
           "damage": 1,
-          "radius": 2.0,
+          "range": 2.0,
           "damage_increase_rate": 0.3,
-          "max_damage_rate": 4.0
+          "max_damage_rate": 15.0
         }
       },
       "unusual": {
         "price": 175,
         "attribs": {
           "hp": 1,
-          "damage": 3,
-          "radius": 2.0,
+          "damage": 2,
+          "range": 2.0,
           "damage_increase_rate": 0.3,
-          "max_damage_rate": 4.0
+          "max_damage_rate": 15.0
         }
       },
       "rare": {
         "price": 2100,
         "attribs": {
           "hp": 1,
-          "damage": 9,
-          "radius": 2.0,
+          "damage": 6,
+          "range": 2.0,
           "damage_increase_rate": 0.3,
-          "max_damage_rate": 4.0
+          "max_damage_rate": 15.0
         }
       },
       "epic": {
         "price": 37800,
         "attribs": {
           "hp": 1,
-          "damage": 27,
-          "radius": 2.0,
+          "damage": 18,
+          "range": 2.0,
           "damage_increase_rate": 0.3,
-          "max_damage_rate": 4.0
+          "max_damage_rate": 15.0
         }
       },
       "legendary": {
         "price": 1398600,
         "attribs": {
           "hp": 1,
-          "damage": 81,
-          "radius": 2.0,
+          "damage": 54,
+          "range": 2.0,
           "damage_increase_rate": 0.3,
-          "max_damage_rate": 4.0
+          "max_damage_rate": 15.0
         }
       },
       "mythic": {
         "price": 97902000,
         "attribs": {
           "hp": 1,
-          "damage": 243,
-          "radius": 2.0,
+          "damage": 162,
+          "range": 2.0,
           "damage_increase_rate": 0.3,
-          "max_damage_rate": 4.0
+          "max_damage_rate": 15.0
         }
       },
       "ultra": {
         "price": 12727260000,
         "attribs": {
           "hp": 1,
-          "damage": 729,
-          "radius": 2.0,
+          "damage": 486,
+          "range": 2.0,
           "damage_increase_rate": 0.3,
-          "max_damage_rate": 4.0
+          "max_damage_rate": 15.0
+        }
+      },
+      "super": {
+        "price": 3245451300000,
+        "attribs": {
+          "hp": 1,
+          "damage": 1600,
+          "range": 2.0,
+          "damage_increase_rate": 0.35,
+          "max_damage_rate": 15
         }
       }
     }
@@ -1347,6 +1465,12 @@
         "price": 10181808000,
         "attribs": {
           "heal_value_buff": 3645
+        }
+      },
+      "super": {
+        "price": 2596361040000,
+        "attribs": {
+          "heal_value_buff": 15000
         }
       }
     }
@@ -1413,9 +1537,9 @@
         "price": 58741200,
         "attribs": {
           "hp": 81,
-          "damage": 200,
+          "damage": 400,
           "reload": 0.3,
-          "range": 3.5,
+          "range": 3.0,
           "speed": 4.0,
           "copy": 5
         }
@@ -1424,8 +1548,19 @@
         "price": 7636356000,
         "attribs": {
           "hp": 243,
-          "damage": 600,
+          "damage": 1200,
           "reload": 0.3,
+          "range": 3.0,
+          "speed": 4.0,
+          "copy": 5
+        }
+      },
+      "super": {
+        "price": 1947270780000,
+        "attribs": {
+          "hp": 1,
+          "damage": 5000,
+          "reload": 0.2,
           "range": 3.5,
           "speed": 4.0,
           "copy": 5
@@ -1520,6 +1655,18 @@
           "bounces": 7,
           "bounce_range": 3.0
         }
+      },
+      "super": {
+        "price": 3245451300000,
+        "attribs": {
+          "hp": 1,
+          "reload": 4.5,
+          "range": 5.0,
+          "speed": 3.5,
+          "damage": 13122,
+          "bounces": 10,
+          "bounce_range": 3.5
+        }
       }
     }
   },
@@ -1531,7 +1678,7 @@
         "attribs": {
           "hp": 2,
           "damage": 20,
-          "reload": 3.0,
+          "reload": 4.0,
           "range": 5.5,
           "speed": 4.0
         }
@@ -1541,7 +1688,7 @@
         "attribs": {
           "hp": 6,
           "damage": 60,
-          "reload": 3.0,
+          "reload": 4.0,
           "range": 5.5,
           "speed": 4.0
         }
@@ -1551,7 +1698,7 @@
         "attribs": {
           "hp": 18,
           "damage": 200,
-          "reload": 3.0,
+          "reload": 4.0,
           "range": 5.5,
           "speed": 4.0
         }
@@ -1561,7 +1708,7 @@
         "attribs": {
           "hp": 54,
           "damage": 600,
-          "reload": 3.0,
+          "reload": 4.0,
           "range": 5.5,
           "speed": 4.0
         }
@@ -1571,7 +1718,7 @@
         "attribs": {
           "hp": 162,
           "damage": 1800,
-          "reload": 3.0,
+          "reload": 4.0,
           "range": 5.5,
           "speed": 4.0
         }
@@ -1581,7 +1728,7 @@
         "attribs": {
           "hp": 486,
           "damage": 5400,
-          "reload": 3.0,
+          "reload": 4.0,
           "range": 5.5,
           "speed": 4.0
         }
@@ -1591,6 +1738,16 @@
         "attribs": {
           "hp": 1458,
           "damage": 16200,
+          "reload": 4.0,
+          "range": 5.5,
+          "speed": 4.0
+        }
+      },
+      "super": {
+        "price": 2596361040000,
+        "attribs": {
+          "hp": 4374,
+          "damage": 50000,
           "reload": 3.0,
           "range": 5.5,
           "speed": 4.0
@@ -1752,6 +1909,15 @@
           "reload": 3.0,
           "copy": 3
         }
+      },
+      "super": {
+        "price": 1038544416000,
+        "attribs": {
+          "hp": 1,
+          "damage": 70000,
+          "reload": 3.5,
+          "copy": 1
+        }
       }
     }
   },
@@ -1827,6 +1993,16 @@
           "range": 3.0,
           "speed": 4.0
         }
+      },
+      "super": {
+        "price": 2596361040000,
+        "attribs": {
+          "hp": 1,
+          "damage": 6500,
+          "reload": 0.1,
+          "range": 4.0,
+          "speed": 4.0
+        }
       }
     }
   },
@@ -1888,6 +2064,14 @@
           "damage": 3645,
           "reload": 20.0
         }
+      },
+      "super": {
+        "price": 1298180520000,
+        "attribs": {
+          "hp": 2916000,
+          "damage": 14580,
+          "reload": 20.0
+        }
       }
     }
   },
@@ -1941,6 +2125,13 @@
         "attribs": {
           "heal": 3645,
           "reload": 1
+        }
+      },
+      "super": {
+        "price": 2596361040000,
+        "attribs": {
+          "heal": 15000,
+          "reload": 0.9
         }
       }
     }
@@ -2132,7 +2323,9 @@
           "damage": 100,
           "reload": 10.0,
           "range": 5.0,
-          "speed": 4.0
+          "speed": 4.0,
+          "crit_chance": 0.1,
+          "crit_damage_factor": 2.0
         }
       },
       "unusual": {
@@ -2142,7 +2335,9 @@
           "damage": 300,
           "reload": 10.0,
           "range": 5.0,
-          "speed": 4.0
+          "speed": 4.0,
+          "crit_chance": 0.1,
+          "crit_damage_factor": 2.0
         }
       },
       "rare": {
@@ -2152,7 +2347,9 @@
           "damage": 900,
           "reload": 10.0,
           "range": 5.0,
-          "speed": 4.0
+          "speed": 4.0,
+          "crit_chance": 0.1,
+          "crit_damage_factor": 2.0
         }
       },
       "epic": {
@@ -2162,7 +2359,9 @@
           "damage": 3000,
           "reload": 10.0,
           "range": 5.0,
-          "speed": 4.0
+          "speed": 4.0,
+          "crit_chance": 0.1,
+          "crit_damage_factor": 2.0
         }
       },
       "legendary": {
@@ -2172,7 +2371,9 @@
           "damage": 9000,
           "reload": 10.0,
           "range": 5.0,
-          "speed": 4.0
+          "speed": 4.0,
+          "crit_chance": 0.1,
+          "crit_damage_factor": 3.0
         }
       },
       "mythic": {
@@ -2182,7 +2383,9 @@
           "damage": 27000,
           "reload": 10.0,
           "range": 5.0,
-          "speed": 4.0
+          "speed": 4.0,
+          "crit_chance": 0.1,
+          "crit_damage_factor": 3.0
         }
       },
       "ultra": {
@@ -2192,7 +2395,21 @@
           "damage": 81000,
           "reload": 10.0,
           "range": 5.0,
-          "speed": 4.0
+          "speed": 4.0,
+          "crit_chance": 0.1,
+          "crit_damage_factor": 4.0
+        }
+      },
+      "super": {
+        "price": 1298180520000,
+        "attribs": {
+          "hp": 1,
+          "damage": 400000,
+          "reload": 9.0,
+          "range": 5.0,
+          "speed": 4.0,
+          "crit_chance": 0.2,
+          "crit_damage_factor": 4.0
         }
       }
     }
@@ -2201,45 +2418,51 @@
     "type": "buff",
     "rarities": {
       "common": {
-        "price": 10,
-        "attribs": {
-          "evasion_buff": 0.05
-        }
-      },
-      "unusual": {
-        "price": 70,
+        "price": 8,
         "attribs": {
           "evasion_buff": 0.1
         }
       },
-      "rare": {
-        "price": 840,
-        "attribs": {
-          "evasion_buff": 0.15
-        }
-      },
-      "epic": {
-        "price": 15120,
+      "unusual": {
+        "price": 56,
         "attribs": {
           "evasion_buff": 0.2
         }
       },
-      "legendary": {
-        "price": 559440,
+      "rare": {
+        "price": 672,
         "attribs": {
           "evasion_buff": 0.3
         }
       },
-      "mythic": {
-        "price": 39160800,
+      "epic": {
+        "price": 12096,
         "attribs": {
-          "evasion_buff": 0.35
+          "evasion_buff": 0.4
+        }
+      },
+      "legendary": {
+        "price": 423360,
+        "attribs": {
+          "evasion_buff": 0.5
+        }
+      },
+      "mythic": {
+        "price": 29635200,
+        "attribs": {
+          "evasion_buff": 0.6
         }
       },
       "ultra": {
-        "price": 5090904000,
+        "price": 3852576000,
         "attribs": {
-          "evasion_buff": 0.40
+          "evasion_buff": 0.7
+        }
+      },
+      "super": {
+        "price": 982406880000,
+        "attribs": {
+          "evasion_buff": 0.8
         }
       }
     }
@@ -2452,6 +2675,16 @@
           "duration": 10.0,
           "scale": 4.3,
           "slow_down": 0.40
+        }
+      },
+      "super": {
+        "price": 1947270780000,
+        "attribs": {
+          "hp": 1,
+          "reload": 5.0,
+          "duration": 15.0,
+          "scale": 5.0,
+          "slow_down": 0.60
         }
       }
     }
