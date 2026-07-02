@@ -509,7 +509,7 @@
           "label": "Damage",
           "label_color": "red",
           "value": "damage",
-          "value_type": "int"
+          "value_type": "per_tick"
         },
         {
           "label": "Reload",

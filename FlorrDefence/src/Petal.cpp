@@ -103,6 +103,10 @@ void ShootPetal::update() {
 	// Move
 	updatePosition();
 
+	// Check if the target became underground
+	if (m_target.has_value() && m_target.value()->get()->isUnderground())
+		lostTarget();
+
 	// Check if out of bounds
 	sf::Vector2f newPosition = getPosition();
 	if (!Map::bounds.contains(newPosition)) {
@@ -217,7 +221,8 @@ std::unique_ptr<MobPetal> MobPetal::create(SharedInfo& info, const CardInfo& car
 MobPetal::MobPetal(SharedInfo& info, const CardInfo& card, float startPosition)
 	: Petal(info, card, AssetManager::getPetalTexture(TOWER_SUMMON_MOBS.at(card.type))),
 	m_mob({ RARITIES[(int)TOWER_ATTRIBS[card.type].rarities[card.rarity].attribs["mob_rarity"]], TOWER_SUMMON_MOBS.at(card.type) }),
-	m_position(startPosition) {
+	m_position(startPosition),
+	m_speedMultiplier(randomUniform(0.85f, 1.15f)) {
 	float scale = MOB_RARITY_SCALES.at(m_mob.rarity) * 1.5f;
 	setScale(scale);
 
@@ -242,7 +247,7 @@ void MobPetal::update() {
 
 void MobPetal::updatePosition() {
 	// Movement along path
-	float speed = m_info.playerState.buff.speed.apply(getMobAttribs().speed);
+	float speed = m_info.playerState.buff.speed.apply(getMobAttribs().speed) * m_speedMultiplier;
 	bool reverse = m_info.playerState.buff.yin_yang.apply(0) >= RARITIE_LEVELS.at(m_mob.rarity);
 	m_position += (reverse ? 1 : -1) * m_info.dt.asSeconds() * speed;
 	m_position = std::clamp(m_position, 0.f, 39.f);
@@ -357,6 +362,9 @@ std::vector<std::list<std::unique_ptr<Mob>>::iterator> LightningPetal::getTarget
 		float>> best;
 
 	for (auto it = mobs.begin(); it != mobs.end(); it++) {
+		// Lightning cannot hit underground mobs
+		if (it->get()->isUnderground()) continue;
+
 		auto mp = (*it)->getPosition();
 		float dx = mp.x - position.x;
 		float dy = mp.y - position.y;
@@ -475,6 +483,7 @@ void LaserPetal::update() {
 	// Target
 	updateTarget();
 
+	// Change phase
 	if (m_target.has_value())
 		m_sprite.setTexture(AssetManager::getPetalTexture("laser"));
 	else
@@ -489,16 +498,21 @@ void LaserPetal::updateTarget() {
 	auto position = getPosition();
 
 	if (m_target.has_value()) {
+		// If target is out of range
 		float distSquared = getDistanceSquare(position, m_target.value()->get()->getPosition());
-		if (distSquared <= rangeSquared)
+		if (distSquared > rangeSquared || m_target.value()->get()->isUnderground())
+			lostTarget();
+		else
 			return;
-		lostTarget();
 	}
 
 	std::optional<std::list<std::unique_ptr<Mob>>::const_iterator> nearestMob;
 	float nearestDistSquared = std::numeric_limits<float>::max();
 
 	for (auto it = m_mobs.begin(); it != m_mobs.end(); it++) {
+		// Cannot target underground mobs
+		if (it->get()->isUnderground()) continue;
+
 		float distSquared = getDistanceSquare(position, it->get()->getPosition());
 
 		if (distSquared <= rangeSquared && distSquared < nearestDistSquared) {

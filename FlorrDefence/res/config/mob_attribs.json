@@ -9,9 +9,7 @@
         "armor": 1,
         "coin_drop": 2,
         "xp_drop": 50,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "unusual": {
         "hp": 140,
@@ -20,9 +18,7 @@
         "armor": 2,
         "coin_drop": 8,
         "xp_drop": 200,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "rare": {
         "hp": 506,
@@ -31,9 +27,7 @@
         "armor": 7,
         "coin_drop": 64,
         "xp_drop": 800,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "epic": {
         "hp": 2000,
@@ -42,9 +36,7 @@
         "armor": 22,
         "coin_drop": 768,
         "xp_drop": 3200,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "legendary": {
         "hp": 12100,
@@ -53,9 +45,7 @@
         "armor": 65,
         "coin_drop": 17664,
         "xp_drop": 12800,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "mythic": {
         "hp": 110565,
@@ -64,9 +54,7 @@
         "armor": 194,
         "coin_drop": 883200,
         "xp_drop": 51200,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "ultra": {
         "hp": 911000,
@@ -75,9 +63,7 @@
         "armor": 582,
         "coin_drop": 8000000,
         "xp_drop": 204800,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "super": {
         "hp": 75000000,
@@ -86,14 +72,12 @@
         "armor": 1746,
         "coin_drop": 1000000000,
         "xp_drop": 5000000,
-        "attribs": {
-
-        }
+        "attribs": {}
       }
     }
   },
   "spider": {
-    "description": "It is poisonous",
+    "description": "It is poisonous.",
     "rarities": {
       "common": {
         "hp": 62,
@@ -296,7 +280,7 @@
     }
   },
   "missile": {
-    "description": "Stronger than your missiles",
+    "description": "Stronger than your missiles.",
     "rarities": {
       "common": {
         "hp": 10,
@@ -305,9 +289,7 @@
         "armor": 0,
         "coin_drop": 0,
         "xp_drop": 10,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "unusual": {
         "hp": 37.5,
@@ -316,9 +298,7 @@
         "armor": 0,
         "coin_drop": 2.0,
         "xp_drop": 30,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "rare": {
         "hp": 135,
@@ -327,9 +307,7 @@
         "armor": 0,
         "coin_drop": 10.0,
         "xp_drop": 90,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "epic": {
         "hp": 540,
@@ -338,9 +316,7 @@
         "armor": 0,
         "coin_drop": 60.0,
         "xp_drop": 270,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "legendary": {
         "hp": 3240,
@@ -349,9 +325,7 @@
         "armor": 0,
         "coin_drop": 420.0,
         "xp_drop": 810,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "mythic": {
         "hp": 15625,
@@ -360,9 +334,7 @@
         "armor": 0,
         "coin_drop": 3360.0,
         "xp_drop": 2430,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "ultra": {
         "hp": 700000,
@@ -371,9 +343,84 @@
         "armor": 0,
         "coin_drop": 600000.0,
         "xp_drop": 7290,
-        "attribs": {
-
-        }
+        "attribs": {}
+      }
+    }
+  },
+  "ladybug": {
+    "description": "Cute and harmless.",
+    "rarities": {
+      "common": {
+        "hp": 74,
+        "speed": 0.8,
+        "damage": 20,
+        "armor": 2,
+        "coin_drop": 2,
+        "xp_drop": 50,
+        "attribs": {}
+      },
+      "unusual": {
+        "hp": 280,
+        "speed": 0.8,
+        "damage": 60,
+        "armor": 6,
+        "coin_drop": 8,
+        "xp_drop": 200,
+        "attribs": {}
+      },
+      "rare": {
+        "hp": 1012,
+        "speed": 0.8,
+        "damage": 180,
+        "armor": 21,
+        "coin_drop": 64,
+        "xp_drop": 800,
+        "attribs": {}
+      },
+      "epic": {
+        "hp": 4000,
+        "speed": 0.8,
+        "damage": 600,
+        "armor": 44,
+        "coin_drop": 768,
+        "xp_drop": 3200,
+        "attribs": {}
+      },
+      "legendary": {
+        "hp": 24200,
+        "speed": 0.8,
+        "damage": 1200,
+        "armor": 130,
+        "coin_drop": 17664,
+        "xp_drop": 12800,
+        "attribs": {}
+      },
+      "mythic": {
+        "hp": 221130,
+        "speed": 0.6,
+        "damage": 12150,
+        "armor": 194,
+        "coin_drop": 883200,
+        "xp_drop": 102400,
+        "attribs": {}
+      },
+      "ultra": {
+        "hp": 1822000,
+        "speed": 0.6,
+        "damage": 36450,
+        "armor": 582,
+        "coin_drop": 8000000,
+        "xp_drop": 409600,
+        "attribs": {}
+      },
+      "super": {
+        "hp": 150000000,
+        "speed": 0.4,
+        "damage": 109350,
+        "armor": 1746,
+        "coin_drop": 1000000000,
+        "xp_drop": 10000000,
+        "attribs": {}
       }
     }
   },
@@ -658,6 +705,123 @@
       }
     }
   },
+  "worm": {
+    "description": "How does it go underground?",
+    "rarities": {
+      "common": {
+        "hp": 5,
+        "speed": 1,
+        "damage": 2.5,
+        "armor": 1,
+        "coin_drop": 2,
+        "xp_drop": 10,
+        "attribs": {
+          "underground_duration_low": 4,
+          "underground_duration_high": 8,
+          "aboveground_duration_low": 2,
+          "aboveground_duration_high": 4
+        }
+      },
+      "unusual": {
+        "hp": 140,
+        "speed": 1,
+        "damage": 150,
+        "armor": 2,
+        "coin_drop": 8,
+        "xp_drop": 200,
+        "attribs": {
+          "underground_duration_low": 4,
+          "underground_duration_high": 8,
+          "aboveground_duration_low": 2,
+          "aboveground_duration_high": 4
+        }
+      },
+      "rare": {
+        "hp": 506,
+        "speed": 1,
+        "damage": 450,
+        "armor": 7,
+        "coin_drop": 64,
+        "xp_drop": 800,
+        "attribs": {
+          "underground_duration_low": 4,
+          "underground_duration_high": 8,
+          "aboveground_duration_low": 2,
+          "aboveground_duration_high": 4
+        }
+      },
+      "epic": {
+        "hp": 2000,
+        "speed": 1,
+        "damage": 1400,
+        "armor": 22,
+        "coin_drop": 768,
+        "xp_drop": 3200,
+        "attribs": {
+          "underground_duration_low": 4,
+          "underground_duration_high": 8,
+          "aboveground_duration_low": 2,
+          "aboveground_duration_high": 4
+        }
+      },
+      "legendary": {
+        "hp": 12100,
+        "speed": 1,
+        "damage": 4100,
+        "armor": 65,
+        "coin_drop": 17664,
+        "xp_drop": 12800,
+        "attribs": {
+          "underground_duration_low": 4,
+          "underground_duration_high": 8,
+          "aboveground_duration_low": 2,
+          "aboveground_duration_high": 4
+        }
+      },
+      "mythic": {
+        "hp": 110565,
+        "speed": 1,
+        "damage": 12150,
+        "armor": 194,
+        "coin_drop": 883200,
+        "xp_drop": 51200,
+        "attribs": {
+          "underground_duration_low": 4,
+          "underground_duration_high": 8,
+          "aboveground_duration_low": 2,
+          "aboveground_duration_high": 4
+        }
+      },
+      "ultra": {
+        "hp": 911000,
+        "speed": 1,
+        "damage": 36450,
+        "armor": 582,
+        "coin_drop": 8000000,
+        "xp_drop": 204800,
+        "attribs": {
+          "underground_duration_low": 4,
+          "underground_duration_high": 8,
+          "aboveground_duration_low": 2,
+          "aboveground_duration_high": 4
+        }
+      },
+      "super": {
+        "hp": 75000000,
+        "speed": 0.8,
+        "damage": 109350,
+        "armor": 1746,
+        "coin_drop": 1000000000,
+        "xp_drop": 5000000,
+        "attribs": {
+          "underground_duration_low": 4,
+          "underground_duration_high": 8,
+          "aboveground_duration_low": 2,
+          "aboveground_duration_high": 4
+        }
+      }
+    }
+  },
   "ant_soldier_summoned": {
     "description": "Ant! Ant!",
     "rarities": {
@@ -668,9 +832,7 @@
         "armor": 1,
         "coin_drop": 1,
         "xp_drop": 30,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "unusual": {
         "hp": 125,
@@ -679,9 +841,7 @@
         "armor": 2,
         "coin_drop": 4,
         "xp_drop": 90,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "rare": {
         "hp": 467,
@@ -690,9 +850,7 @@
         "armor": 7,
         "coin_drop": 32,
         "xp_drop": 270,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "epic": {
         "hp": 1800,
@@ -701,9 +859,7 @@
         "armor": 22,
         "coin_drop": 384,
         "xp_drop": 810,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "legendary": {
         "hp": 10800,
@@ -712,9 +868,7 @@
         "armor": 65,
         "coin_drop": 8832,
         "xp_drop": 2430,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "mythic": {
         "hp": 105300,
@@ -723,9 +877,7 @@
         "armor": 194,
         "coin_drop": 441600,
         "xp_drop": 7290,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "ultra": {
         "hp": 1000000,
@@ -734,9 +886,7 @@
         "armor": 582,
         "coin_drop": 6000000,
         "xp_drop": 21870,
-        "attribs": {
-
-        }
+        "attribs": {}
       }
     }
   },
@@ -750,9 +900,7 @@
         "armor": 1,
         "coin_drop": 3,
         "xp_drop": 100,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "unusual": {
         "hp": 125,
@@ -761,9 +909,7 @@
         "armor": 2,
         "coin_drop": 12,
         "xp_drop": 300,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "rare": {
         "hp": 467,
@@ -772,9 +918,7 @@
         "armor": 7,
         "coin_drop": 60,
         "xp_drop": 900,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "epic": {
         "hp": 1800,
@@ -783,9 +927,7 @@
         "armor": 22,
         "coin_drop": 360,
         "xp_drop": 2700,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "legendary": {
         "hp": 10800,
@@ -794,9 +936,7 @@
         "armor": 65,
         "coin_drop": 3600,
         "xp_drop": 8100,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "mythic": {
         "hp": 105300,
@@ -805,9 +945,7 @@
         "armor": 194,
         "coin_drop": 72000,
         "xp_drop": 24300,
-        "attribs": {
-
-        }
+        "attribs": {}
       },
       "ultra": {
         "hp": 1000000,
@@ -816,9 +954,7 @@
         "armor": 194,
         "coin_drop": 6000000,
         "xp_drop": 72900,
-        "attribs": {
-
-        }
+        "attribs": {}
       }
     }
   },

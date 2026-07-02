@@ -397,8 +397,12 @@ void Map::tickDeadEntities() {
 }
 
 void Map::collision(Petal& petal, Mob& mob) {
+    if (mob.isUnderground())
+        return;
+
     if (petal.getCard().type == "web" && mob.getMob().type == "spider")
         return;  // Web doesn't effect spiders
+
     if (petal.getCard().type == "lightning") {
         LightningPetal& lightning = dynamic_cast<LightningPetal&>(petal);
         lightning.onHit(mob, m_mobs, m_effects);
@@ -540,9 +544,13 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     }
 
     // Mob
+    for (auto& mob : m_mobs)
+        if (mob->isUnderground())
+            target.draw(*mob, states);
+
     for (const std::string& rarity : RARITIES) {
         for (auto& mob : m_mobs) {
-            if (mob->getMob().rarity != rarity)
+            if (mob->isUnderground() || mob->getMob().rarity != rarity)
                 continue;
 
             if (m_info.input.keyH) {

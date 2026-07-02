@@ -13,6 +13,8 @@ std::unique_ptr<Mob> Mob::create(SharedInfo& info, const MobInfo& mob, std::list
         return std::make_unique<RoachMob>(info, mob);
     if (mob.type == "fly")
         return std::make_unique<FlyMob>(info, mob);
+    if (mob.type == "worm")
+        return std::make_unique<WormMob>(info, mob);
     return std::make_unique<Mob>(info, mob);
 }
 
@@ -59,8 +61,8 @@ void Mob::update() {
 void Mob::tick() {
     auto& player = m_info.playerState;
 
-    // Hit player logic
-    if (m_position >= 39.f) {
+    // Hit player
+    if (m_position >= 39.f && !isUnderground()) {
         player.hit(getAttribs().damage, getMob());
         hit(player.getBodyDamage(), DamageType::Lightning);
     }
@@ -112,6 +114,10 @@ float Mob::getSlowDownResistance() const {
 
 float Mob::getKnockbackResistance() const {
     return rarityKnockbackResistance.at(m_mob.rarity);
+}
+
+bool Mob::isUnderground() const {
+    return false;
 }
 
 void Mob::onDead() {
@@ -201,11 +207,7 @@ void HornetMob::update() {
     }
     }
 
-    // Animation
-    updateAnimation();
-
-    // Position
-    updatePosition();
+    Mob::update();
 }
 
 float HornetMob::getSpeed() const {
@@ -289,11 +291,7 @@ void RoachMob::update() {
     }
     }
 
-    // Animation
-    updateAnimation();
-
-    // Position
-    updatePosition();
+    Mob::update();
 }
 
 float RoachMob::getSpeed() const {
@@ -329,4 +327,44 @@ void FlyMob::hit(int damage, DamageType type) {
     if (type == DamageType::Normal && randomUniform(0.f, 1.f) <= getAttrib("evasion"))
         return;
     Mob::hit(damage, type);
+}
+
+// Worm
+void WormMob::nextDuration() {
+    if (!m_timerStarted) {
+        m_timerStarted = true;
+        if (m_state == State::AboveGround) {
+            m_currDuration = randomUniform(getAttrib("aboveground_duration_low"), getAttrib("aboveground_duration_high"));
+        }
+        else {
+            m_currDuration = randomUniform(getAttrib("underground_duration_low"), getAttrib("underground_duration_high"));
+        }
+    }
+}
+
+void WormMob::update() {
+    nextDuration();
+    m_timer += m_info.dt;
+    
+    if (m_timer.asSeconds() >= m_currDuration) {
+        m_state = (m_state == State::AboveGround) ? State::Underground : State::AboveGround;
+        m_timer = sf::Time::Zero;
+        m_timerStarted = false;
+    }
+    
+    // Texture
+    if (m_state == State::Underground)
+        m_sprite.setTexture(AssetManager::getMobTexture("worm_underground"));
+    else
+        m_sprite.setTexture(AssetManager::getMobTexture("worm"));
+    
+    Mob::update();
+}
+
+float WormMob::getSpeed() const {
+    return (m_state == State::Underground) ? getAttribs().speed : 0.f;
+}
+
+bool WormMob::isUnderground() const {
+    return m_state == State::Underground;
 }

@@ -97,6 +97,8 @@ std::optional<std::list<std::unique_ptr<Mob>>::const_iterator> ShootTower::getNe
     float nearestDistSquared = std::numeric_limits<float>::max();
 
     for (auto it = mobs.begin(); it != mobs.end(); it++) {
+        if (it->get()->isUnderground()) continue;  // Cannot target mobs underground
+
         float distSquared = getDistanceSquare(towerPos, it->get()->getPosition());
 
         if (distSquared <= rangeSquared && distSquared < nearestDistSquared) {
@@ -212,6 +214,8 @@ MultiShotTower::getTargets(const std::list<std::unique_ptr<Mob>>& mobs) const {
         float>> best;
 
     for (auto it = mobs.begin(); it != mobs.end(); it++) {
+        if (it->get()->isUnderground()) continue;  // Do not target mobs underground
+
         float d2 = getDistanceSquare(towerPos, it->get()->getPosition());
         if (d2 > rangeSq) continue;
 
@@ -521,6 +525,9 @@ void UraniumTower::update() {
 }
 
 void UraniumTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {
+    if (m_timer < TICK * 2.f)  // upadte per two ticks
+        return;
+    
     float range = getAttrib("radius") * MapInfo::squareSize.x;
     float rangeSquared = range * range;
     auto towerPos = getPosition();
@@ -532,6 +539,9 @@ void UraniumTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::li
     m_damageAcc -= damage;
 
     for (auto it = mobs.begin(); it != mobs.end(); it++) {
+        // Uranium can target mobs undergound
+        // if (it->get()->isUnderground()) continue;
+
         float distSquared = getDistanceSquare(towerPos, it->get()->getPosition());
 
         if (distSquared <= rangeSquared) {

@@ -2,18 +2,15 @@
 #include "AssetManager.hpp"
 
 void SpriteCollisionManager::load() {
-    // Mobs
     const TexEntry& mobs = AssetManager::getEntry().get("mobs");
     for (const auto& [_, sub] : mobs.subs)
         if (sub->isTexture)
             getInstance().addTexture(*sub->tex);
 
-    // Petals
     const TexEntry& petals = AssetManager::getEntry().get("petals");
-    for (const auto& [_, sub] : petals.subs) {
+    for (const auto& [_, sub] : petals.subs)
         if (sub->isTexture)
             getInstance().addTexture(*sub->tex);
-    }
 }
 
 sf::FloatRect SpriteCollisionManager::getTrimmedBounds(const sf::Texture& texture) {
@@ -21,8 +18,7 @@ sf::FloatRect SpriteCollisionManager::getTrimmedBounds(const sf::Texture& textur
 }
 
 sf::FloatRect SpriteCollisionManager::getTrimmedBounds(const sf::Sprite& sprite) {
-    const sf::Texture* tex = &sprite.getTexture();
-    return sprite.getTransform().transformRect(getInstance()._getTrimmedBounds(*tex));
+    return sprite.getTransform().transformRect(getInstance()._getTrimmedBounds(sprite.getTexture()));
 }
 
 bool SpriteCollisionManager::isCollide(const sf::Sprite& a, const sf::Sprite& b) {
@@ -35,16 +31,14 @@ SpriteCollisionManager& SpriteCollisionManager::getInstance() {
 }
 
 sf::FloatRect SpriteCollisionManager::_getTrimmedBounds(const sf::Texture& texture) {
-    if (m_trimmedBounds.find(&texture) == m_trimmedBounds.end())
+    if (!m_trimmedBounds.contains(&texture))
         addTexture(texture);
-
     return m_trimmedBounds.at(&texture);
 }
 
-const std::vector<bool>& SpriteCollisionManager::_getAlphaMask(const sf::Texture& texture) {
-    if (m_alphaMasks.find(&texture) == m_alphaMasks.end())
+const std::vector<uint8_t>& SpriteCollisionManager::_getAlphaMask(const sf::Texture& texture) {
+    if (!m_alphaMasks.contains(&texture))
         addTexture(texture);
-
     return m_alphaMasks.at(&texture);
 }
 
@@ -52,43 +46,70 @@ bool SpriteCollisionManager::_isCollide(const sf::Sprite& a, const sf::Sprite& b
     const sf::Texture* texA = &a.getTexture();
     const sf::Texture* texB = &b.getTexture();
 
-    sf::IntRect subRectA = a.getTextureRect();
-    sf::IntRect subRectB = b.getTextureRect();
-
     const auto& maskA = _getAlphaMask(*texA);
     const auto& maskB = _getAlphaMask(*texB);
 
-    sf::FloatRect boundsA = getTrimmedBounds(a);
-    sf::FloatRect boundsB = getTrimmedBounds(b);
+    const auto sizeA = texA->getSize();
+    const auto sizeB = texB->getSize();
 
-    std::optional optionalIntersection = boundsA.findIntersection(boundsB);
-    if (!optionalIntersection)
-        return false;
-    sf::FloatRect intersection = *optionalIntersection;
+    const int wA = (int)sizeA.x, hA = (int)sizeA.y;
+    const int wB = (int)sizeB.x, hB = (int)sizeB.y;
 
-    int intervalX = std::clamp(int(intersection.size.x / 8.f) - 1, 1, 10);
-    int intervalY = std::clamp(int(intersection.size.y / 8.f) - 1, 1, 10);
+    const auto subA = a.getTextureRect();
+    const auto subB = b.getTextureRect();
 
-    for (int i = int(intersection.position.x); i < int(intersection.position.x + intersection.size.x); i += intervalX) {
-        for (int j = int(intersection.position.y); j < int(intersection.position.y + intersection.size.y); j += intervalY) {
-            sf::Vector2f p(i + 0.5f, j + 0.5f);
-            sf::Vector2f localA = a.getInverseTransform().transformPoint(p);
-            sf::Vector2f localB = b.getInverseTransform().transformPoint(p);
+    auto inter = getTrimmedBounds(a).findIntersection(getTrimmedBounds(b));
+    if (!inter) return false;
 
-            int xA = int(localA.x + subRectA.position.x);
-            int yA = int(localA.y + subRectA.position.y);
-            int xB = int(localB.x + subRectB.position.x);
-            int yB = int(localB.y + subRectB.position.y);
+    const sf::FloatRect r = *inter;
 
-            if (xA >= 0 && yA >= 0 && xA < int(texA->getSize().x) && yA < int(texA->getSize().y) &&
-                xB >= 0 && yB >= 0 && xB < int(texB->getSize().x) && yB < int(texB->getSize().y)) {
+    const int stepX = std::clamp((int)(r.size.x / 8.f) - 1, 1, 10);
+    const int stepY = std::clamp((int)(r.size.y / 8.f) - 1, 1, 10);
 
-                if (maskA[yA * texA->getSize().x + xA] &&
-                    maskB[yB * texB->getSize().x + xB]) {
+    const auto& invA = a.getInverseTransform();
+    const auto& invB = b.getInverseTransform();
+
+    const int sx = (int)r.position.x;
+    const int sy = (int)r.position.y;
+    const int ex = (int)(r.position.x + r.size.x);
+    const int ey = (int)(r.position.y + r.size.y);
+
+    const sf::Vector2f origin((float)sx + 0.5f, (float)sy + 0.5f);
+
+    sf::Vector2f rowA = invA.transformPoint(origin);
+    sf::Vector2f rowB = invB.transformPoint(origin);
+
+    const sf::Vector2f dxA = invA.transformPoint({ origin.x + (float)stepX,origin.y }) - rowA;
+    const sf::Vector2f dyA = invA.transformPoint({ origin.x,origin.y + (float)stepY }) - rowA;
+
+    const sf::Vector2f dxB = invB.transformPoint({ origin.x + (float)stepX,origin.y }) - rowB;
+    const sf::Vector2f dyB = invB.transformPoint({ origin.x,origin.y + (float)stepY }) - rowB;
+
+    for (int y = sy; y < ey; y += stepY) {
+        sf::Vector2f localA = rowA;
+        sf::Vector2f localB = rowB;
+
+        for (int x = sx; x < ex; x += stepX) {
+
+            const int xA = (int)localA.x + subA.position.x;
+            const int yA = (int)localA.y + subA.position.y;
+
+            const int xB = (int)localB.x + subB.position.x;
+            const int yB = (int)localB.y + subB.position.y;
+
+            if ((unsigned)xA < sizeA.x && (unsigned)yA < sizeA.y &&
+                (unsigned)xB < sizeB.x && (unsigned)yB < sizeB.y) {
+
+                if (maskA[yA * wA + xA] && maskB[yB * wB + xB])
                     return true;
-                }
             }
+
+            localA += dxA;
+            localB += dxB;
         }
+
+        rowA += dyA;
+        rowB += dyB;
     }
 
     return false;
@@ -128,10 +149,10 @@ void SpriteCollisionManager::addTexture(const sf::Texture& texture) {
     m_trimmedBounds[&texture] = bounds;
 
     // Alpha mask
-    std::vector<bool> alphaMask(w * h);
+    std::vector<uint8_t> alphaMask(w * h);
     for (unsigned y = 0; y < h; y++) {
         for (unsigned x = 0; x < w; x++) {
-            alphaMask[y * w + x] = img.getPixel({ x, y }).a > alphaThreshold;
+            alphaMask[y * w + x] = img.getPixel({ x, y }).a > alphaThreshold ? 1 : 0;
         }
     }
 

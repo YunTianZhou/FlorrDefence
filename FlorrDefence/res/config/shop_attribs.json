@@ -15,12 +15,12 @@
     "banned_cards": []
   },
   "ultra": {
-    "product_count": 3,
+    "product_count": 100,
     "refresh_interval": 60,
     "banned_cards": []
   },
   "unique": {
-    "product_count": 2,
+    "product_count": 100,
     "refresh_interval": 300,
     "banned_cards": []
   }

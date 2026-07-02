@@ -15,7 +15,7 @@ private:
     static SpriteCollisionManager& getInstance();
 
     sf::FloatRect _getTrimmedBounds(const sf::Texture& texture);
-    const std::vector<bool>& _getAlphaMask(const sf::Texture& texture);
+    const std::vector<uint8_t>& _getAlphaMask(const sf::Texture& texture);
     bool _isCollide(const sf::Sprite& a, const sf::Sprite& b);
 
 private:
@@ -26,5 +26,5 @@ public:
 
 private:
     std::unordered_map<const sf::Texture*, sf::FloatRect> m_trimmedBounds;
-    std::unordered_map<const sf::Texture*, std::vector<bool>> m_alphaMasks;
+    std::unordered_map<const sf::Texture*, std::vector<uint8_t>> m_alphaMasks;
 };

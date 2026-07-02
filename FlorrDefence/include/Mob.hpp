@@ -19,6 +19,7 @@ public:
     virtual float getSpeed() const;
     virtual float getSlowDownResistance() const;
     virtual float getKnockbackResistance() const;
+    virtual bool isUnderground() const;
 
     virtual void onDead() override;
 
@@ -135,4 +136,30 @@ public:
 
 private:
     float m_headDeg = 0.f;
+};
+
+class WormMob : public Mob {
+private:
+    enum class State {
+        AboveGround,
+        Underground
+    };
+
+public:
+    using Mob::Mob;
+
+    void update() override;
+
+    float getSpeed() const override;
+
+    bool isUnderground() const override;
+
+private:
+    void nextDuration();
+
+private:
+    sf::Time m_timer;
+    float m_currDuration = 0.f;
+    State m_state = State::Underground;
+    bool m_timerStarted = false;
 };

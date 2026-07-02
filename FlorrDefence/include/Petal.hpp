@@ -106,6 +106,7 @@ protected:
 private:
 	MobInfo m_mob;
 	float m_position;
+	float m_speedMultiplier;
 };
 
 class WebPetal : public DefencePetal {
