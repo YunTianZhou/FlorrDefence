@@ -35,6 +35,11 @@
       255,
       231
     ],
+    "purple": [
+      206,
+      118,
+      219
+    ],
     "gray": [
       102,
       102,
@@ -1042,10 +1047,10 @@
       "description": "NUCLEAR RADIATION WARNING!!!",
       "labels": [
         {
-          "label": "Damage",
-          "label_color": "red",
+          "label": "Poison",
+          "label_color": "purple",
           "value": "damage",
-          "value_type": "int"
+          "value_type": "per_second"
         },
         {
           "label": "Radius",

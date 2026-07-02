@@ -500,7 +500,6 @@ UraniumTower::UraniumTower(SharedInfo& info, const CardInfo& card)
     : ShootTower(info, card) {
 
     // Circle
-    m_circle.setPointCount(40);
     m_circle.setPosition(getPosition() + MapInfo::squareSize / 2.f);
     m_circle.setFillColor(sf::Color(120, 180, 60, 80));
 
