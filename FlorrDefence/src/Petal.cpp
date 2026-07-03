@@ -93,7 +93,7 @@ ShootPetal::ShootPetal(SharedInfo& info, const CardInfo& card, sf::Vector2f star
 	}
 }
 
-ShootPetal::ShootPetal(SharedInfo& info, const CardInfo& card) 
+ShootPetal::ShootPetal(SharedInfo& info, const CardInfo& card)
 	: Petal(info, card) {}
 
 void ShootPetal::update() {
@@ -171,7 +171,7 @@ void ShootPetal::updateDirection(float trunSpeed) {
 
 	float turnRadPerSec = trunSpeed * (PI / 180.f);
 	float maxStep = turnRadPerSec * m_info.dt.asSeconds();
-	
+
 	float step = std::max(-maxStep, std::min(maxStep, diff));
 	float next = current + step;
 	m_direction = sf::radians(next);
@@ -312,8 +312,7 @@ float WebPetal::getDelta() const {
 
 // Triangle (Shoot)
 TrianglePetal::TrianglePetal(SharedInfo& info, const CardInfo& card, sf::Vector2f startPosition, std::list<std::unique_ptr<Mob>>::const_iterator target, int adjCount)
-	: ShootPetal(info, card, startPosition, target), m_adjCount(adjCount) {
-}
+	: ShootPetal(info, card, startPosition, target), m_adjCount(adjCount) {}
 
 int TrianglePetal::getDamage() const {
 	return Petal::getDamage() + (int)getAttrib("damage_increase") * m_adjCount;
@@ -330,7 +329,7 @@ void LightningPetal::onHit(Mob& mob, std::list<std::unique_ptr<Mob>>& mobs, std:
 
 	std::sort(targets.begin(), targets.end(), [](const MobsIt& a, const MobsIt& b) {
 		return (*a)->getPathPosition() < (*b)->getPathPosition();
-	});
+		});
 
 	int connected = -1;
 	float connectedDst = 0.f;
@@ -410,7 +409,7 @@ void JellyPetal::applyDebuff(Debuff& debuff) const {
 }
 
 // Dice (Shoot)
-int DicePetal::getDamage() const {	
+int DicePetal::getDamage() const {
 	float boostProb = boostBaseProb + boostIncreasePerLuck * m_info.playerState.buff.luck.apply(0);
 	if (randomUniform(0.f, 1.f) <= boostProb)
 		return ShootPetal::getDamage() * boostRate;
@@ -425,7 +424,7 @@ void BurPetal::applyDebuff(Debuff& debuff) const {
 }
 
 // Laser
-LaserPetal::LaserPetal(SharedInfo& info, const CardInfo& card, sf::Vector2i square, MapInfo& map, const std::list<std::unique_ptr<Mob>>& mobs) 
+LaserPetal::LaserPetal(SharedInfo& info, const CardInfo& card, sf::Vector2i square, MapInfo& map, const std::list<std::unique_ptr<Mob>>& mobs)
 	: ShootPetal(info, card), m_square(square), m_map(map), m_mobs(mobs) {
 
 	sf::Vector2f texSize = sf::Vector2f(m_sprite.getTexture().getSize());
@@ -438,7 +437,7 @@ LaserPetal::LaserPetal(SharedInfo& info, const CardInfo& card, sf::Vector2i squa
 	m_sprite.setOrigin({ half, half });
 	m_sprite.setPosition(MapInfo::getSquareCenter(square));
 
-	m_direction = sf::degrees(randomUniform(0.f, 360.f))  - sf::degrees(90.f);
+	m_direction = sf::degrees(randomUniform(0.f, 360.f)) - sf::degrees(90.f);
 	m_sprite.setRotation(m_direction + sf::degrees(90.f) - petalTilt.at(getCard().type));
 
 	m_info.laserMap[m_square.x][m_square.y] = true;
@@ -536,7 +535,7 @@ int ChipPetal::getArmor() const {
 }
 
 // Glass Petal
-GlassPetal::GlassPetal(SharedInfo& info, const CardInfo& card, sf::Vector2i square, const MapInfo& map) 
+GlassPetal::GlassPetal(SharedInfo& info, const CardInfo& card, sf::Vector2i square, const MapInfo& map)
 	: DefencePetal(info, card, square), m_map(map) {
 
 }

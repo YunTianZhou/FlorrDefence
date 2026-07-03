@@ -15,6 +15,10 @@ std::unique_ptr<Mob> Mob::create(SharedInfo& info, const MobInfo& mob, std::list
         return std::make_unique<FlyMob>(info, mob);
     if (mob.type == "worm")
         return std::make_unique<WormMob>(info, mob);
+    if (mob.type == "ant_queen")
+        return std::make_unique<AntQueenMob>(info, mob, mobs);
+    if (mob.type == "ant_egg")
+        return std::make_unique<AntEggMob>(info, mob, mobs);
     return std::make_unique<Mob>(info, mob);
 }
 
@@ -336,7 +340,7 @@ void WormMob::nextDuration() {
         if (m_state == State::AboveGround) {
             m_currDuration = randomUniform(getAttrib("aboveground_duration_low"), getAttrib("aboveground_duration_high"));
         }
-        else {
+        else {  // State::UnderGround
             m_currDuration = randomUniform(getAttrib("underground_duration_low"), getAttrib("underground_duration_high"));
         }
     }
@@ -367,4 +371,80 @@ float WormMob::getSpeed() const {
 
 bool WormMob::isUnderground() const {
     return m_state == State::Underground;
+}
+
+// Queen Ant
+AntQueenMob::AntQueenMob(SharedInfo& info, const MobInfo& mob, std::list<std::unique_ptr<Mob>>& mobs)
+    : m_mobs(mobs), Mob(info, mob) {
+    nextDuration();
+}
+
+void AntQueenMob::update() {
+    m_timer += m_info.dt;
+    const float elapsed = m_timer.asSeconds();
+
+    switch (m_state) {
+    case State::Moving: {
+        if (m_position < 36.f && elapsed >= m_currDuration) {
+            m_state = State::Spawning;
+            nextDuration();
+            m_timer = sf::Time::Zero;
+        }
+        break;
+    }
+
+    case State::Spawning: {
+        if (elapsed >= m_currDuration) {
+            spawn();
+            m_state = State::Moving;
+            nextDuration();
+            m_timer = sf::Time::Zero;
+        }
+        break;
+    }
+    }
+
+    Mob::update();
+}
+
+float AntQueenMob::getSpeed() const {
+    if (m_state == State::Moving)
+        return getAttribs().speed;
+    else
+        return 0.f;
+};
+
+void AntQueenMob::nextDuration() {
+    if (m_state == State::Moving) {
+        m_currDuration = randomUniform(getAttrib("move_duration_low"), getAttrib("move_duration_high"));
+    }
+    else {  // State::Spawning
+        m_currDuration = randomUniform(getAttrib("spawn_duration_low"), getAttrib("spawn_duration_high"));
+    }
+}
+
+void AntQueenMob::spawn() {
+    m_mobs.push_back(std::make_unique<AntEggMob>(m_info, MobInfo{ m_mob.rarity, "ant_egg" }, m_mobs, m_position));
+}
+
+// Ant Egg
+AntEggMob::AntEggMob(SharedInfo& info, const MobInfo& mob, std::list<std::unique_ptr<Mob>>& mobs, float startPosition)
+    : m_mobs(mobs), Mob(info, mob, startPosition) {
+    setScale(m_scale * 0.5f);
+}
+
+void AntEggMob::update() {
+    m_timer += m_info.dt;
+    if (m_timer.asSeconds() > getAttrib("max_dutation")) {
+        kill();
+        return;
+    }
+
+    Mob::update();
+}
+
+void AntEggMob::onDead() {
+    float spawnChance = getAttrib("spawn_chance");
+    if (randomUniform(0.f, 1.f) <= spawnChance)
+        m_mobs.push_back(std::make_unique<Mob>(m_info, MobInfo{ m_mob.rarity, "ant_baby" }, m_position));
 }

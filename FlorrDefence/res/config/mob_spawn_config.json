@@ -39,6 +39,11 @@
           "type": "worm",
           "rarity": "common",
           "weight": 0.1
+        },
+        {
+          "type": "ant_queen",
+          "rarity": "common",
+          "weight": 0.1
         }
       ]
     },
@@ -868,6 +873,11 @@
           "type": "worm",
           "rarity": "super",
           "weight": 0.01
+        },
+        {
+          "type": "ant_queen",
+          "rarity": "ultra",
+          "weight": 0.05
         }
       ]
     }

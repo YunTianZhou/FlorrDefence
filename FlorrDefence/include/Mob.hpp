@@ -163,3 +163,44 @@ private:
     State m_state = State::Underground;
     bool m_timerStarted = false;
 };
+
+class AntQueenMob : public Mob {
+private:
+    enum class State {
+        Moving,
+        Spawning
+    };
+
+public:
+    AntQueenMob(SharedInfo& info, const MobInfo& mob, std::list<std::unique_ptr<Mob>>& mobs);
+
+    void update() override;
+
+    float getSpeed() const;
+
+private:
+    void shoot();
+
+    void nextDuration();
+
+    void spawn();
+
+private:
+    std::list<std::unique_ptr<Mob>>& m_mobs;
+    sf::Time m_timer;
+    float m_currDuration = 0.f;
+    State m_state = State::Moving;
+};
+
+class AntEggMob : public Mob {
+public:
+    AntEggMob(SharedInfo& info, const MobInfo& mob, std::list<std::unique_ptr<Mob>>& mobs, float startPosition = 0.f);
+
+    void update() override;
+
+    void onDead() override;
+
+private:
+    std::list<std::unique_ptr<Mob>>& m_mobs;
+    sf::Time m_timer;
+};

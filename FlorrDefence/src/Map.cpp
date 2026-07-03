@@ -548,17 +548,27 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const {
         if (mob->isUnderground())
             target.draw(*mob, states);
 
-    for (const std::string& rarity : RARITIES) {
-        for (auto& mob : m_mobs) {
-            if (mob->isUnderground() || mob->getMob().rarity != rarity)
-                continue;
+    m_sortedMobs.clear();
 
-            if (m_info.input.keyH) {
-                drawMobDebugBox(target, states, *mob);
-            }
+    for (auto& mob : m_mobs)
+        if (!mob->isUnderground())
+            m_sortedMobs.push_back(mob.get());
 
-            target.draw(*mob, states);
-        }
+    std::sort(m_sortedMobs.begin(), m_sortedMobs.end(), [](const Mob* a, const Mob* b) {
+        return std::tuple(
+            a->getMob().type != "ant_egg",
+            RARITIE_LEVELS.at(a->getMob().rarity)
+        ) < std::tuple(
+            b->getMob().type != "ant_egg",
+            RARITIE_LEVELS.at(b->getMob().rarity)
+        );
+    });
+
+    for (Mob* mob : m_sortedMobs) {
+        if (m_info.input.keyH)
+            drawMobDebugBox(target, states, *mob);
+
+        target.draw(*mob, states);
     }
 
     // Dead Mobs

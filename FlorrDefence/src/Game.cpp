@@ -12,6 +12,7 @@ Game::Game(sf::RenderWindow& window)
 bool Game::run() {
     m_record.try_load();
     m_info.dtClock.restart();
+    m_map.getMapInfo().tick();  // init buff to prevent problems
 
     while (m_window.isOpen() ) {
         handleEvents();

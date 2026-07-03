@@ -118,7 +118,7 @@ inline void to_json(json& j, const PlayerState& p) {
 inline void from_json(const json& j, PlayerState& p) {
     p.init();
 
-    p.hpLimit = j.value("hpLimit", 0);
+    p.hpLimit = p.prevHpLimit = j.value("hpLimit", 0);
     p.hp = j.value("hp", 0);
     p.shield = j.value("shield", 0);
     p.xp = j.value("xp", 0);

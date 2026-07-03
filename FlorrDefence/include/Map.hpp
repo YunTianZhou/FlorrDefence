@@ -140,6 +140,8 @@ private:
 	std::list<std::unique_ptr<Effect>> m_effects;
 	sf::Time m_tickTimer;
 
+	mutable std::vector<Mob*> m_sortedMobs;
+
 	SpawnManager m_spawner;
 	
 	std::optional<Mob*> m_trackedBoss;

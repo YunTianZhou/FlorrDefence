@@ -42,14 +42,13 @@ public:
 protected:
     SharedInfo& m_info;
     int m_hp = 0;
-    int getHP() const { return m_hp; }
     mutable sf::Sprite m_sprite;
     sf::Angle m_rotation = sf::degrees(45.f);
     sf::Angle m_rotationOffset = sf::degrees(0.f);
-
-private:
     float m_scale = 1.f;
     float m_alpha = 1.f;
+
+private:
     sf::Color m_flashColor;
     float m_flashBrightness = 1.f;
     sf::Time m_flashTime;
