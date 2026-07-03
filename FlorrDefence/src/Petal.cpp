@@ -222,7 +222,7 @@ MobPetal::MobPetal(SharedInfo& info, const CardInfo& card, float startPosition)
 	: Petal(info, card, AssetManager::getPetalTexture(TOWER_SUMMON_MOBS.at(card.type))),
 	m_mob({ RARITIES[(int)TOWER_ATTRIBS[card.type].rarities[card.rarity].attribs["mob_rarity"]], TOWER_SUMMON_MOBS.at(card.type) }),
 	m_position(startPosition),
-	m_speedMultiplier(randomUniform(0.85f, 1.15f)) {
+	m_speedMultiplier(randomUniform(0.9f, 1.1f)) {
 	float scale = MOB_RARITY_SCALES.at(m_mob.rarity) * 1.5f;
 	setScale(scale);
 
