@@ -49,6 +49,8 @@ Mob::Mob(SharedInfo& info, const MobInfo& mob, float startPosition)
     setScale(MOB_RARITY_SCALES.at(mob.rarity));
     setFlash(sf::Color(255, 200, 200), 0.9f);
     m_hp = getAttribs().hp;
+
+    updatePathPosition(m_position);  // prevent flashing
 }
 
 void Mob::update() {

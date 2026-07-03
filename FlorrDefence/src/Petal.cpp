@@ -231,6 +231,8 @@ MobPetal::MobPetal(SharedInfo& info, const CardInfo& card, float startPosition)
 	if (hasAttrib("rotation_speed"))
 		// Random initial direction
 		setRotationOffset(sf::degrees(randomUniform(0.f, 360.f)));
+
+	updatePathPosition(m_position);  // prevent flashing
 }
 
 void MobPetal::update() {
