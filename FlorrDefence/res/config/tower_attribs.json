@@ -122,7 +122,7 @@
       "unique": {
         "price": 0,
         "attribs": {
-          "reload": 5.0,
+          "reload": 7.0,
           "copy": 4,
           "mob_rarity": 6
         }
@@ -2324,70 +2324,78 @@
   "stick": {
     "type": "summon",
     "rarities": {
-      "common": {
-        "price": 20,
-        "attribs": {
-          "reload": 8.0,
-          "copy": 4,
-          "mob_rarity": 0
+        "common": {
+            "price": 50,
+            "attribs": {
+                "reload": 8.0,
+                "copy": 4,
+                "mob_rarity": 0
+            }
+        },
+        "unusual": {
+            "price": 350,
+            "attribs": {
+                "reload": 12.0,
+                "copy": 4,
+                "mob_rarity": 1
+            }
+        },
+        "rare": {
+            "price": 4200,
+            "attribs": {
+                "reload": 16.0,
+                "copy": 4,
+                "mob_rarity": 2
+            }
+        },
+        "epic": {
+            "price": 75600,
+            "attribs": {
+                "reload": 20.0,
+                "copy": 4,
+                "mob_rarity": 3
+            }
+        },
+        "legendary": {
+            "price": 2646000,
+            "attribs": {
+                "reload": 24.0,
+                "copy": 4,
+                "mob_rarity": 4
+            }
+        },
+        "mythic": {
+            "price": 185220000,
+            "attribs": {
+                "reload": 10.0,
+                "copy": 4,
+                "mob_rarity": 4
+            }
+        },
+        "ultra": {
+            "price": 24078600000,
+            "attribs": {
+                "reload": 20.0,
+                "copy": 4,
+                "mob_rarity": 5
+            }
+        },
+        "super": {
+            "price": 5847660000000,
+            "attribs": {
+                "reload": 40.0,
+                "copy": 4,
+                "mob_rarity": 6
+            }
+        },
+        "unique": {
+            "price": 0,
+            "attribs": {
+                "reload": 10.0,
+                "copy": 4,
+                "mob_rarity": 6
+            }
         }
-      },
-      "unusual": {
-        "price": 140,
-        "attribs": {
-          "reload": 12.0,
-          "copy": 4,
-          "mob_rarity": 1
-        }
-      },
-      "rare": {
-        "price": 1680,
-        "attribs": {
-          "reload": 16.0,
-          "copy": 4,
-          "mob_rarity": 2
-        }
-      },
-      "epic": {
-        "price": 30240,
-        "attribs": {
-          "reload": 20.0,
-          "copy": 4,
-          "mob_rarity": 3
-        }
-      },
-      "legendary": {
-        "price": 1118880,
-        "attribs": {
-          "reload": 25.0,
-          "copy": 4,
-          "mob_rarity": 4
-        }
-      },
-      "mythic": {
-        "price": 78321600,
-        "attribs": {
-          "reload": 8.0,
-          "copy": 4,
-          "mob_rarity": 4
-        }
-      },
-      "ultra": {
-        "price": 10181808000,
-        "attribs": {
-          "reload": 20.0,
-          "copy": 4,
-          "mob_rarity": 5
-        }
-      },
-      "super": {
-        "price": 2647270100000,
-        "attribs": {
-          "reload": 2.0,
-          "copy": 4,
-          "mob_rarity": 5
-        }
-      }
     }
   },
   "stinger": {

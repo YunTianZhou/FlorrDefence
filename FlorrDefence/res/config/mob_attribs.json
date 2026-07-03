@@ -1310,9 +1310,9 @@
         "attribs": {}
       },
       "ultra": {
-        "hp": 1000000,
+        "hp": 333333,
         "speed": 1.0,
-        "damage": 21870,
+        "damage": 65610,
         "armor": 582,
         "coin_drop": 6000000,
         "xp_drop": 21870,
@@ -1377,24 +1377,24 @@
         "xp_drop": 24300,
         "attribs": {}
       },
-      "ultra": {
-        "hp": 1000000,
-        "speed": 1.5,
-        "damage": 65610,
-        "armor": 194,
-        "coin_drop": 6000000,
-        "xp_drop": 72900,
-        "attribs": {}
-      }
+        "ultra": {
+            "hp": 333333,
+            "speed": 1.5,
+            "damage": 196830,
+            "armor": 194,
+            "coin_drop": 6000000,
+            "xp_drop": 72900,
+            "attribs": {}
+        }
     }
   },
   "sandstorm_summoned": {
     "description": "Why does it even exist?",
     "rarities": {
       "common": {
-        "hp": 33,
+        "hp": 25,
         "speed": 1.5,
-        "damage": 90,
+        "damage": 120,
         "armor": 1,
         "coin_drop": 3,
         "xp_drop": 100,
@@ -1403,9 +1403,9 @@
         }
       },
       "unusual": {
-        "hp": 125,
+        "hp": 94,
         "speed": 1.5,
-        "damage": 270,
+        "damage": 360,
         "armor": 2,
         "coin_drop": 12,
         "xp_drop": 300,
@@ -1414,9 +1414,9 @@
         }
       },
       "rare": {
-        "hp": 467,
+        "hp": 338,
         "speed": 1.5,
-        "damage": 810,
+        "damage": 1080,
         "armor": 7,
         "coin_drop": 60,
         "xp_drop": 900,
@@ -1425,9 +1425,9 @@
         }
       },
       "epic": {
-        "hp": 1800,
+        "hp": 1350,
         "speed": 1.5,
-        "damage": 2430,
+        "damage": 3240,
         "armor": 22,
         "coin_drop": 360,
         "xp_drop": 2700,
@@ -1436,9 +1436,9 @@
         }
       },
       "legendary": {
-        "hp": 10800,
+        "hp": 8100,
         "speed": 1.5,
-        "damage": 7290,
+        "damage": 9720,
         "armor": 65,
         "coin_drop": 3600,
         "xp_drop": 8100,
@@ -1447,9 +1447,9 @@
         }
       },
       "mythic": {
-        "hp": 105300,
+        "hp": 78975,
         "speed": 1.5,
-        "damage": 21870,
+        "damage": 29160,
         "armor": 194,
         "coin_drop": 72000,
         "xp_drop": 24300,
@@ -1457,17 +1457,17 @@
           "rotation_speed": 240
         }
       },
-      "ultra": {
-        "hp": 1000000,
-        "speed": 1.5,
-        "damage": 65610,
-        "armor": 194,
-        "coin_drop": 6000000,
-        "xp_drop": 72900,
-        "attribs": {
-          "rotation_speed": 240
+        "ultra": {
+            "hp": 300000,
+            "speed": 1.5,
+            "damage": 262440,
+            "armor": 194,
+            "coin_drop": 6000000,
+            "xp_drop": 72900,
+            "attribs": {
+                "rotation_speed": 240
+            }
         }
-      }
     }
   }
 }
