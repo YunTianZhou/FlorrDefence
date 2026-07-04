@@ -9,6 +9,7 @@ public:
 
 	void setCard(const CardInfo& card);
 	virtual void setLength(float length);
+	void setAlpha(float alpha);
 	void setDisabled(bool disability);
 	const float getLength() const { return m_length; }
 	sf::FloatRect getRect() const { return sf::FloatRect(getPosition(), m_backgroundRect.getSize()); };
@@ -25,6 +26,7 @@ protected:
 	sf::RectangleShape m_texRect;
 	float m_length = 0.f;
 	float m_reload = 0.f;
+	float m_alpha = 1.f;
 	bool m_disabled = false;
 };
 

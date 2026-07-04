@@ -21,6 +21,11 @@ void Card::setLength(float length) {
     m_backgroundRect.setRadius(length * (30.f / 922.f));
 }
 
+void Card::setAlpha(float alpha) {
+    m_alpha = alpha;
+    updateColor();
+}
+
 void Card::setDisabled(bool disabled) {
     if (m_disabled == disabled) return;
     m_disabled = disabled;
@@ -29,8 +34,14 @@ void Card::setDisabled(bool disabled) {
 
 void Card::updateColor() {
     const std::string key = m_disabled ? "disabled" : m_card.rarity;
-    m_backgroundRect.setFillColor(LIGHT_COLORS.at(key));
-    m_backgroundRect.setOutlineColor(DARK_COLORS.at(key));
+
+    sf::Color light = LIGHT_COLORS.at(key);
+    light.a *= m_alpha;
+    m_backgroundRect.setFillColor(light);
+
+    sf::Color dark = DARK_COLORS.at(key);
+    dark.a *= m_alpha;
+    m_backgroundRect.setOutlineColor(dark);
 }
 
 void Card::draw(sf::RenderTarget& target, sf::RenderStates states) const {
@@ -99,7 +110,10 @@ void TowerCard::setReload(float reload, bool top) {
 }
 
 void TowerCard::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-    m_reloadRect.setFillColor(DARK_COLORS.at(getCard().rarity));
+    sf::Color color = DARK_COLORS.at(getCard().rarity);
+    color.a *= m_alpha;
+    m_reloadRect.setFillColor(color);
+
     float outline = getLength() * (77.f / 922.f);
     float inside = getLength() - outline * 2;
     m_reloadRect.setSize({ inside, inside * (1.f - m_reload) });
@@ -109,7 +123,7 @@ void TowerCard::draw(sf::RenderTarget& target, sf::RenderStates states) const {
         m_reloadRect.setPosition({ outline, getLength() - outline - m_reloadRect.getSize().y });
 
     states.transform *= getTransform();
-    
+   
     target.draw(m_backgroundRect, states);
     target.draw(m_reloadRect, states);
     target.draw(m_texRect, states);

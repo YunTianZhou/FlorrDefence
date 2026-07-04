@@ -112,7 +112,9 @@ std::optional<std::list<std::unique_ptr<Mob>>::const_iterator> ShootTower::getNe
 
 // DefenceTower
 DefenceTower::DefenceTower(SharedInfo& info, const CardInfo& card, sf::Vector2i square)
-    : m_square(square), Tower(info, card) {}
+    : m_square(square), Tower(info, card) {
+    m_card.setAlpha(0.8f);
+}
 
 void DefenceTower::update() {
     if (auto defence = m_info.defencePetalMap[m_square.x][m_square.y]) {
