@@ -102,6 +102,8 @@ void Craft::onEvent(const sf::Event& event) {
 							(m_craftStack.card == cards.card && m_craftStack.count < 5 && 
 								m_craftState != "succeeded" ? m_craftStack.count : 0));
 					insertCards(cards);
+					if (m_info.input.keyCtrl)
+						startCraft();
 				}
 			}
 
