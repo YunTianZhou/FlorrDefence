@@ -159,7 +159,7 @@ Shop::Shop(SharedInfo& info)
 void Shop::update() {
 	// Menu
 	for (int i = 0; i < m_menu.getSize(); i++) {
-		bool disable = i > m_info.playerState.buff.shop.apply(0);
+		bool disable = RARITIE_LEVELS.at(SHOP_RARITIES[i]) > (int)round(m_info.playerState.buff.shop.apply(1));
 		m_menu.getButton(i).setDisabled(disable);
 	}
 	m_menu.update(m_info.mouseWorldPosition);
@@ -209,7 +209,7 @@ void Shop::update() {
 
 void Shop::updateShopInfo() {
 	for (int i = 0; i < m_menu.getSize(); i++) {
-		bool disable = i > m_info.playerState.buff.shop.apply(0);
+		bool disable = RARITIE_LEVELS.at(SHOP_RARITIES[i]) > (int)round(m_info.playerState.buff.shop.apply(1));
 		if (!disable)
 			if (m_shops.at(SHOP_RARITIES[i]).update())
 				m_updated = false;

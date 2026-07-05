@@ -150,7 +150,7 @@
     "x": 140.0,
     "y": 550.0,
     "buff_type": "damage",
-    "buff_value": 0.1,
+    "buff_value": 0.2,
     "xp_cost": 20
   },
   {
@@ -161,7 +161,7 @@
     "x": 140.0,
     "y": 650.0,
     "buff_type": "damage",
-    "buff_value": 0.15,
+    "buff_value": 0.3,
     "xp_cost": 25
   },
   {
@@ -172,7 +172,7 @@
     "x": 140.0,
     "y": 750.0,
     "buff_type": "damage",
-    "buff_value": 0.15,
+    "buff_value": 0.4,
     "xp_cost": 30
   },
   {
@@ -183,7 +183,7 @@
     "x": 140.0,
     "y": 850.0,
     "buff_type": "damage",
-    "buff_value": 0.2,
+    "buff_value": 0.6,
     "xp_cost": 40
   },
   {
@@ -205,7 +205,7 @@
     "x": 320.0,
     "y": 150.0,
     "buff_type": "summoner",
-    "buff_value": 0.2,
+    "buff_value": 0.4,
     "xp_cost": 2
   },
   {
@@ -216,7 +216,7 @@
     "x": 320.0,
     "y": 250.0,
     "buff_type": "summoner",
-    "buff_value": 0.3,
+    "buff_value": 0.6,
     "xp_cost": 3
   },
   {
@@ -227,7 +227,7 @@
     "x": 320.0,
     "y": 350.0,
     "buff_type": "summoner",
-    "buff_value": 0.3,
+    "buff_value": 0.8,
     "xp_cost": 4
   },
   {
@@ -238,7 +238,7 @@
     "x": 320.0,
     "y": 450.0,
     "buff_type": "summoner",
-    "buff_value": 0.3,
+    "buff_value": 1.1,
     "xp_cost": 5
   },
   {
@@ -249,7 +249,7 @@
     "x": 320.0,
     "y": 550.0,
     "buff_type": "summoner",
-    "buff_value": 0.3,
+    "buff_value": 1.4,
     "xp_cost": 7
   },
   {
@@ -260,7 +260,7 @@
     "x": 320.0,
     "y": 650.0,
     "buff_type": "summoner",
-    "buff_value": 0.4,
+    "buff_value": 1.8,
     "xp_cost": 10
   },
   {
@@ -271,7 +271,7 @@
     "x": 320.0,
     "y": 750.0,
     "buff_type": "summoner",
-    "buff_value": 0.5,
+    "buff_value": 2.3,
     "xp_cost": 15
   },
   {
@@ -282,7 +282,7 @@
     "x": 320.0,
     "y": 850.0,
     "buff_type": "summoner",
-    "buff_value": 0.8,
+    "buff_value": 3.0,
     "xp_cost": 30
   },
   {
@@ -304,7 +304,7 @@
     "x": 410.0,
     "y": 150.0,
     "buff_type": "reach",
-    "buff_value": 0.2,
+    "buff_value": 0.4,
     "xp_cost": 6
   },
   {
@@ -315,7 +315,7 @@
     "x": 410.0,
     "y": 250.0,
     "buff_type": "reach",
-    "buff_value": 0.3,
+    "buff_value": 0.7,
     "xp_cost": 12
   },
   {
@@ -326,7 +326,7 @@
     "x": 410.0,
     "y": 350.0,
     "buff_type": "reach",
-    "buff_value": 0.5,
+    "buff_value": 1.0,
     "xp_cost": 20
   },
   {
@@ -337,7 +337,7 @@
     "x": 500.0,
     "y": 50.0,
     "buff_type": "shop",
-    "buff_value": 1,
+    "buff_value": 3,
     "xp_cost": 2
   },
   {
@@ -348,7 +348,7 @@
     "x": 500.0,
     "y": 150.0,
     "buff_type": "shop",
-    "buff_value": 2,
+    "buff_value": 5,
     "xp_cost": 3
   },
   {
@@ -359,7 +359,7 @@
     "x": 500.0,
     "y": 250.0,
     "buff_type": "shop",
-    "buff_value": 3,
+    "buff_value": 7,
     "xp_cost": 5
   },
   {
@@ -370,7 +370,7 @@
     "x": 500.0,
     "y": 350.0,
     "buff_type": "shop",
-    "buff_value": 4,
+    "buff_value": 9,
     "xp_cost": 10
   },
   {
@@ -447,7 +447,7 @@
     "x": 230.0,
     "y": 650.0,
     "buff_type": "health",
-    "buff_value": 15.0,
+    "buff_value": 14.0,
     "xp_cost": 15
   },
   {
@@ -458,7 +458,7 @@
     "x": 230.0,
     "y": 750.0,
     "buff_type": "health",
-    "buff_value": 30.0,
+    "buff_value": 29.0,
     "xp_cost": 20
   },
   {
@@ -469,7 +469,7 @@
     "x": 230.0,
     "y": 850.0,
     "buff_type": "health",
-    "buff_value": 100.0,
+    "buff_value": 149.0,
     "xp_cost": 30
   }
 ]

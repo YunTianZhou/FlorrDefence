@@ -1,6 +1,7 @@
 {
   "amulet": {
     "type": "buff",
+    "buff_type": "flower",
     "rarities": {
       "common": {
         "price": 10,
@@ -131,6 +132,7 @@
   },
   "antennae": {
     "type": "buff",
+    "buff_type": "flower",
     "rarities": {
       "common": {
         "price": 25,
@@ -869,6 +871,7 @@
   },
   "cutter": {
     "type": "buff",
+    "buff_type": "flower",
     "rarities": {
       "common": {
         "price": 8,
@@ -1084,6 +1087,7 @@
   },
   "disc": {
     "type": "buff",
+    "buff_type": "flower",
     "rarities": {
       "common": {
         "price": 8,
@@ -1475,6 +1479,7 @@
   },
   "leaf": {
     "type": "buff",
+    "buff_type": "flower",
     "rarities": {
       "common": {
         "price": 20,
@@ -2140,6 +2145,7 @@
   },
   "rose": {
     "type": "buff",
+    "buff_type": "flower",
     "rarities": {
       "common": {
         "price": 20,
@@ -2201,6 +2207,7 @@
   },
   "shell": {
     "type": "buff",
+    "buff_type": "flower",
     "rarities": {
       "common": {
         "price": 20,
@@ -2501,6 +2508,7 @@
   },
   "talisman": {
     "type": "buff",
+    "buff_type": "flower",
     "rarities": {
       "common": {
         "price": 8,

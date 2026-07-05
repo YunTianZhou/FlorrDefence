@@ -76,7 +76,7 @@ CardDescription::CardDescription(const BuffGroup& buff)
 	m_content.setOutlineThickness(contentCharSize * 0.05f);
 	m_content.setLineSpacing(contentLineSpacing);
 
-	load_data();
+	loadData();
 }
 
 void CardDescription::set(const CardInfo& card, sf::Vector2f cardCenter, float cardSize) {
@@ -97,7 +97,7 @@ void CardDescription::set(const CardInfo& card, sf::Vector2f cardCenter, float c
 	m_isVerified = true;
 }
 
-void CardDescription::load_data() {
+void CardDescription::loadData() {
 	std::ifstream ifs("res/config/tower_descrption.json");
 
 	if (!ifs.is_open()) 
@@ -118,8 +118,8 @@ void CardDescription::load_data() {
 }
 
 std::string CardDescription::parseAttrib(const std::string& value, const std::string& type) {
-	auto& entry = TOWER_ATTRIBS[m_card.type].rarities[m_card.rarity];
-	float attrib = entry.attribs[value];
+	const auto& entry = TOWER_ATTRIBS[m_card.type].rarities[m_card.rarity];
+	float attrib = entry.attribs.contains(value) ? entry.attribs.at(value) : std::stof(value);
 
 	// Looking for buff
 	if (value == "reload" || value == "damage") {
@@ -160,16 +160,16 @@ std::string CardDescription::parseAttrib(const std::string& value, const std::st
 		return formatFloat(attrib, 1) + " squares";
 	}
 	else if (type == "percent") {
-		return toNiceString((int64_t)round(attrib * 100)) + "%";
+		return toPercent(attrib);
 	}
 	else if (type == "add_percent") {
-		return "+" + toNiceString((int64_t)round(attrib * 100)) + "%";
+		return "+" + toPercent(attrib);
 	}
 	else if (type == "sub_percent") {
-		return "-" + toNiceString((int64_t)round(attrib * 100)) + "%";
+		return "-" + toPercent(attrib);
 	}
 	else if (type == "add_percent_per_second") {
-		return "+" + toNiceString((int64_t)round(attrib * 100)) + "%/s";
+		return "+" + toPercent(attrib) + "/s";
 	}
 	else if (type == "rarity") {
 		return RARITIES[(int)round(attrib)];

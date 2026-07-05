@@ -140,7 +140,7 @@ public:
 	}
 
 	void add(const CardInfo& card, sf::Vector2i square) {
-		if (flowerBuffCards.find(card.type) != flowerBuffCards.end() &&
+		if (FLOWER_BUFF_TOWERS.contains(card.type) &&
 			RARITIE_LEVELS.at(card.rarity) > m_antennaeLevel)
 			return;
 
@@ -165,11 +165,6 @@ public:
 			squares.push_back(entry.square);
 		return squares;
 	}
-
-public:
-	inline static const std::set<std::string> flowerBuffCards = {
-		"cutter", "leaf", "rose", "amulet", "talisman", "disc", "shell"
-	};
 
 private:
 	int m_antennaeLevel = 0;

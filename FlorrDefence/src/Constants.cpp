@@ -106,6 +106,7 @@ const std::unordered_map<std::string, sf::Color> DARK_COLORS = {
 InitStates INIT_STATES;
 std::vector<std::string> TOWER_TYPES;
 std::unordered_map<std::string, TowerAttribs> TOWER_ATTRIBS;
+std::unordered_set<std::string> FLOWER_BUFF_TOWERS;
 std::unordered_map<std::string, MobAttribs> MOB_ATTRIBS;
 std::unordered_map<std::string, ShopAttribs> SHOP_ATTRIBS;
 std::vector<TalentAttribs> TALENT_ATTRIBS;
@@ -158,6 +159,9 @@ static void loadTowerAttribs() {
 		else {
 			t.damageType = DamageType::Normal;
 		}
+
+		if (t.type == "buff" && obj.value("buff_type", "normal") == "flower")
+			FLOWER_BUFF_TOWERS.insert(type);
 
 		for (auto& [rarity, entry] : obj["rarities"].items()) {
 			TowerAttribs::RarityEntry& e = t.rarities[rarity];

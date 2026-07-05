@@ -5,6 +5,7 @@
 #include "ScrollBar.hpp"
 #include "Button.hpp"
 #include "Constants.hpp"
+#include "TalentDescription.hpp"
 
 class TalentNode : public sf::Drawable {
 public:
@@ -15,6 +16,7 @@ public:
 
 	bool isActive() const { return m_isActive; }
 	int getPrice() const { return m_price; }
+	bool isInside(const sf::Vector2f& position, const sf::Vector2f& offset);
 
 	void onMouseButtonPressed(sf::Event::MouseButtonPressed event, sf::Vector2f offset);
 	bool onMouseButtonReleased(sf::Event::MouseButtonReleased event, sf::Vector2f offset);
@@ -25,7 +27,7 @@ private:
 	void updateColor() const;
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;;
 
-private:
+public:
 	inline static const float radius = 42.f;
 	inline static const float priceRadius = 15.f;
 
@@ -87,7 +89,7 @@ private:
 
 private:
 	inline static const float startX = 1060.f;
-	inline static const float startY = 260.f;
+	inline static const float startY = 275.f;
 	inline static const float endY = 1090.f;
 	inline static const float width = 580.f;
 	inline static const float contentHeight = 900.f;
@@ -102,6 +104,9 @@ private:
 	std::vector<int> m_starts;
 	std::vector<std::vector<int>> m_graph;
 	std::vector<int> m_activatedNodes;
+	std::unordered_map<std::string, int> m_maxRarity;
+
+	TalentDescription m_description;
 
 	int prevTalent = 0;
 	bool m_updated = false;

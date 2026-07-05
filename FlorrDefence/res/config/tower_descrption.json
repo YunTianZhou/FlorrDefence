@@ -94,7 +94,7 @@
   "cards": {
     "amulet": {
       "name": "Amulet",
-      "type": "Buff",
+      "type": "Flower Buff",
       "description": "Convert a percentage of overheal into shields.",
       "labels": [
         {
@@ -138,8 +138,8 @@
     },
     "antennae": {
       "name": "Antennae",
-      "type": "Buff",
-      "description": "Unlock the powers you couldn't control before.",
+      "type": "Flower Buff",
+      "description": "Unlock the powers you couldn't control before.\nEnable other Flower Buff towers.",
       "labels": [
         {
           "label": "Max Rarity",
@@ -406,7 +406,7 @@
     },
     "cutter": {
       "name": "Cutter",
-      "type": "Buff",
+      "type": "Flower Buff",
       "description": "Sharpen your body for stronger body damage.",
       "labels": [
         {
@@ -481,7 +481,7 @@
     },
     "disc": {
       "name": "Disc",
-      "type": "Buff",
+      "type": "Flower Buff",
       "description": "Why can't I play it?",
       "labels": [
         {
@@ -514,6 +514,12 @@
           "label": "Damage",
           "label_color": "red",
           "value": "damage",
+          "value_type": "int"
+        },
+        {
+          "label": "Attack Frequency",
+          "label_color": "yellow",
+          "value": "1",
           "value_type": "per_tick"
         },
         {
@@ -601,7 +607,7 @@
     },
     "leaf": {
       "name": "Leaf",
-      "type": "Buff",
+      "type": "Flower Buff",
       "description": "Hmm... It tastes really yummy.",
       "labels": [
         {
@@ -843,7 +849,7 @@
     },
     "rose": {
       "name": "Rose",
-      "type": "Buff",
+      "type": "Flower Buff",
       "description": "Strange, why doesn't it have any thorns?",
       "labels": [
         {
@@ -862,7 +868,7 @@
     },
     "shell": {
       "name": "Shell",
-      "type": "Buff",
+      "type": "Flower Buff",
       "description": "Strong protection.",
       "labels": [
         {
@@ -968,7 +974,7 @@
     },
     "talisman": {
       "name": "Talisman of Evasion",
-      "type": "Buff",
+      "type": "Flower Buff",
       "description": "A necklace that allows you to anticipate enemy attacks.",
       "labels": [
         {

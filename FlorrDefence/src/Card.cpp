@@ -36,11 +36,11 @@ void Card::updateColor() {
     const std::string key = m_disabled ? "disabled" : m_card.rarity;
 
     sf::Color light = LIGHT_COLORS.at(key);
-    light.a *= m_alpha;
+    light.a = (unsigned char)(light.a * m_alpha);
     m_backgroundRect.setFillColor(light);
 
     sf::Color dark = DARK_COLORS.at(key);
-    dark.a *= m_alpha;
+    dark.a = (unsigned char)(dark.a * m_alpha);
     m_backgroundRect.setOutlineColor(dark);
 }
 
@@ -111,7 +111,7 @@ void TowerCard::setReload(float reload, bool top) {
 
 void TowerCard::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     sf::Color color = DARK_COLORS.at(getCard().rarity);
-    color.a *= m_alpha;
+    color.a = (unsigned char)(color.a * m_alpha);
     m_reloadRect.setFillColor(color);
 
     float outline = getLength() * (77.f / 922.f);

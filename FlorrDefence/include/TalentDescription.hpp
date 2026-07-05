@@ -3,44 +3,20 @@
 #include <SFML/Graphics.hpp>
 #include <nlohmann/json.hpp>
 #include "RoundRect.hpp"
+#include "RichText.hpp"
 #include "Constants.hpp"
-#include "Buff.hpp"
 
-class LabelEntry : public sf::Drawable, public sf::Transformable {
+class TalentDescription : public sf::Drawable {
 public:
-	LabelEntry(
-		const std::string& labelText,
-		const std::string& valueText,
-		unsigned int charSize,
-		sf::Color labelColor = sf::Color::Yellow,
-		sf::Color valueColor = sf::Color::White
-	);
+	TalentDescription();
 
-	void setPosition(sf::Vector2f pos);
-	void setValue(const std::string& valueText);
-
-private:
-	sf::Text label;
-	sf::Text value;
-
-	void updateLayout();
-
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-};
-
-class CardDescription : public sf::Drawable {
-public:
-	CardDescription(const BuffGroup& buff);
-
-	void set(const CardInfo& card, sf::Vector2f cardCenter, float cardSize);
+	void set(const CardInfo& talent, sf::Vector2f talentCenter, float talentRadius);
 
 	void reset() { m_isVerified = false; }
-	void clear() { m_card = {}; m_cardCenter = {}; reset(); }  // run this when buff is updated
 	bool isVerified() const { return m_isVerified; }
 
 private:
 	void loadData();
-	std::string parseAttrib(const std::string& value, const std::string& type);
 
 	void updateText();
 	void updateTextPosition();
@@ -58,20 +34,17 @@ private:
 	static inline const float minWidth = 324.f;
 	static inline const float rarityInterval = 9.f;
 	static inline const float contentInterval = 22.f;
-	static inline const float labelInterval = 18.f;
 
 	static inline const unsigned int titleCharSize = 28;
 	static inline const unsigned int contentCharSize = 16;
 	static inline const float contentLineSpacing = 1.15f;
 
 private:
-	const BuffGroup& m_buff;
-
-	CardInfo m_card;
-	sf::Vector2f m_cardCenter;
-	float m_cardSize = 0.f;
-	bool m_isVerified = false;
+	CardInfo m_talent;
+	sf::Vector2f m_talentCenter;
+	float m_talentRadius = 0.f;
 	const float m_lineSpacing;
+	bool m_isVerified = false;
 
 	sf::Vector2f m_size;
 	sf::Vector2f m_position;
@@ -79,8 +52,7 @@ private:
 	sf::RoundRect m_background;
 	sf::Text m_title;
 	sf::Text m_rarity;
-	sf::Text m_content;
-	std::vector<LabelEntry> m_labels;
+	sf::RichText m_content;
 
 	nlohmann::json m_data;
 	std::unordered_map<std::string, sf::Color> m_colorTable;

@@ -1,0 +1,54 @@
+{
+  "colors": {
+    "green": [
+      102,
+      255,
+      102
+    ],
+    "red": [
+      253,
+      101,
+      102
+    ],
+    "yellow": [
+      255,
+      231,
+      99
+    ],
+    "blue": [
+      102,
+      102,
+      255
+    ]
+  },
+  "talents": {
+    "reload": {
+      "description": "Decreases tower <blue>Reload</> time from # to $.",
+      "value_type": "add_percent"
+    },
+    "antennae": {
+      "description": "Enable <green>Flower Buff</> towers with a rarity of $ or lower.",
+      "value_type": "rarity"
+    },
+    "damage": {
+      "description": "Decreases tower <red>Damage</> from # to $.",
+      "value_type": "add_percent"
+    },
+    "summoner": {
+      "description": "Increases <green>Health</> of summoned mobs from # to $.",
+      "value_type": "add_percent"
+    },
+    "reach": {
+      "description": "Increases tower attack <yellow>Range</> from # to $.",
+      "value_type": "add_percent"
+    },
+    "shop": {
+      "description": "Unlock the $ shop.",
+      "value_type": "rarity"
+    },
+    "health": {
+      "description": "Increases <green>Flower Health</> from # to $.",
+      "value_type": "add_percent"
+    }
+  }
+}

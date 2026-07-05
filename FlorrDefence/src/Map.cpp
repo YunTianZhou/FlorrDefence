@@ -169,6 +169,9 @@ void MapInfo::updateTowerBuff() {
     }
 
     m_buffUpdated = true;
+
+    // Clear card description after buff is changed
+    m_info.cardDescription.clear();
 }
 
 void MapInfo::update() {
@@ -178,7 +181,9 @@ void MapInfo::update() {
 }
 
 void MapInfo::tick() {
-    updateTowerBuff();
+    // No need to update tower buff because lazy update is sufficient
+    // updateTowerBuff();
+
     m_info.playerState.buff.mergeFrom(m_info.playerState.towerBuff, m_info.playerState.talentBuff);
 }
 

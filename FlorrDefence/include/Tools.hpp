@@ -36,19 +36,6 @@ static inline std::string toNiceString(int64_t x) {
 	return s;
 }
 
-static inline std::string capitalized(const std::string& word) {
-	if (word.empty()) return "";
-
-	std::string result = word;
-	result[0] = std::toupper(result[0]);
-
-	for (size_t i = 1; i < result.size(); ++i) {
-		result[i] = std::tolower(result[i]);
-	}
-
-	return result;
-}
-
 static inline std::string toNiceTime(sf::Time duration) {
 	int total = (int)duration.asSeconds();
 	int days = total / 86400; total %= 86400;
@@ -73,6 +60,23 @@ static inline std::string toNiceTime(sf::Time duration) {
 
 	if (!result.empty() && result.back() == ' ')
 		result.pop_back();
+
+	return result;
+}
+
+static inline std::string toPercent(float percent) {
+	return std::to_string((int64_t)round(percent * 100.f)) + "%";
+}
+
+static inline std::string capitalized(const std::string& word) {
+	if (word.empty()) return "";
+
+	std::string result = word;
+	result[0] = std::toupper(result[0]);
+
+	for (size_t i = 1; i < result.size(); ++i) {
+		result[i] = std::tolower(result[i]);
+	}
 
 	return result;
 }

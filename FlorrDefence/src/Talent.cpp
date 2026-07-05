@@ -63,16 +63,16 @@ void TalentNode::setPrice(int price) {
 	m_colorUpdated = false;
 }
 
-void TalentNode::onMouseButtonPressed(sf::Event::MouseButtonPressed event, sf::Vector2f offset) {
-	sf::Vector2f position = getAttribs().position + offset;
+bool TalentNode::isInside(const sf::Vector2f& position, const sf::Vector2f& offset) {
+	return isInCircle(position - offset, getAttribs().position, radius);
+}
 
-	m_held = isInCircle(m_info.mouseWorldPosition, position, radius);
+void TalentNode::onMouseButtonPressed(sf::Event::MouseButtonPressed event, sf::Vector2f offset) {
+	m_held = isInside(m_info.mouseWorldPosition, offset);
 }
 
 bool TalentNode::onMouseButtonReleased(sf::Event::MouseButtonReleased event, sf::Vector2f offset) {
-	sf::Vector2f position = getAttribs().position + offset;
-
-	bool pressed = m_held && isInCircle(m_info.mouseWorldPosition, position, radius);
+	bool pressed = m_held && isInside(m_info.mouseWorldPosition, offset);
 	m_held = false;
 
 	return pressed;
@@ -159,6 +159,20 @@ void Talent::update() {
 	if (!m_updated) 
 		updateComponents();
 
+	// Description
+	m_description.reset();
+
+	if (subWindowRect.contains(m_info.mouseWorldPosition)) {
+		for (auto& node : m_nodes) {
+			if (node.isInside(m_info.mouseWorldPosition, getOffset())) {
+				const auto& att = node.getAttribs();
+				sf::Vector2f postion = att.position + getOffset();
+				m_description.set({ att.rarity, att.type }, postion, TalentNode::radius);
+				break;
+			}
+		}
+	}
+
 	// Scroll Bar
 	m_scrollBar.update(m_info.mouseWorldPosition);
 }
@@ -232,8 +246,15 @@ void Talent::buyTalent(int id, bool free) {
 		m_nodes[i].activate();
 		m_activatedNodes.push_back(i);
 
-		Buff& buff = m_info.playerState.talentBuff.get(m_nodes[i].getAttribs().buff_type);
-		buff.add(m_nodes[i].getAttribs().buff_value);
+		const std::string& type = m_nodes[i].getAttribs().buff_type;
+		int rarity = RARITIE_LEVELS.at(m_nodes[i].getAttribs().rarity);
+
+		// Only update max rarity
+		if (!m_maxRarity.contains(type) || m_maxRarity[type] < rarity) {
+			Buff& buff = m_info.playerState.talentBuff.get(type);
+			buff.set(m_nodes[i].getAttribs().buff_value);
+			m_maxRarity[type] = rarity;
+		}
 
 		const auto& prev = m_nodes[i].getAttribs().prev_id;
 		if (!prev) break;
@@ -241,6 +262,9 @@ void Talent::buyTalent(int id, bool free) {
 	}
 
 	m_updated = false;
+
+	// Clear card description after buff is changed
+	m_info.cardDescription.clear();
 }
 
 void Talent::draw(sf::RenderTarget& target, sf::RenderStates states) const {
@@ -269,6 +293,10 @@ void Talent::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	// Scroll bar
 	if (contentHeight > m_scrollBar.getViewHeight())
 		target.draw(m_scrollBar, states);
+
+	// Description
+	if (m_description.isVerified())
+		target.draw(m_description, states);
 }
 
 void Talent::initComponents() {
