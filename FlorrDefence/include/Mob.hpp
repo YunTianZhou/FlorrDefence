@@ -16,6 +16,7 @@ public:
 
     virtual int getArmor() const override;
     virtual int getDamage() const;
+    virtual int getDamageOnFlower() const;
     virtual float getSpeed() const;
     virtual float getSlowDownResistance() const;
     virtual float getKnockbackResistance() const;

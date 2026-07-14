@@ -69,7 +69,7 @@ void Mob::tick() {
 
     // Hit player
     if (m_position >= 39.f && !isUnderground()) {
-        player.hit(getAttribs().damage, getMob());
+        player.hit(getDamageOnFlower(), getMob());
         hit(player.getBodyDamage(), DamageType::Lightning);
     }
 }
@@ -108,6 +108,11 @@ int Mob::getArmor() const {
 
 int Mob::getDamage() const {
     return getAttribs().damage;
+}
+
+int Mob::getDamageOnFlower() const {
+    float mul = MOB_RARITY_FLOWER_DAMGE_MUL.at(getMob().rarity);
+    return mul * getDamage();
 }
 
 float Mob::getSpeed() const {

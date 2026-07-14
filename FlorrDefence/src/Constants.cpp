@@ -108,6 +108,7 @@ std::vector<std::string> TOWER_TYPES;
 std::unordered_map<std::string, TowerAttribs> TOWER_ATTRIBS;
 std::unordered_set<std::string> FLOWER_BUFF_TOWERS;
 std::unordered_map<std::string, MobAttribs> MOB_ATTRIBS;
+std::unordered_map<std::string, float> MOB_RARITY_FLOWER_DAMGE_MUL;
 std::unordered_map<std::string, ShopAttribs> SHOP_ATTRIBS;
 std::vector<TalentAttribs> TALENT_ATTRIBS;
 std::unordered_map<std::string, int> TALENT_ID_TO_INDEX;
@@ -242,7 +243,10 @@ void loadMobAttribs() {
 	nlohmann::json j;
 	ifs >> j;
 
-	for (auto& [tyoe, obj] : j.items()) {
+	for (auto& [rarity, val] : j["flower_damage_multiplier"].items())
+		MOB_RARITY_FLOWER_DAMGE_MUL[rarity] = val.get<float>();
+
+	for (auto& [tyoe, obj] : j["types"].items()) {
 		MobAttribs ta;
 		for (auto& [rarity, entry] : obj["rarities"].items()) {
 			MobAttribs::RarityEntry& e = ta.rarities[rarity];

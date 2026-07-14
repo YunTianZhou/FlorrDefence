@@ -142,6 +142,7 @@ extern std::vector<std::string> TOWER_TYPES;
 extern std::unordered_map<std::string, TowerAttribs> TOWER_ATTRIBS;
 extern std::unordered_set<std::string> FLOWER_BUFF_TOWERS;
 extern std::unordered_map<std::string, MobAttribs> MOB_ATTRIBS;
+extern std::unordered_map<std::string, float> MOB_RARITY_FLOWER_DAMGE_MUL;
 extern std::unordered_map<std::string, ShopAttribs> SHOP_ATTRIBS;
 extern std::vector<TalentAttribs> TALENT_ATTRIBS;
 extern std::unordered_map<std::string, int> TALENT_ID_TO_INDEX;
