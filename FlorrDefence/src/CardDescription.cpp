@@ -119,7 +119,7 @@ void CardDescription::loadData() {
 
 std::string CardDescription::parseAttrib(const std::string& value, const std::string& type) {
 	const auto& entry = TOWER_ATTRIBS[m_card.type].rarities[m_card.rarity];
-	float attrib = entry.attribs.contains(value) ? entry.attribs.at(value) : std::stof(value);
+	float attrib = entry.attribs.contains(value) ? entry.attribs.at(value) : 0;
 
 	// Looking for buff
 	if (value == "reload" || value == "damage") {
@@ -218,6 +218,9 @@ void CardDescription::updateText() {
 			}
 			else if (valueType == "coin") {
 				value = "+" + toNiceString(TOWER_ATTRIBS[m_card.type].rarities[m_card.rarity].coin);
+			}
+			else if (valueType == "ticks_per_second") {
+				value = std::to_string((int)round(std::stof(value) / TICK.asSeconds())) + "/s";
 			}
 			else {
 				value = parseAttrib(value, valueType);

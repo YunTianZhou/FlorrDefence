@@ -520,7 +520,7 @@
           "label": "Attack Frequency",
           "label_color": "yellow",
           "value": "1",
-          "value_type": "per_tick"
+          "value_type": "ticks_per_second"
         },
         {
           "label": "Reload",

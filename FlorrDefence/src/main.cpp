@@ -21,6 +21,7 @@ int main() {
     sf::ContextSettings settings;
     settings.antiAliasingLevel = 6;
     window.create(sf::VideoMode(WINDOW_INIT_SIZE), "Florr Defence", sf::Style::Default, sf::State::Windowed, settings);
+    window.setIcon(AssetManager::getTexture("icon").copyToImage());
     window.setFramerateLimit(60);
 
     while (true) {
