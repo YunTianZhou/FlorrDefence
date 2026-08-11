@@ -14,13 +14,18 @@ public:
 
 private:
     void handleEvents();
+    void handleSpecialKey(sf::Keyboard::Key keyCode);
     void update();
     void render();
+
+    bool trySaveToPath(const std::filesystem::path& path);
 
 private:
     sf::RenderWindow& m_window;
     int m_frameCount = 0;
     float m_elapsedTime = 0.f;
+    sf::Clock m_saveCooldownClock;
+    bool m_hasSavedOnce = false;
 
     ViewManager m_viewManager;
     SharedInfo m_info;

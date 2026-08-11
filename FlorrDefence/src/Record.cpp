@@ -22,6 +22,11 @@ bool Record::try_load() {
 bool Record::try_load(std::filesystem::path path) {
 	m_info.init();
 
+	if (path.empty()) {
+		std::cout << "Game record path is empty, start a new game by default." << std::endl;
+		return true;
+	}
+
 	std::cout << std::format("Looking for game record from '{}'", path.string()) << std::endl;
 
 	std::ifstream ifs(path);
@@ -59,6 +64,11 @@ void Record::save() {
 }
 
 void Record::save(std::filesystem::path path) {
+	if (path.empty()) {
+		std::cout << "Target saving file is empty, do not save by default." << std::endl;
+		return;
+	}
+
 	std::cout << "Saving game..." << std::endl;
 
 	if (m_info.draggedCard.has_value()) {

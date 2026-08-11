@@ -151,6 +151,5 @@ double SpawnManager::computeNextInterval(const Stage& s, int level) {
     if (next > m_globalMaxInterval) next = m_globalMaxInterval;
 
     m_prevInterval = next;
-    std::cout << "Next mob will spawn in " << next << "sec" << std::endl;  // TEST
     return next;
 }

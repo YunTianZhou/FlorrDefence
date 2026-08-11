@@ -14,10 +14,23 @@ void load() {
     SpriteCollisionManager::load();
 
 #ifdef _WIN32
-    if (!DEBUG_MODE) {
+    if (DEBUG_MODE) {
+        // Ensure a console is present and visible
+        HWND console = GetConsoleWindow();
+        if (!console) {
+            if (AllocConsole()) {
+                FILE* fDummy;
+                freopen_s(&fDummy, "CONOUT$", "w", stdout);
+                freopen_s(&fDummy, "CONIN$", "r", stdin);
+                freopen_s(&fDummy, "CONOUT$", "w", stderr);
+            }
+            console = GetConsoleWindow();
+        }
+        if (console) ShowWindow(console, SW_SHOW);
+    }
+    else {
         HWND console = GetConsoleWindow();
         if (console) ShowWindow(console, SW_HIDE);
-        // Detach the console to ensure it does not appear in some run configurations
         FreeConsole();
     }
 #endif

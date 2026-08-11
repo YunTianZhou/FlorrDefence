@@ -1,6 +1,6 @@
 {
-  "load_path_default": "TowerDefence.json",
-  "save_path_default": "TowerDefence.json",
+  "load_path_default": "FlorrDefence.json",
+  "save_path_default": "FlorrDefence.json",
   "auto_save_enabled": true,
   "auto_save_interval_seconds": 60,
   "debug_mode": true
