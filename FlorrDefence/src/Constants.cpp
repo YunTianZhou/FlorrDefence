@@ -2,6 +2,10 @@
 #include <chrono>
 #include <nlohmann/json.hpp>
 #include "Constants.hpp"
+#include <fstream>
+#include <iostream>
+#include <filesystem>
+#include "Record.hpp"
 
 const std::vector<std::string> RARITIES = {
 	"common", "unusual", "rare", "epic", "legendary",
@@ -113,12 +117,45 @@ std::unordered_map<std::string, ShopAttribs> SHOP_ATTRIBS;
 std::vector<TalentAttribs> TALENT_ATTRIBS;
 std::unordered_map<std::string, int> TALENT_ID_TO_INDEX;
 
+// Settings
+std::string LOAD_PATH_DEFAULT = "TowerDefence.json";
+std::string SAVE_PATH_DEFAULT = "TowerDefence.json";
+bool AUTO_SAVE_ENABLED = false;
+int AUTO_SAVE_INTERVAL_SECONDS = 60;
+bool DEBUG_MODE = false;
+
 DamageType stringToDamageType(const std::string& str) {
 	if (str == "normal")
 		return DamageType::Normal;
 	else if (str == "lightning")
 		return DamageType::Lightning;
 	throw std::runtime_error(std::format("invalid damage type '{}'", str));
+}
+
+void loadSettings() {
+	std::ifstream file("res/config/settings.json");
+	if (file.is_open()) {
+		try {
+			nlohmann::json j;
+			file >> j;
+			LOAD_PATH_DEFAULT = j.value("load_path_default", LOAD_PATH_DEFAULT);
+			SAVE_PATH_DEFAULT = j.value("save_path_default", SAVE_PATH_DEFAULT);
+			AUTO_SAVE_ENABLED = j.value("auto_save_enabled", AUTO_SAVE_ENABLED);
+			AUTO_SAVE_INTERVAL_SECONDS = j.value("auto_save_interval_seconds", AUTO_SAVE_INTERVAL_SECONDS);
+			DEBUG_MODE = j.value("debug_mode", DEBUG_MODE);
+		}
+		catch (const std::exception& e) {
+			std::cerr << "Failed to parse settings.json: " << e.what() << std::endl;
+		}
+		file.close();
+	}
+	else {
+		std::cerr << "settings.json not found, using defaults" << std::endl;
+	}
+
+	// Apply settings to Record defaults
+	Record::defaultLoadPath = LOAD_PATH_DEFAULT;
+	Record::defaultSavePath = SAVE_PATH_DEFAULT;
 }
 
 static void loadInitSupplies() {
@@ -265,6 +302,7 @@ void loadMobAttribs() {
 }
 
 void loadConstants() {
+	loadSettings();
 	loadInitSupplies();
 	loadTowerAttribs();
 	loadMobAttribs();

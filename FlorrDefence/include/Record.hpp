@@ -12,13 +12,15 @@ class Talent;
 class Record {
 public:
 	Record(SharedInfo& info, Map& map, Shop& shop, Talent& talent);
+	bool try_load();
+	bool try_load(std::filesystem::path path);
 
-	bool try_load(std::filesystem::path path = defaultPath);
-
-	void save(std::filesystem::path path = defaultPath);
+	void save();
+	void save(std::filesystem::path path);
 
 public:
-	static const std::filesystem::path defaultPath;
+	static std::filesystem::path defaultLoadPath;
+	static std::filesystem::path defaultSavePath;
 
 private:
 	SharedInfo& m_info;

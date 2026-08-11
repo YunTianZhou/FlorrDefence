@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Game.hpp"
 #include "Constants.hpp"
+#include <filesystem>
 
 Game::Game(sf::RenderWindow& window)
     : m_window(window), m_viewManager(VIEW_SIZE), m_map(m_info), m_ui(m_info), 
@@ -13,6 +14,8 @@ bool Game::run() {
     m_record.try_load();
     m_info.dtClock.restart();
     m_map.getMapInfo().tick();  // init buff to prevent problems
+
+    sf::Clock autoSaveClock;
 
     while (m_window.isOpen() ) {
         handleEvents();
@@ -29,6 +32,16 @@ bool Game::run() {
             std::cout << "FPS: " << m_frameCount << std::endl;
             m_frameCount = 0;
             m_elapsedTime = 0.f;
+        }
+
+        // Auto-save
+        if (AUTO_SAVE_ENABLED && m_info.playerState.isAlive()) {
+            if (autoSaveClock.getElapsedTime().asSeconds() >= (float)AUTO_SAVE_INTERVAL_SECONDS) {
+                std::cout << "Auto saving..." << std::endl;
+
+                m_record.save(std::filesystem::path(SAVE_PATH_DEFAULT));
+                autoSaveClock.restart();
+            }
         }
     }
 

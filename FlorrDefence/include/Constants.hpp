@@ -148,3 +148,10 @@ extern std::vector<TalentAttribs> TALENT_ATTRIBS;
 extern std::unordered_map<std::string, int> TALENT_ID_TO_INDEX;
 
 void loadConstants();
+
+// Settings loaded from res/config/settings.json
+extern std::string LOAD_PATH_DEFAULT;
+extern std::string SAVE_PATH_DEFAULT;
+extern bool AUTO_SAVE_ENABLED;
+extern int AUTO_SAVE_INTERVAL_SECONDS;
+extern bool DEBUG_MODE;

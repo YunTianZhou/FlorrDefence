@@ -1,4 +1,8 @@
 ﻿#include <iostream>
+#ifdef _WIN32
+#include <Windows.h>
+#endif
+
 #include "Game.hpp"
 #include "AssetManager.hpp"
 #include "SpriteCollisionManager.hpp"
@@ -8,10 +12,18 @@ void load() {
     loadConstants();
     AssetManager::load();
     SpriteCollisionManager::load();
+
+#ifdef _WIN32
+    if (!DEBUG_MODE) {
+        HWND console = GetConsoleWindow();
+        if (console) ShowWindow(console, SW_HIDE);
+        // Detach the console to ensure it does not appear in some run configurations
+        FreeConsole();
+    }
+#endif
 }
 
 int main() {
-    std::cout << "--- Florr Defence ---" << std::endl;
     sf::Clock clock;
     load();
     std::cout << "Loading took " << clock.getElapsedTime().asMilliseconds() << "ms" << std::endl;
