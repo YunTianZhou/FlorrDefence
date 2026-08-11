@@ -14,7 +14,7 @@ void load() {
     SpriteCollisionManager::load();
 
 #ifdef _WIN32
-    if (DEBUG_MODE) {
+    if (SHOW_CONSOLE) {
         // Ensure a console is present and visible
         HWND console = GetConsoleWindow();
         if (!console) {
@@ -29,6 +29,7 @@ void load() {
         if (console) ShowWindow(console, SW_SHOW);
     }
     else {
+        // Hide the console
         HWND console = GetConsoleWindow();
         if (console) ShowWindow(console, SW_HIDE);
         FreeConsole();
@@ -37,17 +38,21 @@ void load() {
 }
 
 int main() {
+    std::cout << "--- Florr Defence ---" << std::endl;
     sf::Clock clock;
     load();
     std::cout << "Loading took " << clock.getElapsedTime().asMilliseconds() << "ms" << std::endl;
-    
-    sf::RenderWindow window;
 
     sf::ContextSettings settings;
     settings.antiAliasingLevel = 6;
+
+    sf::RenderWindow window;
     window.create(sf::VideoMode(WINDOW_INIT_SIZE), "Florr Defence", sf::Style::Default, sf::State::Windowed, settings);
     window.setIcon(AssetManager::getTexture("icon").copyToImage());
-    window.setFramerateLimit(60);
+    if (VSYNC_ENABLED)
+        window.setVerticalSyncEnabled(true);
+    else
+        window.setFramerateLimit(60);
 
     while (true) {
         std::cout << "Starting game..." << std::endl;

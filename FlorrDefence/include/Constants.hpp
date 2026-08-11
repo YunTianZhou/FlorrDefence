@@ -154,4 +154,6 @@ extern std::string LOAD_PATH_DEFAULT;
 extern std::string SAVE_PATH_DEFAULT;
 extern bool AUTO_SAVE_ENABLED;
 extern int AUTO_SAVE_INTERVAL_SECONDS;
+extern bool SHOW_CONSOLE;
 extern bool DEBUG_MODE;
+extern bool VSYNC_ENABLED;

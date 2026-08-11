@@ -34,7 +34,8 @@ bool Game::run() {
         m_frameCount++;
 
         if (m_elapsedTime >= 1.f) {
-            std::cout << "FPS: " << m_frameCount << std::endl;
+            if (DEBUG_MODE)
+                std::cout << "FPS: " << m_frameCount << std::endl;
             m_frameCount = 0;
             m_elapsedTime = 0.f;
         }
@@ -65,11 +66,11 @@ void Game::handleEvents() {
             m_window.setView(m_viewManager.getView());
         }
         else {
-            if (m_info.playerState.isAlive()) {
-                if (const auto* keyEvent = event->getIf<sf::Event::KeyReleased>()) {
-                    handleSpecialKey(keyEvent->code);
-                }
+            if (const auto* keyEvent = event->getIf<sf::Event::KeyReleased>()) {
+                handleSpecialKey(keyEvent->code);
+            }
 
+            if (m_info.playerState.isAlive()) {
                 if (m_map.onEvent(*event))
                     m_ui.updateComponents();
                 m_ui.onEvent(*event);
@@ -167,26 +168,30 @@ bool Game::trySaveToPath(const std::filesystem::path& path) {
 }
 
 void Game::handleSpecialKey(sf::Keyboard::Key keyCode) {
-    // Ctrl + S -> Save
-    if (m_info.input.keyCtrl && !m_info.input.keyShift && keyCode == sf::Keyboard::Key::S) {
-        trySaveToPath(std::filesystem::path(SAVE_PATH_DEFAULT));
-        return;
-    }
+    if (m_info.playerState.isAlive()) {
 
-    // Ctrl + Shift + S -> Save As
-    if (m_info.input.keyCtrl && m_info.input.keyShift && keyCode == sf::Keyboard::Key::S) {
+        // Ctrl + S -> Save
+        if (m_info.input.keyCtrl && !m_info.input.keyShift && keyCode == sf::Keyboard::Key::S) {
+            trySaveToPath(std::filesystem::path(SAVE_PATH_DEFAULT));
+            return;
+        }
+
+        // Ctrl + Shift + S -> Save As
+        if (m_info.input.keyCtrl && m_info.input.keyShift && keyCode == sf::Keyboard::Key::S) {
 #ifdef _WIN32
-        std::string out;
-        if (FileDialog::saveAs(out)) {
-            trySaveToPath(std::filesystem::path(out));
-        }
-        else {
-            std::cout << "Save-as cancelled or failed." << std::endl;
-        }
+            std::string out;
+            if (FileDialog::saveAs(out)) {
+                trySaveToPath(std::filesystem::path(out));
+            }
+            else {
+                std::cout << "Save-as cancelled or failed." << std::endl;
+            }
 #else
-        std::cout << "Save-as not supported on this platform." << std::endl;
+            std::cout << "Save-as not supported on this platform." << std::endl;
 #endif
-        return;
+            return;
+        }
+
     }
 
     // Ctrl + O -> Open file
@@ -218,7 +223,7 @@ void Game::handleSpecialKey(sf::Keyboard::Key keyCode) {
     }
 
     // Debug keys
-    if (DEBUG_MODE && !m_info.input.keyCtrl) {
+    if (DEBUG_MODE && m_info.playerState.isAlive()) {
         switch (keyCode) {
             case sf::Keyboard::Key::Num1:
             m_info.playerState.level++;
@@ -233,7 +238,7 @@ void Game::handleSpecialKey(sf::Keyboard::Key keyCode) {
             m_info.playerState.level -= 100;
             break;
         case sf::Keyboard::Key::Q:
-            m_info.playerState.coin += 100'000'000'000ll;
+            m_info.playerState.coin += 10'000'000'000'000ll;
             break;
         case sf::Keyboard::Key::Num0:
             m_info.playerState.level = 1;

@@ -122,7 +122,9 @@ std::string LOAD_PATH_DEFAULT = "TowerDefence.json";
 std::string SAVE_PATH_DEFAULT = "TowerDefence.json";
 bool AUTO_SAVE_ENABLED = false;
 int AUTO_SAVE_INTERVAL_SECONDS = 60;
+bool SHOW_CONSOLE = false;
 bool DEBUG_MODE = false;
+bool VSYNC_ENABLED = true;
 
 DamageType stringToDamageType(const std::string& str) {
 	if (str == "normal")
@@ -142,6 +144,8 @@ void loadSettings() {
 			SAVE_PATH_DEFAULT = j.value("save_path_default", SAVE_PATH_DEFAULT);
 			AUTO_SAVE_ENABLED = j.value("auto_save_enabled", AUTO_SAVE_ENABLED);
 			AUTO_SAVE_INTERVAL_SECONDS = j.value("auto_save_interval_seconds", AUTO_SAVE_INTERVAL_SECONDS);
+			VSYNC_ENABLED = j.value("vsync_enabled", VSYNC_ENABLED);
+			SHOW_CONSOLE = j.value("show_console", SHOW_CONSOLE);
 			DEBUG_MODE = j.value("debug_mode", DEBUG_MODE);
 		}
 		catch (const std::exception& e) {

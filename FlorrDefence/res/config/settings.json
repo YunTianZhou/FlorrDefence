@@ -3,5 +3,7 @@
   "save_path_default": "FlorrDefence.json",
   "auto_save_enabled": true,
   "auto_save_interval_seconds": 60,
+  "vsync_enabled": true,
+  "show_console": true,
   "debug_mode": true
 }
