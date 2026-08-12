@@ -121,15 +121,15 @@ void Game::render() {
     m_window.display();
 }
 
-bool Game::trySaveToPath(const std::filesystem::path& path) {
+bool Game::trySaveToPath(const std::filesystem::path& path, bool ignoreLimit) {
     try {
         if (path.empty()) {
             std::cerr << "Invalid save path." << std::endl;
             return false;
         }
 
-        // Enforce 5 second save threshold
-        if (m_hasSavedOnce) {
+        if (!ignoreLimit && m_hasSavedOnce) {
+            // Enforce 5 second save threshold
             float elapsed = m_saveCooldownClock.getElapsedTime().asSeconds();
             if (elapsed < 5.f) {
                 std::cout << "[WARNING] Saving too fast (" << elapsed << "s). Wait at least 5s between saves." << std::endl;
@@ -180,7 +180,7 @@ void Game::handleSpecialKey(sf::Keyboard::Key keyCode) {
         if (m_info.input.keyCtrl && m_info.input.keyShift && keyCode == sf::Keyboard::Key::S) {
             std::string out;
             if (OS::saveAs(out)) {
-                trySaveToPath(std::filesystem::path(out));
+                trySaveToPath(std::filesystem::path(out), true);
             }
             else {
                 std::cout << "Save-as cancelled or failed." << std::endl;

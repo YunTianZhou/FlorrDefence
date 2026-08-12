@@ -89,7 +89,7 @@ void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     else if (isDead()) {
         return;
     }
-    m_sprite.setColor({ 255, 255, 255, unsigned char(255 * alpha) });
+    m_sprite.setColor({ 255, 255, 255, (unsigned char)(255 * alpha) });
 
     if (m_flashTime > sf::Time::Zero) {
         float strength = std::clamp(m_flashTime.asSeconds() / flashDuration.asSeconds(), 0.f, 1.f);

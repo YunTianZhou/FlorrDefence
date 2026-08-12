@@ -249,9 +249,8 @@ void Shop::onEvent(const sf::Event& event) {
 				int64_t count = m_info.input.keyShift && info.card.rarity != "unique" ?
 					m_info.playerState.coin / product.getPrice() : 1;
 
-				int64_t rem = std::max(0LL, towerLimit - m_info.playerState.backpack.getCount(info.card));
+				int64_t rem = std::max<int64_t>(0, towerLimit - m_info.playerState.backpack.getCount(info.card));
 				count = std::min(count, rem / product.getCount());
-				assert(count < INT_MAX);
 
 				m_info.playerState.coin -= count * product.getPrice();
 				info.count *= int(count);

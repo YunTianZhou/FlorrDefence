@@ -1,4 +1,5 @@
 #pragma once
+#include <list>
 #include <SFML/Graphics.hpp>
 #include "Entity.hpp"
 #include "Debuff.hpp"
