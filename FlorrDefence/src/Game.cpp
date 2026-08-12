@@ -2,7 +2,7 @@
 #include <filesystem>
 #include "Game.hpp"
 #include "Constants.hpp"
-#include "FileDialog.hpp"
+#include "OS.hpp"
 
 Game::Game(sf::RenderWindow& window)
     : m_window(window), m_viewManager(VIEW_SIZE), m_map(m_info), m_ui(m_info), 
@@ -178,17 +178,13 @@ void Game::handleSpecialKey(sf::Keyboard::Key keyCode) {
 
         // Ctrl + Shift + S -> Save As
         if (m_info.input.keyCtrl && m_info.input.keyShift && keyCode == sf::Keyboard::Key::S) {
-#ifdef _WIN32
             std::string out;
-            if (FileDialog::saveAs(out)) {
+            if (OS::saveAs(out)) {
                 trySaveToPath(std::filesystem::path(out));
             }
             else {
                 std::cout << "Save-as cancelled or failed." << std::endl;
             }
-#else
-            std::cout << "Save-as not supported on this platform." << std::endl;
-#endif
             return;
         }
 
@@ -196,9 +192,8 @@ void Game::handleSpecialKey(sf::Keyboard::Key keyCode) {
 
     // Ctrl + O -> Open file
     if (m_info.input.keyCtrl && keyCode == sf::Keyboard::Key::O) {
-#ifdef _WIN32
         std::string in;
-        if (FileDialog::open(in)) {
+        if (OS::open(in)) {
             try {
                 std::filesystem::path p(in);
                 if (std::filesystem::exists(p)) {
@@ -216,9 +211,6 @@ void Game::handleSpecialKey(sf::Keyboard::Key keyCode) {
         else {
             std::cout << "Open cancelled or failed." << std::endl;
         }
-#else
-        std::cout << "Open not supported on this platform." << std::endl;
-#endif
         return;
     }
 

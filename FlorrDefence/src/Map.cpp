@@ -1,33 +1,48 @@
-#include <cassert>
 #include "Map.hpp"
 #include "AssetManager.hpp"
 #include "SpriteCollisionManager.hpp"
 
-static void drawMobDebugBox(sf::RenderTarget& target, sf::RenderStates states, const Mob& mob) {
-    // TEST: Draw mob bounds
-    sf::RectangleShape globBounds;
-    auto b = SpriteCollisionManager::getTrimmedBounds(mob.getSprite());
-    sf::Color fill = LIGHT_COLORS.at(mob.getMob().rarity);
-    fill.a = 120;
-    globBounds.setPosition(b.position);
-    globBounds.setSize(b.size);
-    globBounds.setFillColor(fill);
-    globBounds.setOutlineColor(DARK_COLORS.at(mob.getMob().rarity));
-    globBounds.setOutlineThickness(3.f);
-    target.draw(globBounds, states);
-}
+namespace {
+    struct DebugBoxRenderer {
+        DebugBoxRenderer() {
+            m_shape.setOutlineThickness(2.f);
+            m_shape.setFillColor(sf::Color::Transparent);
+        }
 
-static void drawPetalDebugBox(sf::RenderTarget& target, sf::RenderStates states, const Petal& petal) {
-    sf::RectangleShape globBounds;
-    auto b = SpriteCollisionManager::getTrimmedBounds(petal.getSprite());
-    sf::Color fill = LIGHT_COLORS.at(petal.getCard().rarity);
-    fill.a = 200;
-    globBounds.setPosition(b.position);
-    globBounds.setSize(b.size);
-    globBounds.setFillColor(fill);
-    globBounds.setOutlineColor(DARK_COLORS.at(petal.getCard().rarity));
-    globBounds.setOutlineThickness(3.f);
-    target.draw(globBounds, states);
+        void drawMobBox(sf::RenderTarget& target, sf::RenderStates states, const Mob& mob) {
+            auto bound = SpriteCollisionManager::getTrimmedBounds(mob.getSprite());
+            sf::Color fill = LIGHT_COLORS.at(mob.getMob().rarity);
+            fill.a = 100;
+
+            m_shape.setPosition(bound.position);
+            m_shape.setSize(bound.size);
+            m_shape.setFillColor(fill);
+            m_shape.setOutlineColor(DARK_COLORS.at(mob.getMob().rarity));
+            target.draw(m_shape, states);
+        }
+
+        void drawPetalBox(sf::RenderTarget& target, sf::RenderStates states, const Petal& petal) {
+            auto bound = SpriteCollisionManager::getTrimmedBounds(petal.getSprite());
+            sf::Color fill = LIGHT_COLORS.at(petal.getCard().rarity);
+            fill.a = 120;
+
+            m_shape.setPosition(bound.position);
+            m_shape.setSize(bound.size);
+            m_shape.setFillColor(fill);
+            m_shape.setOutlineColor(DARK_COLORS.at(petal.getCard().rarity));
+            target.draw(m_shape, states);
+        }
+
+        sf::RectangleShape m_shape;
+    } g_debugBoxRenderer;
+
+    inline void drawMobBox(sf::RenderTarget& target, sf::RenderStates states, const Mob& mob) {
+        g_debugBoxRenderer.drawMobBox(target, states, mob);
+    }
+
+    inline void drawPetalBox(sf::RenderTarget& target, sf::RenderStates states, const Petal& petal) {
+        g_debugBoxRenderer.drawPetalBox(target, states, petal);
+    }
 }
 
 // MapInfo
@@ -541,9 +556,9 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     // Petals (Web)
     for (auto& petal : m_petals) {
         if (dynamic_cast<WebPetal*>(petal.get())) {
-            if (m_info.input.keyG) {
-                drawPetalDebugBox(target, states, *petal);
-            }
+            if (m_info.input.keyG)
+                drawPetalBox(target, states, *petal);
+
             target.draw(*petal, states);
         }
     }
@@ -571,7 +586,7 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
     for (Mob* mob : m_sortedMobs) {
         if (m_info.input.keyH)
-            drawMobDebugBox(target, states, *mob);
+            drawMobBox(target, states, *mob);
 
         target.draw(*mob, states);
     }
@@ -586,7 +601,7 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     for (auto& petal : m_petals) {
         if (dynamic_cast<MobPetal*>(petal.get())) {
             if (m_info.input.keyG) {
-                drawPetalDebugBox(target, states, *petal);
+                drawPetalBox(target, states, *petal);
             }
             target.draw(*petal, states);
         }
@@ -596,7 +611,7 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const {
         if (!dynamic_cast<MobPetal*>(petal.get()) &&
             !dynamic_cast<WebPetal*>(petal.get())) {
             if (m_info.input.keyG) {
-                drawPetalDebugBox(target, states, *petal);
+                drawPetalBox(target, states, *petal);
             }
             target.draw(*petal, states);
         }

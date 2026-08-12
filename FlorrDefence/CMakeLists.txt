@@ -2,7 +2,7 @@
 # project specific logic here.
 #
 
-file(GLOB SOURCES "src/*.cpp")
+file(GLOB SOURCES "src/*.cpp" "external/src/*.cpp")
 
 add_executable(FlorrDefence ${SOURCES})
 target_link_libraries(FlorrDefence PRIVATE SFML::Graphics)
@@ -10,6 +10,7 @@ target_include_directories(FlorrDefence PUBLIC
     "${CMAKE_SOURCE_DIR}/SFML/include" 
     "${CMAKE_SOURCE_DIR}/json/include"
     "include"
+    "external/include"
 )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)

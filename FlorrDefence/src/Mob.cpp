@@ -112,7 +112,7 @@ int Mob::getDamage() const {
 
 int Mob::getDamageOnFlower() const {
     float mul = MOB_RARITY_FLOWER_DAMGE_MUL.at(getMob().rarity);
-    return mul * getDamage();
+    return int(mul * getDamage());
 }
 
 float Mob::getSpeed() const {

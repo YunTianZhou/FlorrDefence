@@ -213,19 +213,45 @@ static void loadTowerAttribs() {
 				e.attribs[key] = val.get<float>();
 			}
 		}
+
+		// TEST
+		for (auto& rarity : RARITIES) {
+			if (t.rarities.count(rarity) == 0)
+				t.rarities[rarity] = {};
+		}
+
 		TOWER_ATTRIBS[type] = std::move(t);
 	}
 
 	sort(TOWER_TYPES.begin(), TOWER_TYPES.end());
+}
 
-	// TEST
-	for (auto& type : TOWER_TYPES) {
-		if (TOWER_ATTRIBS.count(type) == 0)
-			TOWER_ATTRIBS[type] = {};
-		for (auto& rarity : RARITIES) {
-			if (TOWER_ATTRIBS[type].rarities.count(rarity) == 0)
-				TOWER_ATTRIBS[type].rarities[rarity] = {};
+void loadMobAttribs() {
+	std::ifstream ifs("res/config/mob_attribs.json");
+	if (!ifs.is_open())
+		throw std::runtime_error("Failed to open mob_attribs.json");
+
+	nlohmann::json j;
+	ifs >> j;
+
+	for (auto& [rarity, val] : j["flower_damage_multiplier"].items())
+		MOB_RARITY_FLOWER_DAMGE_MUL[rarity] = val.get<float>();
+
+	for (auto& [tyoe, obj] : j["types"].items()) {
+		MobAttribs ta;
+		for (auto& [rarity, entry] : obj["rarities"].items()) {
+			MobAttribs::RarityEntry& e = ta.rarities[rarity];
+			e.hp = entry["hp"].get<int>();
+			e.speed = entry["speed"].get<float>();
+			e.damage = entry["damage"].get<int>();
+			e.armor = entry["armor"].get<int>();
+			e.coinDrop = entry["coin_drop"].get<int64_t>();
+			e.xpDrop = entry["xp_drop"].get<int>();
+			for (auto& [key, val] : entry["attribs"].items()) {
+				e.attribs[key] = val.get<float>();
+			}
 		}
+		MOB_ATTRIBS[tyoe] = std::move(ta);
 	}
 }
 
@@ -273,35 +299,6 @@ static void loadTalentAttribs() {
 		TALENT_ATTRIBS.emplace_back(t);
 		TALENT_ID_TO_INDEX[t.id] = index;
 		index++;
-	}
-}
-
-void loadMobAttribs() {
-	std::ifstream ifs("res/config/mob_attribs.json");
-	if (!ifs.is_open())
-		throw std::runtime_error("Failed to open mob_attribs.json");
-
-	nlohmann::json j;
-	ifs >> j;
-
-	for (auto& [rarity, val] : j["flower_damage_multiplier"].items())
-		MOB_RARITY_FLOWER_DAMGE_MUL[rarity] = val.get<float>();
-
-	for (auto& [tyoe, obj] : j["types"].items()) {
-		MobAttribs ta;
-		for (auto& [rarity, entry] : obj["rarities"].items()) {
-			MobAttribs::RarityEntry& e = ta.rarities[rarity];
-			e.hp = entry["hp"].get<int>();
-			e.speed = entry["speed"].get<float>();
-			e.damage = entry["damage"].get<int>();
-			e.armor = entry["armor"].get<int>();
-			e.coinDrop = entry["coin_drop"].get<int64_t>();
-			e.xpDrop = entry["xp_drop"].get<int>();
-			for (auto& [key, val] : entry["attribs"].items()) {
-				e.attribs[key] = val.get<float>();
-			}
-		}
-		MOB_ATTRIBS[tyoe] = std::move(ta);
 	}
 }
 
