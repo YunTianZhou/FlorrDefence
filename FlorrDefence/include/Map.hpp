@@ -157,6 +157,12 @@ inline void to_json(json& j, const Map& m) {
 }
 
 inline void from_json(const json& j, Map& m) {
+    // // Clear existing data
+	// m.getPetals().clear();
+	// m.getMobs().clear();
+	// m.m_deadEntities.clear();
+	// m.m_effects.clear();
+
 	if (j.contains("info"))
 		j["info"].get_to(m.getMapInfo());
 

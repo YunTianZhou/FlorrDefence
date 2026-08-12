@@ -18,7 +18,8 @@ private:
     void update();
     void render();
 
-    bool trySaveToPath(const std::filesystem::path& path, bool ignoreLimit = false);
+    void handleFileDialog();
+    bool trySaveToPath(const std::filesystem::path& path, bool ignoreThreshold = false);
 
 private:
     sf::RenderWindow& m_window;

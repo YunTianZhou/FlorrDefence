@@ -1,14 +1,41 @@
 #pragma once
+
+#include <optional>
 #include <string>
-#include <filesystem>
+#include <memory>
 
-struct OS {
-	// Show a Save-As dialog. Returns true and sets outPath on success
-	static bool saveAs(std::string& outPath);
+namespace pfd {
+    class open_file;
+    class save_file;
+}
 
-	// Show an Open dialog. Returns true and sets outPath on success
-	static bool open(std::string& outPath);
+class OS {
+public:
+    enum class DialogType {
+        Open,
+        Save
+    };
 
-	// Show or hide the console (windows only)
-	static void showConsole(bool show);
+    struct DialogResult {
+        DialogType type;
+        std::string path;
+    };
+
+    // Start a native file dialog
+    // These functions return immediately
+    static bool open();
+    static bool saveAs();
+
+    // Check whether the currently open dialog has finished
+    // Returns a result only when the dialog has completed successfully
+    static std::optional<DialogResult> pollDialog();
+
+    // Returns true while a file dialog is active
+    static bool isDialogOpen();
+
+    static void showConsole(bool show);
+
+private:
+    static std::unique_ptr<pfd::open_file> m_openDialog;
+    static std::unique_ptr<pfd::save_file> m_saveDialog;
 };
