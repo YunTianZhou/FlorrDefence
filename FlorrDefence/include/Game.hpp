@@ -4,13 +4,26 @@
 #include "SharedInfo.hpp"
 #include "Map.hpp"
 #include "UI.hpp"
-#include "Record.hpp"
 #include "GameOver.hpp"
 
 class Game {
 public:
+    enum class Request {
+        None,
+        Restart,
+        Load,
+        Quit
+    };
+
+public:
     Game(sf::RenderWindow& window);
-    bool run();
+    void start();
+    void run();
+
+    Request getRequest() const { return m_request; }
+    std::filesystem::path getRequestPath() const { return m_requestPath; }
+
+    friend class Record;
 
 private:
     void handleEvents();
@@ -26,12 +39,15 @@ private:
     int m_frameCount = 0;
     float m_elapsedTime = 0.f;
     sf::Clock m_saveCooldownClock;
+    sf::Clock autoSaveClock;
     bool m_hasSavedOnce = false;
+
+    Request m_request = Request::None;
+    std::filesystem::path m_requestPath;
 
     ViewManager m_viewManager;
     SharedInfo m_info;
     Map m_map;
     UI m_ui;
-    Record m_record;
     GameOver m_gameOver;
 };

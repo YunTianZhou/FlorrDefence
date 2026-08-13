@@ -5,7 +5,6 @@
 #include <fstream>
 #include <iostream>
 #include <filesystem>
-#include "Record.hpp"
 
 const std::vector<std::string> RARITIES = {
 	"common", "unusual", "rare", "epic", "legendary",
@@ -156,10 +155,6 @@ void loadSettings() {
 	else {
 		std::cerr << "settings.json not found, using defaults" << std::endl;
 	}
-
-	// Apply settings to Record defaults
-	Record::defaultLoadPath = LOAD_PATH_DEFAULT;
-	Record::defaultSavePath = SAVE_PATH_DEFAULT;
 }
 
 static void loadInitSupplies() {

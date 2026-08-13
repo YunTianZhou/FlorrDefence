@@ -2,26 +2,16 @@
 
 #include <iostream>
 #include <fstream>
-#include "SharedInfo.hpp"
-#include "Map.hpp"
-#include "Shop.hpp"
-#include "Talent.hpp"
+#include <format>
 
-std::filesystem::path Record::defaultLoadPath = "FlorrDefence.json";
-std::filesystem::path Record::defaultSavePath = "FlorrDefence.json";
+#include "Game.hpp"
 
-Record::Record(SharedInfo* info, Map& map, Shop& shop, Talent& talent)
-	: m_info(info), m_map(map), m_shop(shop), m_talent(talent) {
-
+Record& Record::instance() {
+	static Record record;
+	return record;
 }
 
-bool Record::try_load() {
-	return try_load(defaultLoadPath);
-}
-
-bool Record::try_load(std::filesystem::path path) {
-	m_info->init();
-
+bool Record::try_load(Game& game, const std::filesystem::path& path) {
 	if (path.empty()) {
 		std::cout << "Game record path is empty, start a new game by default." << std::endl;
 		return true;
@@ -38,32 +28,36 @@ bool Record::try_load(std::filesystem::path path) {
 
 	std::cout << "Loading game record..." << std::endl;
 
-	m_data.clear();
-	ifs >> m_data;
+	try {
+		m_data.clear();
+		ifs >> m_data;
 
-	m_data["player"].get_to(m_info->playerState);
-	m_data["map"].get_to(m_map);
-	m_data["shop"].get_to(m_shop);
-	m_data["talent"].get_to(m_talent);
+		m_data["player"].get_to(game.m_info.playerState);
+		m_data["map"].get_to(game.m_map);
+		m_data["shop"].get_to(game.m_ui.m_shop);
+		m_data["talent"].get_to(game.m_ui.m_talent);
 
-	auto& uniques = m_info->playerState.aquiredUniques;
-	for (const std::string& type : TOWER_TYPES) {
-		CardInfo card = { "unique", type };
-		if (m_info->playerState.backpack.getCount(card) > 0
-			|| m_map.getMapInfo().containsTower(card))
-			uniques.insert(type);
+		auto& uniques = game.m_info.playerState.aquiredUniques;
+
+		for (const std::string& type : TOWER_TYPES) {
+			CardInfo card = { "unique", type };
+
+			if (game.m_info.playerState.backpack.getCount(card) > 0
+				|| game.m_map.getMapInfo().containsTower(card)) {
+				uniques.insert(type);
+			}
+		}
+
+		std::cout << "Game loaded successfully!" << std::endl;
+		return true;
 	}
-
-	ifs.close();
-	std::cout << "Game loaded successfully!" << std::endl;
-	return true;
+	catch (const std::exception& e) {
+		std::cerr << "Failed to load game record: " << e.what() << std::endl;
+		return false;
+	}
 }
 
-void Record::save() {
-	save(defaultSavePath);
-}
-
-void Record::save(std::filesystem::path path) {
+void Record::save(Game& game, const std::filesystem::path& path) {
 	if (path.empty()) {
 		std::cout << "Target saving file is empty, do not save by default." << std::endl;
 		return;
@@ -71,26 +65,33 @@ void Record::save(std::filesystem::path path) {
 
 	std::cout << "Saving game..." << std::endl;
 
-	if (m_info->draggedCard.has_value()) {
+	if (game.m_info.draggedCard.has_value()) {
 		std::cout << "[WARNING] Saving game while dragging a card!" << std::endl;
-		m_info->playerState.backpack.add({ m_info->draggedCard->getCard(), 1 });
+		game.m_info.playerState.backpack.add({ game.m_info.draggedCard->getCard(), 1 });
 	}
 
-	m_data.clear();
-	m_data["player"] = m_info->playerState;
-	m_data["map"] = m_map;
-	m_data["shop"] = m_shop;
-	m_data["talent"] = m_talent;
+	try {
+		m_data.clear();
+		m_data["player"] = game.m_info.playerState;
+		m_data["map"] = game.m_map;
+		m_data["shop"] = game.m_ui.m_shop;
+		m_data["talent"] = game.m_ui.m_talent;
 
-	std::ofstream ofs(path);
+		std::ofstream ofs(path);
 
-	if (!ofs.is_open()) {
-		std::cerr << "Failed to save record to " << path << std::endl;
-		return;
+		if (!ofs.is_open()) {
+			std::cerr << "Failed to save record to " << path << std::endl;
+			return;
+		}
+
+		ofs << m_data.dump(4);
+
+		std::cout << std::format(
+			"Game successfully saved to '{}'",
+			path.string()
+		) << std::endl;
 	}
-
-	ofs << m_data.dump(4);
-	ofs.close();
-
-	std::cout << std::format("Game successfully save to '{}'", path.string()) << std::endl;
+	catch (const std::exception& e) {
+		std::cerr << "Failed to save record: " << e.what() << std::endl;
+	}
 }

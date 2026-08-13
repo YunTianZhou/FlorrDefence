@@ -4,66 +4,65 @@
 #include "Game.hpp"
 #include "Constants.hpp"
 #include "OS.hpp"
+#include "Record.hpp"
 
 Game::Game(sf::RenderWindow& window)
     : m_window(&window),
       m_viewManager(VIEW_SIZE),
       m_map(&m_info),
-      m_ui(&m_info),
-      m_record(&m_info, m_map, m_ui.m_shop, m_ui.m_talent) {
+      m_ui(&m_info) {}
 
+void Game::start() {
+    m_info.dtClock.restart();
+    m_map.getMapInfo().tick();  // init buff to prevent problems
+
+    // Initialize save cooldown so first save is allowed immediately
+    m_saveCooldownClock.restart();
+    autoSaveClock.restart();
+    m_hasSavedOnce = false;
+
+    // Window view
     m_viewManager.onResize(m_window->getSize());
     m_window->setView(m_viewManager.getView());
 }
 
-bool Game::run() {
-    m_record.try_load();
-
-    m_info.dtClock.restart();
-    m_map.getMapInfo().tick();  // init buff to prevent problems
-
-    sf::Clock autoSaveClock;
-
-    // Initialize save cooldown so first save is allowed immediately
-    m_saveCooldownClock.restart();
-    m_hasSavedOnce = false;
-
-    while (m_window->isOpen()) {
-        handleEvents();
-        update();
-        render();
-
-        if (!m_info.playerState.isAlive() && m_gameOver.readyToContinue())
-            return true;
-
-        m_elapsedTime += m_info.dt.asSeconds();
-        m_frameCount++;
-
-        if (m_elapsedTime >= 1.f) {
-            if (DEBUG_MODE)
-                std::cout << "FPS: " << m_frameCount << std::endl;
-
-            m_frameCount = 0;
-            m_elapsedTime = 0.f;
-        }
-
-        // Auto-save
-        if (AUTO_SAVE_ENABLED && m_info.playerState.isAlive()) {
-            if (autoSaveClock.getElapsedTime().asSeconds() >=
-                static_cast<float>(AUTO_SAVE_INTERVAL_SECONDS)) {
-
-                std::cout << "Auto saving..." << std::endl;
-
-                trySaveToPath(std::filesystem::path(SAVE_PATH_DEFAULT));
-                autoSaveClock.restart();
-            }
-        }
+void Game::run() {
+    if (!m_window->isOpen()) {
+        m_request = Request::Quit;
+        return;
     }
 
-    if (m_info.playerState.isAlive())
-        m_record.save();
+    handleEvents();
+    update();
+    render();
 
-    return false;
+    if (!m_info.playerState.isAlive() && m_gameOver.readyToContinue()) {
+        m_request = Request::Restart;
+        return;
+    }
+
+    m_elapsedTime += m_info.dt.asSeconds();
+    m_frameCount++;
+
+    if (m_elapsedTime >= 1.f) {
+        if (DEBUG_MODE)
+            std::cout << "FPS: " << m_frameCount << std::endl;
+
+        m_frameCount = 0;
+        m_elapsedTime = 0.f;
+    }
+
+    // Auto-save
+    if (AUTO_SAVE_ENABLED && m_info.playerState.isAlive()) {
+        if (autoSaveClock.getElapsedTime().asSeconds() >=
+            static_cast<float>(AUTO_SAVE_INTERVAL_SECONDS)) {
+
+            std::cout << "Auto saving..." << std::endl;
+
+            trySaveToPath(std::filesystem::path(SAVE_PATH_DEFAULT));
+            autoSaveClock.restart();
+        }
+    }
 }
 
 void Game::handleEvents() {
@@ -152,18 +151,14 @@ void Game::handleFileDialog() {
         trySaveToPath(path, true);
         return;
     }
-
-    try {
+    else if (result->type == OS::DialogType::Open) {
         if (!std::filesystem::exists(path)) {
             std::cout << "Selected file does not exist: " << path.string() << std::endl;
             return;
         }
 
-        if (!m_record.try_load(path))
-            std::cout << "Failed to load record from '" << path.string() << "'" << std::endl;
-    }
-    catch (const std::exception& e) {
-        std::cerr << "Error loading file: " << e.what() << std::endl;
+        m_request = Request::Load;
+        m_requestPath = path;
     }
 }
 
@@ -198,7 +193,7 @@ bool Game::trySaveToPath(const std::filesystem::path& path, bool ignoreThreshold
 
         // Perform save
         try {
-            m_record.save(path);
+            Record::instance().save(*this, path);
 
             m_saveCooldownClock.restart();
             m_hasSavedOnce = true;
@@ -243,7 +238,6 @@ void Game::handleSpecialKey(sf::Keyboard::Key keyCode) {
     if (m_info.input.keyCtrl && keyCode == sf::Keyboard::Key::O) {
         if (!OS::open())
             std::cout << "A file dialog is already open." << std::endl;
-
         return;
     }
 

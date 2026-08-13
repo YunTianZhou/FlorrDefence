@@ -1,31 +1,27 @@
 #pragma once
+
 #include <filesystem>
 #include <nlohmann/json.hpp>
 
-using nlohmann::json;
+class Game;
 
-struct SharedInfo;
-class Map;
-class Shop;
-class Talent;
+using nlohmann::json;
 
 class Record {
 public:
-	Record(SharedInfo* info, Map& map, Shop& shop, Talent& talent);
-	bool try_load();
-	bool try_load(std::filesystem::path path);
+	static Record& instance();
 
-	void save();
-	void save(std::filesystem::path path);
+	Record(const Record&) = delete;
+	Record& operator=(const Record&) = delete;
+	Record(Record&&) = delete;
+	Record& operator=(Record&&) = delete;
 
-public:
-	static std::filesystem::path defaultLoadPath;
-	static std::filesystem::path defaultSavePath;
+	bool try_load(Game& game, const std::filesystem::path& path);
+	void save(Game& game, const std::filesystem::path& path);
 
 private:
-	SharedInfo* m_info;
-	Map& m_map;
-	Shop& m_shop;
-	Talent& m_talent;
+	Record() = default;
+	~Record() = default;
+
 	json m_data;
 };

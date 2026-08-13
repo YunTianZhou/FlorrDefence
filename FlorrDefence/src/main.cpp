@@ -4,6 +4,7 @@
 #include "SpriteCollisionManager.hpp"
 #include "Constants.hpp"
 #include "OS.hpp"
+#include "Record.hpp"
 
 void load() {
     loadConstants();
@@ -21,6 +22,7 @@ int main() {
     load();
     std::cout << "Loading took " << clock.getElapsedTime().asMilliseconds() << "ms" << std::endl;
 
+    // Init window
     sf::ContextSettings settings;
     settings.antiAliasingLevel = 6;
 
@@ -32,12 +34,43 @@ int main() {
     else
         window.setFramerateLimit(60);
 
-    while (true) {
-        std::cout << "Starting game..." << std::endl;
+    // Game
+    Record& record = Record::instance();
 
-        Game game(window);
-        bool restart = game.run();
+    auto game = std::make_unique<Game>(window);
+    if (!record.try_load(*game, LOAD_PATH_DEFAULT)) {
+        std::cerr << "Invalid record, program terminates." << std::endl;
+        return -1;
+    }
+    game->start();
 
-        if (!restart) break;
+    while (window.isOpen()) {
+        game->run();
+
+        switch (game->getRequest()) {
+        case Game::Request::None:
+            break;
+
+        case Game::Request::Quit:
+            return 0;
+
+        case Game::Request::Restart: {
+            auto new_game = std::make_unique<Game>(window);
+            if (record.try_load(*new_game, LOAD_PATH_DEFAULT)) {
+                game = std::move(new_game);
+                game->start();
+            }
+            break;
+        }
+
+        case Game::Request::Load: {
+            auto new_game = std::make_unique<Game>(window);
+            if (record.try_load(*new_game, game->getRequestPath())) {
+                game = std::move(new_game);
+                game->start();
+            }
+            break;
+        }
+        }
     }
 }

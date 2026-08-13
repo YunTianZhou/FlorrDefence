@@ -18,6 +18,7 @@ public:
 	void updateComponents();
 
 	friend class Game;
+	friend class Record;
 
 private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
