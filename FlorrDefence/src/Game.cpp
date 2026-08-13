@@ -6,14 +6,14 @@
 #include "OS.hpp"
 
 Game::Game(sf::RenderWindow& window)
-    : m_window(window),
+    : m_window(&window),
       m_viewManager(VIEW_SIZE),
-      m_map(m_info),
-      m_ui(m_info),
-      m_record(m_info, m_map, m_ui.m_shop, m_ui.m_talent) {
+      m_map(&m_info),
+      m_ui(&m_info),
+      m_record(&m_info, m_map, m_ui.m_shop, m_ui.m_talent) {
 
-    m_viewManager.onResize(m_window.getSize());
-    m_window.setView(m_viewManager.getView());
+    m_viewManager.onResize(m_window->getSize());
+    m_window->setView(m_viewManager.getView());
 }
 
 bool Game::run() {
@@ -28,7 +28,7 @@ bool Game::run() {
     m_saveCooldownClock.restart();
     m_hasSavedOnce = false;
 
-    while (m_window.isOpen()) {
+    while (m_window->isOpen()) {
         handleEvents();
         update();
         render();
@@ -67,13 +67,13 @@ bool Game::run() {
 }
 
 void Game::handleEvents() {
-    while (std::optional event = m_window.pollEvent()) {
+    while (std::optional event = m_window->pollEvent()) {
         if (event->is<sf::Event::Closed>()) {
-            m_window.close();
+            m_window->close();
         }
         else if (const auto* resizeEvent = event->getIf<sf::Event::Resized>()) {
             m_viewManager.onResize(resizeEvent->size);
-            m_window.setView(m_viewManager.getView());
+            m_window->setView(m_viewManager.getView());
         }
         else {
             if (const auto* keyEvent = event->getIf<sf::Event::KeyReleased>()) {
@@ -105,7 +105,7 @@ void Game::handleEvents() {
 void Game::update() {
     handleFileDialog();
 
-    bool needUpdate = m_info.update(m_window);
+    bool needUpdate = m_info.update(*m_window);
 
     if (m_info.playerState.isAlive()) {
         if (needUpdate)
@@ -122,23 +122,23 @@ void Game::update() {
 }
 
 void Game::render() {
-    m_window.clear();
+    m_window->clear();
 
-    m_window.draw(m_map);
-    m_window.draw(m_ui);
+    m_window->draw(m_map);
+    m_window->draw(m_ui);
 
     if (m_info.draggedCard.has_value())
-        m_window.draw(*m_info.draggedCard);
+        m_window->draw(*m_info.draggedCard);
 
     if (m_info.cardDescription.isVerified())
-        m_window.draw(m_info.cardDescription);
+        m_window->draw(m_info.cardDescription);
 
     if (!m_info.playerState.isAlive()) {
         m_gameOver.setTarget(m_info.playerState.lastHitMob.type);
-        m_window.draw(m_gameOver);
+        m_window->draw(m_gameOver);
     }
 
-    m_window.display();
+    m_window->display();
 }
 
 void Game::handleFileDialog() {

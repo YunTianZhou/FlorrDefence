@@ -6,7 +6,7 @@
 
 #include "Mob.hpp"
 
-SpawnManager::SpawnManager(SharedInfo& info)
+SpawnManager::SpawnManager(SharedInfo* info)
     : m_info(info)
 {
     std::random_device rd;
@@ -94,14 +94,14 @@ const MobTypeEntry* SpawnManager::chooseMobType(const Stage& s) {
 }
 
 void SpawnManager::update(std::list<std::unique_ptr<Mob>>& mobList) {
-    m_spawnTimer += m_info.dt;
-    m_globalTimer += m_info.dt;
+    m_spawnTimer += m_info->dt;
+    m_globalTimer += m_info->dt;
 
     if (mobList.size() >= m_maxMob) return;
     if (m_spawnTimer.asSeconds() < m_nextInterval) return;
     m_spawnTimer = sf::Time::Zero;
 
-    int playerLevel = m_info.playerState.level;
+    int playerLevel = m_info->playerState.level;
     const Stage* stage = findStage(playerLevel);
     if (!stage) return;
 
@@ -119,7 +119,7 @@ void SpawnManager::update(std::list<std::unique_ptr<Mob>>& mobList) {
 double SpawnManager::computeNextInterval(const Stage& s, int level) {
     double t = m_globalTimer.asSeconds();
     double raw = s.base_interval;
-    double rate = m_info.playerState.buff.mob_spawn_rate.apply(1.f);
+    double rate = m_info->playerState.buff.mob_spawn_rate.apply(1.f);
 
     // Apply linear decrease per level (scale_per_level usually negative)
     int levelOffset = level - s.min_level;

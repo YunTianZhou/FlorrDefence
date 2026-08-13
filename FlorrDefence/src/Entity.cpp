@@ -10,7 +10,7 @@ static float angleDelta(float from, float to) {
     return diff;
 }
 
-Entity::Entity(SharedInfo& info, const sf::Texture& texture)
+Entity::Entity(SharedInfo* info, const sf::Texture& texture)
     : m_info(info), m_sprite(texture)
 {
     m_sprite.setTexture(texture);
@@ -31,9 +31,9 @@ void Entity::hit(int damage, DamageType type) {
 
 void Entity::updateAnimation() {
     if (m_flashTime > sf::Time::Zero)
-        m_flashTime -= m_info.dt;
+        m_flashTime -= m_info->dt;
     if (m_deathTime > sf::Time::Zero)
-        m_deathTime -= m_info.dt;
+        m_deathTime -= m_info->dt;
 }
 
 void Entity::setScale(float scale) {

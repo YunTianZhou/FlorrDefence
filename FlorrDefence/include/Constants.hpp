@@ -7,6 +7,9 @@
 #include <SFML/Graphics.hpp>
 #include <nlohmann/json.hpp>
 
+inline const int MAP_HEIGHT = 11;
+inline const int MAP_WIDTH = 10;
+
 inline const sf::Vector2f VIEW_SIZE(1700.f, 1100.f);
 inline const sf::Vector2u WINDOW_INIT_SIZE(850u, 550u);
 

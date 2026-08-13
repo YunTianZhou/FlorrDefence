@@ -47,26 +47,26 @@ void BreakLine::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	target.draw(m_line, states);
 }
 
-Backpack::Backpack(SharedInfo& info)
+Backpack::Backpack(SharedInfo* info)
 	: m_info(info) {
 	initComponents();
 }
 
 void Backpack::update() {
 	// Card description
-	if (!m_info.draggedCard.has_value() &&
-		subWindowRect.contains(m_info.mouseWorldPosition)) {
+	if (!m_info->draggedCard.has_value() &&
+		subWindowRect.contains(m_info->mouseWorldPosition)) {
 		for (const Card& card : m_cards) {
-			if (card.getRect().contains(m_info.mouseWorldPosition)) {
+			if (card.getRect().contains(m_info->mouseWorldPosition)) {
 				sf::Vector2f center = card.getPosition() + sf::Vector2f(cardLength, cardLength) / 2.f;
-				m_info.cardDescription.set(card.getCard(), center, cardLength);
+				m_info->cardDescription.set(card.getCard(), center, cardLength);
 			}
 		}
 	}
 
 	// Scroll bar
 	float prevOffset = m_scrollBar.getOffset();
-	m_scrollBar.update(m_info.mouseWorldPosition);
+	m_scrollBar.update(m_info->mouseWorldPosition);
 	if (prevOffset!= m_scrollBar.getOffset())
 		m_updated = false;
 }
@@ -83,25 +83,25 @@ void Backpack::onExit() {
 
 void Backpack::onEvent(const sf::Event& event) {
 	if (const auto* pressedEvent = event.getIf<sf::Event::MouseButtonPressed>()) {
-		if (pressedEvent->button == sf::Mouse::Button::Left && !m_info.draggedCard.has_value()) {
+		if (pressedEvent->button == sf::Mouse::Button::Left && !m_info->draggedCard.has_value()) {
 			for (const CardStack& stack : m_cards) {
 				assert(stack.getCount() > 0);
-				if (stack.getRect().contains(m_info.mouseWorldPosition)) {
-					m_info.playerState.backpack.add({ stack.getCard(), -1 });
-					m_info.draggedCard = DraggedCard(stack.getCard());
+				if (stack.getRect().contains(m_info->mouseWorldPosition)) {
+					m_info->playerState.backpack.add({ stack.getCard(), -1 });
+					m_info->draggedCard = DraggedCard(stack.getCard());
 					m_updated = false;
 					break;
 				}
 			}
 		}
-		else if (pressedEvent->button == sf::Mouse::Button::Right && !m_info.draggedCard.has_value()) {
+		else if (pressedEvent->button == sf::Mouse::Button::Right && !m_info->draggedCard.has_value()) {
 			for (const CardStack& stack : m_cards) {
 				assert(stack.getCount() > 0);
-				if (stack.getRect().contains(m_info.mouseWorldPosition)) {
-					if (m_info.input.keyShift)
-						m_info.placeRequest = stack.getInfo();
+				if (stack.getRect().contains(m_info->mouseWorldPosition)) {
+					if (m_info->input.keyShift)
+						m_info->placeRequest = stack.getInfo();
 					else
-						m_info.placeRequest = { stack.getCard(), 1 };
+						m_info->placeRequest = { stack.getCard(), 1 };
 					m_updated = false;
 					break;
 				}
@@ -113,7 +113,7 @@ void Backpack::onEvent(const sf::Event& event) {
 		m_scrollBar.onMouseButtonReleased(*releasedEvent);
 	}
 	else if (const auto* scrolledEvent = event.getIf<sf::Event::MouseWheelScrolled>()) {
-		if (!m_info.input.mouseLeftButton && subWindowRect.contains(m_info.mouseWorldPosition)) {
+		if (!m_info->input.mouseLeftButton && subWindowRect.contains(m_info->mouseWorldPosition)) {
 			m_scrollBar.onMouseWheelScrolled(*scrolledEvent);
 			m_updated = false;
 		}
@@ -127,7 +127,7 @@ void Backpack::updateComponents() const {
 	float y = startY - m_scrollBar.getOffset();
 	CardStack stack;
 	stack.setLength(cardLength);
-	auto& backpack = m_info.playerState.backpack;
+	auto& backpack = m_info->playerState.backpack;
 
 	for (auto it = RARITIES.rbegin(); it != RARITIES.rend(); it++) {
 		const std::string& rarity = *it;

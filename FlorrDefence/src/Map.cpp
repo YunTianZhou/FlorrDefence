@@ -48,7 +48,7 @@ namespace {
 // MapInfo
 using ST = MapInfo::SquareType;
 
-std::array<std::array<ST, 10>, 11> MapInfo::m_squareTypeMap = { {
+std::array<std::array<ST, MAP_WIDTH>, MAP_HEIGHT> MapInfo::m_squareTypeMap = { {
     { ST::Grass, ST::Grass, ST::Grass, ST::Grass, ST::Grass, ST::Slot, ST::Grass, ST::Obstacle, ST::Grass, ST::Grass },
     { ST::Obstacle, ST::Grass, ST::Trail, ST::Trail, ST::Trail, ST::Grass, ST::Grass, ST::Grass, ST::Grass, ST::Grass },
     { ST::Grass, ST::Grass, ST::Trail, ST::Grass, ST::Trail, ST::Grass, ST::Trail, ST::Trail, ST::Trail, ST::Trail },
@@ -62,8 +62,8 @@ std::array<std::array<ST, 10>, 11> MapInfo::m_squareTypeMap = { {
     { ST::Obstacle, ST::Grass, ST::Grass, ST::Grass, ST::Grass, ST::Grass, ST::Grass, ST::Grass, ST::Grass, ST::Grass },
 } };
 
-MapInfo::MapInfo(SharedInfo& info, Map& map)
-    : m_info(info), m_mapRef(map) {
+MapInfo::MapInfo(SharedInfo* info, Map* map)
+    : m_info(info), m_mapPtr(map) {
 }
 
 const Tower* MapInfo::getTower(sf::Vector2i square) const {
@@ -81,7 +81,7 @@ void MapInfo::setCard(sf::Vector2i square, const CardInfo& card) {
     if (!isEmpty(square))
         removeCard(square);
 
-    auto tower = Tower::create(m_info, card, square, m_mapRef);
+    auto tower = Tower::create(m_info, card, square, m_mapPtr);
     tower->setLength(squareSize.x);
     tower->setOrigin(squareSize / 2.f);
     tower->setPosition(getSquareCenter(square));
@@ -102,8 +102,8 @@ void MapInfo::removeCard(sf::Vector2i square) {
 int MapInfo::removeAll(const CardInfo& card) {
     int count = 0;
 
-    for (int i = 0; i < 11; i++) {
-        for (int j = 0; j < 10; j++) {
+    for (int i = 0; i < MAP_HEIGHT; i++) {
+        for (int j = 0; j < MAP_WIDTH; j++) {
             sf::Vector2i square = { i, j };
             if (!isEmpty(square) && getTower(square)->getCard() == card) {
                 removeCard(square);
@@ -128,8 +128,8 @@ bool MapInfo::findSquareAndPlace(const CardInfo& card) {
         }
     }
     else {
-        for (int i = 0; i < 11; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < MAP_HEIGHT; i++) {
+            for (int j = 0; j < MAP_WIDTH; j++) {
                 sf::Vector2i square = { i, j };
                 if (isEmpty(square) && isPlaceable(square, card)) {
                     // Found a place to place that tower
@@ -145,20 +145,20 @@ bool MapInfo::findSquareAndPlace(const CardInfo& card) {
 }
 
 void MapInfo::clear() {
-    for (int i = 0; i < 11; i++) {
-        for (int j = 0; j < 10; j++) {
+    for (int i = 0; i < MAP_HEIGHT; i++) {
+        for (int j = 0; j < MAP_WIDTH; j++) {
             removeCard({ i, j });
         }
     }
 }
 
 void MapInfo::updateTowerBuff() {
-    PlayerState& player = m_info.playerState;
+    PlayerState& player = m_info->playerState;
     player.towerBuff.reset();
 
     int antennaeLevel = (int)player.talentBuff.antennae.apply(0);
-    for (int row = 0; row < 11; row++) {
-        for (int col = 0; col < 10; col++) {
+    for (int row = 0; row < MAP_HEIGHT; row++) {
+        for (int col = 0; col < MAP_WIDTH; col++) {
             if (auto tower = getTower({ row, col }))
                 if (tower->getCard().type == "antennae")
                     antennaeLevel = std::max(antennaeLevel,
@@ -166,11 +166,11 @@ void MapInfo::updateTowerBuff() {
         }
     }
 
-    BuffManager& buffManager = m_info.playerState.buffManager;
+    BuffManager& buffManager = m_info->playerState.buffManager;
     buffManager.setAntennaeLevel(antennaeLevel);
 
-    for (int row = 0; row < 11; row++) {
-        for (int col = 0; col < 10; col++) {
+    for (int row = 0; row < MAP_HEIGHT; row++) {
+        for (int col = 0; col < MAP_WIDTH; col++) {
             if (auto tower = getTower({ row, col }))
                 if (auto buffTower = dynamic_cast<BuffTower*>(tower))
                     buffManager.add(buffTower->getCard(), { row, col });
@@ -186,24 +186,24 @@ void MapInfo::updateTowerBuff() {
     m_buffUpdated = true;
 
     // Clear card description after buff is changed
-    m_info.cardDescription.clear();
+    m_info->cardDescription.clear();
 }
 
 void MapInfo::update() {
     if (!m_buffUpdated)
         updateTowerBuff();
-    m_info.playerState.applyHealValueBuff(m_info.dt);
+    m_info->playerState.applyHealValueBuff(m_info->dt);
 }
 
 void MapInfo::tick() {
     // No need to update tower buff because lazy update is sufficient
     // updateTowerBuff();
 
-    m_info.playerState.buff.mergeFrom(m_info.playerState.towerBuff, m_info.playerState.talentBuff);
+    m_info->playerState.buff.mergeFrom(m_info->playerState.towerBuff, m_info->playerState.talentBuff);
 }
 
 bool MapInfo::isValid(sf::Vector2i square) const {
-    return square.x >= 0 && square.x < 11 && square.y >= 0 && square.y < 10;
+    return square.x >= 0 && square.x < MAP_HEIGHT && square.y >= 0 && square.y < MAP_WIDTH;
 }
 
 bool MapInfo::isEmpty(sf::Vector2i square) const {
@@ -226,8 +226,8 @@ bool MapInfo::isPlaceable(sf::Vector2i square, const CardInfo& card) const {
 }
 
 bool MapInfo::containsTower(const CardInfo& card) const {
-    for (int row = 0; row < 11; row++) {
-        for (int col = 0; col < 10; col++) {
+    for (int row = 0; row < MAP_HEIGHT; row++) {
+        for (int col = 0; col < MAP_WIDTH; col++) {
             if (auto tower = getTower({ row, col })) {
                 if (tower->getCard() == card)
                     return true;
@@ -246,8 +246,8 @@ sf::Vector2f MapInfo::getSquareCenter(sf::Vector2i square) {
 }
 
 // Map
-Map::Map(SharedInfo& info)
-    : m_info(info), m_map(info, *this), m_spawner(info) {
+Map::Map(SharedInfo* info)
+    : m_info(info), m_map(info, this), m_spawner(info) {
     initComponents();
 }
 
@@ -263,8 +263,8 @@ bool Map::update() {
         mob->update();
 
     // Update towers
-    for (int row = 0; row < 11; row++) {
-        for (int col = 0; col < 10; col++) {
+    for (int row = 0; row < MAP_HEIGHT; row++) {
+        for (int col = 0; col < MAP_WIDTH; col++) {
             if (auto tower = m_map.getTower({ row, col })) {
                 tower->update();
             }
@@ -286,17 +286,17 @@ bool Map::update() {
         effect->update();
 
     // Card description
-    if (!m_info.draggedCard.has_value() && isInside(m_info.mouseWorldPosition)) {
-        sf::Vector2i square = m_map.getSquare(m_info.mouseWorldPosition);
+    if (!m_info->draggedCard.has_value() && isInside(m_info->mouseWorldPosition)) {
+        sf::Vector2i square = m_map.getSquare(m_info->mouseWorldPosition);
         if (Tower* tower = m_map.getTower(square)) {
             CardInfo card = tower->getCard();
             sf::Vector2f pos = MapInfo::getSquareCenter(square);
-            m_info.cardDescription.set(card, pos, MapInfo::squareSize.x);
+            m_info->cardDescription.set(card, pos, MapInfo::squareSize.x);
         }
     }
 
     // Tick
-    m_tickTimer += m_info.dt;
+    m_tickTimer += m_info->dt;
     if (m_tickTimer >= TICK) {
         tick();
         m_tickTimer = sf::Time::Zero;
@@ -357,8 +357,8 @@ void Map::tick() {
     tickDeadEntities();
 
     // Tower tick
-    for (int row = 0; row < 11; row++) {
-        for (int col = 0; col < 10; col++) {
+    for (int row = 0; row < MAP_HEIGHT; row++) {
+        for (int col = 0; col < MAP_WIDTH; col++) {
             if (auto tower = m_map.getTower({ row, col })) {
                 tower->tick(m_petals, m_mobs);
             }
@@ -434,10 +434,10 @@ void Map::collision(Petal& petal, Mob& mob) {
 }
 
 bool Map::onEvent(const sf::Event& event) {
-    if (!isInside(m_info.mouseWorldPosition))
+    if (!isInside(m_info->mouseWorldPosition))
         return false;
 
-    const auto square = m_map.getSquare(m_info.mouseWorldPosition);
+    const auto square = m_map.getSquare(m_info->mouseWorldPosition);
     if (auto pressed = event.getIf<sf::Event::MouseButtonPressed>()) {
         if (pressed->button == sf::Mouse::Button::Left) {
             handlePress(square);
@@ -456,28 +456,28 @@ bool Map::onEvent(const sf::Event& event) {
 }
 
 void Map::handlePress(const sf::Vector2i& square) {
-    if (m_info.draggedCard.has_value())
+    if (m_info->draggedCard.has_value())
         return;
 
     if (auto tower = m_map.getTower(square)) {
-        m_info.draggedCard = DraggedCard(tower->getCard(), square);
+        m_info->draggedCard = DraggedCard(tower->getCard(), square);
         m_map.removeCard(square);
     }
 }
 
 bool Map::handleRightPress(const sf::Vector2i& square) {
-    if (m_info.draggedCard.has_value())
+    if (m_info->draggedCard.has_value())
         return false;
 
     if (auto* tower = m_map.getTower(square)) {
         CardInfo card = tower->getCard();
-        if (m_info.input.keyShift) {
+        if (m_info->input.keyShift) {
             int count = m_map.removeAll(card);
-            m_info.playerState.backpack.add({ card, count });
+            m_info->playerState.backpack.add({ card, count });
         }
         else {
             m_map.removeCard(square);
-            m_info.playerState.backpack.add({ card, 1 });
+            m_info->playerState.backpack.add({ card, 1 });
         }
 
         return true;
@@ -487,13 +487,13 @@ bool Map::handleRightPress(const sf::Vector2i& square) {
 }
 
 void Map::handleRelease(const sf::Vector2i& square) {
-    if (!m_info.draggedCard.has_value())
+    if (!m_info->draggedCard.has_value())
         return;
-    if (m_info.draggedCard->isRetreating())
+    if (m_info->draggedCard->isRetreating())
         return;
 
-    auto dragged = std::move(*m_info.draggedCard);
-    m_info.draggedCard.reset();
+    auto dragged = std::move(*m_info->draggedCard);
+    m_info->draggedCard.reset();
 
     if (m_map.isPlaceable(square, dragged.getCard())) {
         if (auto* target = m_map.getTower(square)) {
@@ -502,9 +502,9 @@ void Map::handleRelease(const sf::Vector2i& square) {
                 m_map.setCard(square, dragged.getCard());
             }
             else {
-                m_info.draggedCard = DraggedCard(target->getCard(), square);
-                m_info.draggedCard->setPosition(m_map.getSquareCenter(square));
-                m_info.draggedCard->startRetreat();
+                m_info->draggedCard = DraggedCard(target->getCard(), square);
+                m_info->draggedCard->setPosition(m_map.getSquareCenter(square));
+                m_info->draggedCard->startRetreat();
                 m_map.setCard(square, dragged.getCard());
             }
         }
@@ -517,24 +517,24 @@ void Map::handleRelease(const sf::Vector2i& square) {
             m_map.setCard(*start, dragged.getCard());
         }
         else {
-            m_info.draggedCard = DraggedCard(dragged.getCard(), square);
-            m_info.draggedCard->setPosition(m_map.getSquareCenter(square));
-            m_info.draggedCard->startRetreat();
+            m_info->draggedCard = DraggedCard(dragged.getCard(), square);
+            m_info->draggedCard->setPosition(m_map.getSquareCenter(square));
+            m_info->draggedCard->startRetreat();
         }
     }
 }
 
 bool Map::handlePlaceTowerRequest() {
-    if (!m_info.placeRequest.has_value())
+    if (!m_info->placeRequest.has_value())
         return false;
 
-    CardStackInfo stack = m_info.placeRequest.value();
-    m_info.placeRequest.reset();
+    CardStackInfo stack = m_info->placeRequest.value();
+    m_info->placeRequest.reset();
 
-    stack.count = std::min(stack.count, m_info.playerState.backpack.getCount(stack.card));
+    stack.count = std::min(stack.count, m_info->playerState.backpack.getCount(stack.card));
     while (stack.count > 0 && m_map.findSquareAndPlace(stack.card)) {
         stack.count--;
-        m_info.playerState.backpack.add({ stack.card, -1 });
+        m_info->playerState.backpack.add({ stack.card, -1 });
     }
 
     return false;
@@ -545,8 +545,8 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(m_background, states);
 
     // Towers
-    for (int row = 0; row < 11; row++) {
-        for (int col = 0; col < 10; col++) {
+    for (int row = 0; row < MAP_HEIGHT; row++) {
+        for (int col = 0; col < MAP_WIDTH; col++) {
             if (auto tower = m_map.getTower({ row, col })) {
                 target.draw(*tower, states);
             }
@@ -556,7 +556,7 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     // Petals (Web)
     for (auto& petal : m_petals) {
         if (dynamic_cast<WebPetal*>(petal.get())) {
-            if (m_info.input.keyG)
+            if (m_info->input.keyG)
                 drawPetalBox(target, states, *petal);
 
             target.draw(*petal, states);
@@ -585,7 +585,7 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     });
 
     for (Mob* mob : m_sortedMobs) {
-        if (m_info.input.keyH)
+        if (m_info->input.keyH)
             drawMobBox(target, states, *mob);
 
         target.draw(*mob, states);
@@ -600,7 +600,7 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     // Petals
     for (auto& petal : m_petals) {
         if (dynamic_cast<MobPetal*>(petal.get())) {
-            if (m_info.input.keyG) {
+            if (m_info->input.keyG) {
                 drawPetalBox(target, states, *petal);
             }
             target.draw(*petal, states);
@@ -610,7 +610,7 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     for (auto& petal : m_petals) {
         if (!dynamic_cast<MobPetal*>(petal.get()) &&
             !dynamic_cast<WebPetal*>(petal.get())) {
-            if (m_info.input.keyG) {
+            if (m_info->input.keyG) {
                 drawPetalBox(target, states, *petal);
             }
             target.draw(*petal, states);
@@ -624,8 +624,8 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     }
 
     // Tower after-entities effects
-    for (int row = 0; row < 11; row++) {
-        for (int col = 0; col < 10; col++) {
+    for (int row = 0; row < MAP_HEIGHT; row++) {
+        for (int col = 0; col < MAP_WIDTH; col++) {
             if (auto tower = m_map.getTower({ row, col })) {
                 tower->drawAfterEntities(target, states);
             }
@@ -641,12 +641,12 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const {
         target.draw(m_bossHealthBar, states);
 
     // Dragged card
-    if (m_info.draggedCard.has_value() && !m_info.draggedCard->isRetreating()) {
-        sf::Vector2i mouseSquare = m_map.getSquare(m_info.mouseWorldPosition);
+    if (m_info->draggedCard.has_value() && !m_info->draggedCard->isRetreating()) {
+        sf::Vector2i mouseSquare = m_map.getSquare(m_info->mouseWorldPosition);
 
         if (m_map.isValid(mouseSquare)) {
             m_highlight.setPosition(m_map.getSquareCenter(mouseSquare));
-            if (m_map.isPlaceable(mouseSquare, m_info.draggedCard->getCard()))
+            if (m_map.isPlaceable(mouseSquare, m_info->draggedCard->getCard()))
                 m_highlight.setFillColor(sf::Color(255, 255, 255, 100));
             else
                 m_highlight.setFillColor(sf::Color(255, 100, 100, 120));

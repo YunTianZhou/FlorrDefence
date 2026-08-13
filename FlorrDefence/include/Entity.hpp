@@ -5,7 +5,7 @@
 
 class Entity : public sf::Drawable {
 public:
-    Entity(SharedInfo& info, const sf::Texture& texture);
+    Entity(SharedInfo* info, const sf::Texture& texture);
 
     virtual void hit(int damage, DamageType type = DamageType::Normal);
     void kill() { hit(m_hp, DamageType::Lightning); }
@@ -40,7 +40,7 @@ public:
     virtual sf::Time getDeathDuration() const { return sf::seconds(0.2f); }
 
 protected:
-    SharedInfo& m_info;
+    SharedInfo* m_info;
     int m_hp = 0;
     mutable sf::Sprite m_sprite;
     sf::Angle m_rotation = sf::degrees(45.f);

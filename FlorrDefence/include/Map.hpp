@@ -15,7 +15,7 @@ class Map;
 
 class MapInfo {
 public:
-	MapInfo(SharedInfo& info, Map& map);
+	MapInfo(SharedInfo* info, Map* map);
 	const Tower* getTower(sf::Vector2i square) const;
 	Tower* getTower(sf::Vector2i square);
 	void setCard(sf::Vector2i square, const CardInfo& card);
@@ -46,13 +46,13 @@ public:
 	};
 
 	inline static const sf::Vector2f squareSize = { 100.f, 100.f };
-	static std::array<std::array<SquareType, 10>, 11> m_squareTypeMap;
+	static std::array<std::array<SquareType, MAP_WIDTH>, MAP_HEIGHT> m_squareTypeMap;
 
 private:
-	Map& m_mapRef;
+	Map* m_mapPtr;
 
-	SharedInfo& m_info;
-	std::array<std::array<std::unique_ptr<Tower>, 10>, 11> m_map;
+	SharedInfo* m_info;
+	std::array<std::array<std::unique_ptr<Tower>, MAP_WIDTH>, MAP_HEIGHT> m_map;
 
 	bool m_buffUpdated = false;
 };
@@ -60,8 +60,8 @@ private:
 inline void to_json(json& j, const MapInfo& m) {
     j["towers"] = json::array();
 
-    for (int x = 0; x < 11; x++) {
-        for (int y = 0; y < 10; y++) {
+    for (int x = 0; x < MAP_HEIGHT; x++) {
+        for (int y = 0; y < MAP_WIDTH; y++) {
             sf::Vector2i square{x, y};
             const Tower* tower = m.getTower(square);
             if (!tower) continue;
@@ -95,7 +95,7 @@ inline void from_json(const json& j, MapInfo& m) {
 
 class Map : public sf::Drawable {
 public:
-	Map(SharedInfo& info);
+	Map(SharedInfo* info);
 
 	bool update();
 	void tick();
@@ -129,7 +129,7 @@ public:
 	inline static const sf::FloatRect bounds = sf::FloatRect({ 0.f, 0.f }, { 1000.f, 1100.f });
 
 private:
-	SharedInfo& m_info;
+	SharedInfo* m_info;
 	MapInfo m_map;
 	sf::RectangleShape m_background;
 	mutable sf::RectangleShape m_highlight;

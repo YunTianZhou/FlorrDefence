@@ -4,22 +4,22 @@
 #include "AssetManager.hpp"
 
 // Petal
-Petal::Petal(SharedInfo& info, const CardInfo& card)
+Petal::Petal(SharedInfo* info, const CardInfo& card)
 	: m_attribs(TOWER_ATTRIBS[card.type][card.rarity]), m_card(card),
 	Entity(info, AssetManager::getPetalTexture(card.type)) {
 	setScale(0.32f);
 	setFlash(sf::Color(180, 0, 0), 0.4f);
 	m_hp = getFullHp();
 
-	m_info.counter.petal[card]++;
+	m_info->counter.petal[card]++;
 }
 
-Petal::Petal(SharedInfo& info, const CardInfo& card, const sf::Texture& texture)
+Petal::Petal(SharedInfo* info, const CardInfo& card, const sf::Texture& texture)
 	: m_attribs(TOWER_ATTRIBS[card.type][card.rarity]), m_card(card),
 	Entity(info, texture) {
 	setFlash(sf::Color(180, 0, 0), 0.4f);
 
-	m_info.counter.petal[card]++;
+	m_info->counter.petal[card]++;
 }
 
 int Petal::getFullHp() const {
@@ -36,9 +36,9 @@ int Petal::getDamage() const {
 
 void Petal::onDead() {
 	if (hasAttrib("death_heal"))
-		m_info.playerState.heal(getAttrib("death_heal"));
+		m_info->playerState.heal(getAttrib("death_heal"));
 
-	m_info.counter.petal[getCard()]--;
+	m_info->counter.petal[getCard()]--;
 }
 
 void Petal::heal(float percent) {
@@ -47,7 +47,7 @@ void Petal::heal(float percent) {
 }
 
 // ShootPetal
-std::unique_ptr<ShootPetal> ShootPetal::create(SharedInfo& info, const CardInfo& card, sf::Vector2f startPosition, std::list<std::unique_ptr<Mob>>::const_iterator target) {
+std::unique_ptr<ShootPetal> ShootPetal::create(SharedInfo* info, const CardInfo& card, sf::Vector2f startPosition, std::list<std::unique_ptr<Mob>>::const_iterator target) {
 	if (card.type == "lightning")
 		return std::make_unique<LightningPetal>(info, card, startPosition, target);
 	else if (card.type == "pincer")
@@ -79,7 +79,7 @@ const std::unordered_map<std::string, sf::Angle> ShootPetal::petalTilt = {
 	{"rice", sf::degrees(40.f)}
 };
 
-ShootPetal::ShootPetal(SharedInfo& info, const CardInfo& card, sf::Vector2f startPosition, std::list<std::unique_ptr<Mob>>::const_iterator target)
+ShootPetal::ShootPetal(SharedInfo* info, const CardInfo& card, sf::Vector2f startPosition, std::list<std::unique_ptr<Mob>>::const_iterator target)
 	: Petal(info, card), m_startPosition(startPosition), m_target(target) {
 	m_sprite.setPosition(startPosition);
 
@@ -93,7 +93,7 @@ ShootPetal::ShootPetal(SharedInfo& info, const CardInfo& card, sf::Vector2f star
 	}
 }
 
-ShootPetal::ShootPetal(SharedInfo& info, const CardInfo& card)
+ShootPetal::ShootPetal(SharedInfo* info, const CardInfo& card)
 	: Petal(info, card) {}
 
 void ShootPetal::update() {
@@ -116,7 +116,7 @@ void ShootPetal::update() {
 
 	sf::Vector2f delta = newPosition - m_startPosition;
 	float dstSquare = delta.x * delta.x + delta.y * delta.y;
-	float range = m_info.playerState.buff.reach.apply(getAttrib("range") * MapInfo::squareSize.x);
+	float range = m_info->playerState.buff.reach.apply(getAttrib("range") * MapInfo::squareSize.x);
 	if (dstSquare > range * range) {
 		kill();
 		return;
@@ -133,7 +133,7 @@ void ShootPetal::updatePosition() {
 		std::cos(m_direction.asRadians()),
 		std::sin(m_direction.asRadians())
 	);
-	m_sprite.move(offset * speed * m_info.dt.asSeconds());
+	m_sprite.move(offset * speed * m_info->dt.asSeconds());
 }
 
 void ShootPetal::lostTarget() {
@@ -170,7 +170,7 @@ void ShootPetal::updateDirection(float trunSpeed) {
 	while (diff > PI) diff -= 2.f * PI;
 
 	float turnRadPerSec = trunSpeed * (PI / 180.f);
-	float maxStep = turnRadPerSec * m_info.dt.asSeconds();
+	float maxStep = turnRadPerSec * m_info->dt.asSeconds();
 
 	float step = std::max(-maxStep, std::min(maxStep, diff));
 	float next = current + step;
@@ -180,7 +180,7 @@ void ShootPetal::updateDirection(float trunSpeed) {
 }
 
 // DefencePetal
-std::unique_ptr<DefencePetal> DefencePetal::create(SharedInfo& info, const CardInfo& card, sf::Vector2i square) {
+std::unique_ptr<DefencePetal> DefencePetal::create(SharedInfo* info, const CardInfo& card, sf::Vector2i square) {
 	if (card.type == "web")
 		return std::make_unique<WebPetal>(info, card, square);
 	else if (card.type == "jelly")
@@ -188,10 +188,10 @@ std::unique_ptr<DefencePetal> DefencePetal::create(SharedInfo& info, const CardI
 	return std::make_unique<DefencePetal>(info, card, square);
 }
 
-DefencePetal::DefencePetal(SharedInfo& info, const CardInfo& card, sf::Vector2i square)
+DefencePetal::DefencePetal(SharedInfo* info, const CardInfo& card, sf::Vector2i square)
 	: Petal(info, card), m_square(square) {
 	m_sprite.setPosition(MapInfo::getSquareCenter(m_square));
-	m_info.defencePetalMap[m_square.x][m_square.y] = this;
+	m_info->defencePetalMap[m_square.x][m_square.y] = this;
 }
 
 void DefencePetal::update() {
@@ -204,21 +204,21 @@ void DefencePetal::update() {
 
 void DefencePetal::updatePosition() {
 	// Rotate
-	m_sprite.rotate(sf::degrees(180.f * m_info.dt.asSeconds()));
+	m_sprite.rotate(sf::degrees(180.f * m_info->dt.asSeconds()));
 }
 
 void DefencePetal::onDead() {
 	Petal::onDead();
 
-	m_info.defencePetalMap[m_square.x][m_square.y] = nullptr;
+	m_info->defencePetalMap[m_square.x][m_square.y] = nullptr;
 }
 
 // Mob petal
-std::unique_ptr<MobPetal> MobPetal::create(SharedInfo& info, const CardInfo& card) {
+std::unique_ptr<MobPetal> MobPetal::create(SharedInfo* info, const CardInfo& card) {
 	return std::make_unique<MobPetal>(info, card, 39.f + randomUniform(-0.4f, -0.05f));
 }
 
-MobPetal::MobPetal(SharedInfo& info, const CardInfo& card, float startPosition)
+MobPetal::MobPetal(SharedInfo* info, const CardInfo& card, float startPosition)
 	: Petal(info, card, AssetManager::getPetalTexture(TOWER_SUMMON_MOBS.at(card.type))),
 	m_mob({ RARITIES[(int)TOWER_ATTRIBS[card.type].rarities[card.rarity].attribs["mob_rarity"]], TOWER_SUMMON_MOBS.at(card.type) }),
 	m_position(startPosition),
@@ -249,9 +249,9 @@ void MobPetal::update() {
 
 void MobPetal::updatePosition() {
 	// Movement along path
-	float speed = m_info.playerState.buff.speed.apply(getMobAttribs().speed) * m_speedMultiplier;
-	bool reverse = m_info.playerState.buff.yin_yang.apply(0) >= RARITIE_LEVELS.at(m_mob.rarity);
-	m_position += (reverse ? 1 : -1) * m_info.dt.asSeconds() * speed;
+	float speed = m_info->playerState.buff.speed.apply(getMobAttribs().speed) * m_speedMultiplier;
+	bool reverse = m_info->playerState.buff.yin_yang.apply(0) >= RARITIE_LEVELS.at(m_mob.rarity);
+	m_position += (reverse ? 1 : -1) * m_info->dt.asSeconds() * speed;
 	m_position = std::clamp(m_position, 0.f, 39.f);
 
 	updatePathPosition(m_position);
@@ -260,15 +260,15 @@ void MobPetal::updatePosition() {
 
 	// Rotate
 	if (hasAttrib("rotation_speed"))
-		rotate(sf::degrees(getAttrib("rotation_speed") * m_info.dt.asSeconds()));
+		rotate(sf::degrees(getAttrib("rotation_speed") * m_info->dt.asSeconds()));
 }
 
 int MobPetal::getFullHp() const {
-	return (int)round(m_info.playerState.buff.summoner.apply((float)getMobAttribs().hp));
+	return (int)round(m_info->playerState.buff.summoner.apply((float)getMobAttribs().hp));
 }
 
 int MobPetal::getDamage() const {
-	return (int)round(m_info.playerState.buff.damage.apply((float)getMobAttribs().damage));
+	return (int)round(m_info->playerState.buff.damage.apply((float)getMobAttribs().damage));
 }
 
 int MobPetal::getArmor() const {
@@ -276,7 +276,7 @@ int MobPetal::getArmor() const {
 }
 
 // Web (Defence)
-WebPetal::WebPetal(SharedInfo& info, const CardInfo& card, sf::Vector2i square)
+WebPetal::WebPetal(SharedInfo* info, const CardInfo& card, sf::Vector2i square)
 	: DefencePetal(info, card, square) {
 	setScale(0.32f * getAttrib("scale"));
 	setAlpha(0.9f);
@@ -285,7 +285,7 @@ WebPetal::WebPetal(SharedInfo& info, const CardInfo& card, sf::Vector2i square)
 void WebPetal::update() {
 	DefencePetal::update();
 
-	m_timer += m_info.dt;
+	m_timer += m_info->dt;
 	float delta = getDelta();
 	if (delta == 0.f)
 		kill();
@@ -313,7 +313,7 @@ float WebPetal::getDelta() const {
 }
 
 // Triangle (Shoot)
-TrianglePetal::TrianglePetal(SharedInfo& info, const CardInfo& card, sf::Vector2f startPosition, std::list<std::unique_ptr<Mob>>::const_iterator target, int adjCount)
+TrianglePetal::TrianglePetal(SharedInfo* info, const CardInfo& card, sf::Vector2f startPosition, std::list<std::unique_ptr<Mob>>::const_iterator target, int adjCount)
 	: ShootPetal(info, card, startPosition, target), m_adjCount(adjCount) {}
 
 int TrianglePetal::getDamage() const {
@@ -412,7 +412,7 @@ void JellyPetal::applyDebuff(Debuff& debuff) const {
 
 // Dice (Shoot)
 int DicePetal::getDamage() const {
-	float boostProb = boostBaseProb + boostIncreasePerLuck * m_info.playerState.buff.luck.apply(0);
+	float boostProb = boostBaseProb + boostIncreasePerLuck * m_info->playerState.buff.luck.apply(0);
 	if (randomUniform(0.f, 1.f) <= boostProb)
 		return ShootPetal::getDamage() * boostRate;
 	else
@@ -426,7 +426,7 @@ void BurPetal::applyDebuff(Debuff& debuff) const {
 }
 
 // Laser
-LaserPetal::LaserPetal(SharedInfo& info, const CardInfo& card, sf::Vector2i square, MapInfo& map, const std::list<std::unique_ptr<Mob>>& mobs)
+LaserPetal::LaserPetal(SharedInfo* info, const CardInfo& card, sf::Vector2i square, MapInfo& map, const std::list<std::unique_ptr<Mob>>& mobs)
 	: ShootPetal(info, card), m_square(square), m_map(map), m_mobs(mobs) {
 
 	sf::Vector2f texSize = sf::Vector2f(m_sprite.getTexture().getSize());
@@ -442,7 +442,7 @@ LaserPetal::LaserPetal(SharedInfo& info, const CardInfo& card, sf::Vector2i squa
 	m_direction = sf::degrees(randomUniform(0.f, 360.f)) - sf::degrees(90.f);
 	m_sprite.setRotation(m_direction + sf::degrees(90.f) - petalTilt.at(getCard().type));
 
-	m_info.laserMap[m_square.x][m_square.y] = true;
+	m_info->laserMap[m_square.x][m_square.y] = true;
 }
 
 int LaserPetal::getArmor() const {
@@ -465,11 +465,11 @@ int LaserPetal::getDamage() const {
 void LaserPetal::onDead() {
 	ShootPetal::onDead();
 
-	m_info.laserMap[m_square.x][m_square.y] = false;
+	m_info->laserMap[m_square.x][m_square.y] = false;
 }
 
 void LaserPetal::update() {
-	m_timer += m_info.dt;
+	m_timer += m_info->dt;
 
 	// If tower no longer exsit
 	const Tower* tower = m_map.getTower(m_square);
@@ -537,14 +537,14 @@ int ChipPetal::getArmor() const {
 }
 
 // Glass Petal
-GlassPetal::GlassPetal(SharedInfo& info, const CardInfo& card, sf::Vector2i square, const MapInfo& map)
-	: DefencePetal(info, card, square), m_map(map) {
+GlassPetal::GlassPetal(SharedInfo* info, const CardInfo& card, sf::Vector2i square, const MapInfo& map)
+	: DefencePetal(info, card, square), m_map(&map) {
 
 }
 
 void GlassPetal::update() {
 	// If tower no longer exsit
-	const Tower* tower = m_map.getTower(m_square);
+	const Tower* tower = m_map->getTower(m_square);
 	if (tower == nullptr || tower->getCard() != getCard()) {
 		kill();
 		return;

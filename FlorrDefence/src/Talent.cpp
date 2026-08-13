@@ -21,7 +21,7 @@ bool isInCircle(sf::Vector2f position, sf::Vector2f circlePosition, float radius
 }
 
 // TalentNode
-TalentNode::TalentNode(SharedInfo& info, int id)
+TalentNode::TalentNode(SharedInfo* info, int id)
 	: m_info(info), m_id(id), m_priceText(AssetManager::getFont()) {
 
 	m_background.setRadius(radius);
@@ -68,11 +68,11 @@ bool TalentNode::isInside(const sf::Vector2f& position, const sf::Vector2f& offs
 }
 
 void TalentNode::onMouseButtonPressed(sf::Event::MouseButtonPressed event, sf::Vector2f offset) {
-	m_held = isInside(m_info.mouseWorldPosition, offset);
+	m_held = isInside(m_info->mouseWorldPosition, offset);
 }
 
 bool TalentNode::onMouseButtonReleased(sf::Event::MouseButtonReleased event, sf::Vector2f offset) {
-	bool pressed = m_held && isInside(m_info.mouseWorldPosition, offset);
+	bool pressed = m_held && isInside(m_info->mouseWorldPosition, offset);
 	m_held = false;
 
 	return pressed;
@@ -84,7 +84,7 @@ void TalentNode::updateColor() const {
 		m_background.setOutlineColor(DARK_COLORS.at(getAttribs().rarity));
 	}
 	else {
-		if (m_price <= m_info.playerState.talent) {
+		if (m_price <= m_info->playerState.talent) {
 			m_priceText.setFillColor(sf::Color::White);
 
 			const sf::Color& c1 = LIGHT_COLORS.at(getAttribs().rarity);
@@ -124,7 +124,7 @@ void TalentNode::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 }
 
 // TalentEdge
-TalentEdge::TalentEdge(SharedInfo& info, int prev, int curr) 
+TalentEdge::TalentEdge(SharedInfo* info, int prev, int curr) 
 	: m_info(info), m_prev(prev), m_curr(curr) {
 
 	const TalentAttribs& prev_attribs = TALENT_ATTRIBS[prev];
@@ -145,16 +145,17 @@ void TalentEdge::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 }
 
 // Talent
-Talent::Talent(SharedInfo& info)
+Talent::Talent(SharedInfo* info)
 	: m_info(info) {
 	initComponents();
+	m_description = {};
 }
 
 void Talent::update() {
-	if (prevTalent != m_info.playerState.talent)
+	if (prevTalent != m_info->playerState.talent)
 		m_updated = false;
 
-	prevTalent = m_info.playerState.talent;
+	prevTalent = m_info->playerState.talent;
 
 	if (!m_updated) 
 		updateComponents();
@@ -162,9 +163,9 @@ void Talent::update() {
 	// Description
 	m_description.reset();
 
-	if (subWindowRect.contains(m_info.mouseWorldPosition)) {
+	if (subWindowRect.contains(m_info->mouseWorldPosition)) {
 		for (auto& node : m_nodes) {
-			if (node.isInside(m_info.mouseWorldPosition, getOffset())) {
+			if (node.isInside(m_info->mouseWorldPosition, getOffset())) {
 				const auto& att = node.getAttribs();
 				sf::Vector2f postion = att.position + getOffset();
 				m_description.set({ att.rarity, att.type }, postion, TalentNode::radius);
@@ -174,7 +175,7 @@ void Talent::update() {
 	}
 
 	// Scroll Bar
-	m_scrollBar.update(m_info.mouseWorldPosition);
+	m_scrollBar.update(m_info->mouseWorldPosition);
 }
 
 void Talent::onEnter() {
@@ -201,7 +202,7 @@ void Talent::onEvent(const sf::Event& event) {
 
 	}
 	else if (const auto* scrolledEvent = event.getIf<sf::Event::MouseWheelScrolled>()) {
-		if (!m_info.input.mouseLeftButton && subWindowRect.contains(m_info.mouseWorldPosition)) {
+		if (!m_info->input.mouseLeftButton && subWindowRect.contains(m_info->mouseWorldPosition)) {
 			m_scrollBar.onMouseWheelScrolled(*scrolledEvent);
 		}
 	}
@@ -236,9 +237,9 @@ void Talent::buyTalent(int id, bool free) {
 		return;
 
 	if (!free) {
-		if (node.getPrice() > m_info.playerState.talent)
+		if (node.getPrice() > m_info->playerState.talent)
 			return;
-		m_info.playerState.talent -= node.getPrice();
+		m_info->playerState.talent -= node.getPrice();
 	}
 
 	int i = id;
@@ -251,7 +252,7 @@ void Talent::buyTalent(int id, bool free) {
 
 		// Only update max rarity
 		if (!m_maxRarity.contains(type) || m_maxRarity[type] < rarity) {
-			Buff& buff = m_info.playerState.talentBuff.get(type);
+			Buff& buff = m_info->playerState.talentBuff.get(type);
 			buff.set(m_nodes[i].getAttribs().buff_value);
 			m_maxRarity[type] = rarity;
 		}
@@ -264,7 +265,7 @@ void Talent::buyTalent(int id, bool free) {
 	m_updated = false;
 
 	// Clear card description after buff is changed
-	m_info.cardDescription.clear();
+	m_info->cardDescription.clear();
 }
 
 void Talent::draw(sf::RenderTarget& target, sf::RenderStates states) const {

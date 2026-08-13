@@ -11,7 +11,7 @@
 
 class UI : public sf::Drawable {
 public:
-	UI(SharedInfo& info);
+	UI(SharedInfo* info);
 	
 	void update();
 	void onEvent(const sf::Event& event);
@@ -24,7 +24,7 @@ private:
 	void initComponents();
 
 private:
-	SharedInfo& m_info;
+	SharedInfo* m_info;
 
 	sf::RectangleShape m_background;
 	std::unique_ptr<PlayerStateDisplayer> m_playerStateDisplayer;

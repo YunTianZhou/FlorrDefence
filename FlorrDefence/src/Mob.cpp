@@ -4,7 +4,7 @@
 #include "Map.hpp"
 
 // Mob
-std::unique_ptr<Mob> Mob::create(SharedInfo& info, const MobInfo& mob, std::list<std::unique_ptr<Mob>>& mobs) {
+std::unique_ptr<Mob> Mob::create(SharedInfo* info, const MobInfo& mob, std::list<std::unique_ptr<Mob>>& mobs) {
     if (mob.type == "spider")
         return std::make_unique<SpiderMob>(info, mob);
     if (mob.type == "hornet")
@@ -44,7 +44,7 @@ const std::unordered_map<std::string, float> Mob::rarityKnockbackResistance = {
     {"super", 0.1f }
 };
 
-Mob::Mob(SharedInfo& info, const MobInfo& mob, float startPosition)
+Mob::Mob(SharedInfo* info, const MobInfo& mob, float startPosition)
     : m_mob(mob), m_position(startPosition), Entity(info, AssetManager::getMobTexture(mob.type)) {
     setScale(MOB_RARITY_SCALES.at(mob.rarity));
     setFlash(sf::Color(255, 200, 200), 0.9f);
@@ -61,11 +61,11 @@ void Mob::update() {
     updatePosition();
 
     // Debuff
-    m_debuff.update(m_info.dt);
+    m_debuff.update(m_info->dt);
 }
 
 void Mob::tick() {
-    auto& player = m_info.playerState;
+    auto& player = m_info->playerState;
 
     // Hit player
     if (m_position >= 39.f && !isUnderground()) {
@@ -88,11 +88,11 @@ void Mob::updatePosition() {
         speed = forwardPart - m_knockback;
     }
 
-    m_position = std::clamp(m_position + m_info.dt.asSeconds() * speed, 0.f, 39.f);
+    m_position = std::clamp(m_position + m_info->dt.asSeconds() * speed, 0.f, 39.f);
 
     m_knockback = std::max(m_knockback, m_debuff.knockback.get(getKnockbackResistance()));
     if (m_knockback >= knockbackThreshold) {
-        float factor = std::pow(knockbackDecayFactor, m_info.dt.asSeconds());
+        float factor = std::pow(knockbackDecayFactor, m_info->dt.asSeconds());
         m_knockback *= factor;
 
         if (m_knockback < knockbackThreshold)
@@ -132,7 +132,7 @@ bool Mob::isUnderground() const {
 }
 
 void Mob::onDead() {
-    auto& player = m_info.playerState;
+    auto& player = m_info->playerState;
 
     player.addCoin(getAttribs().coinDrop);
     player.addXp(getAttribs().xpDrop);
@@ -140,20 +140,20 @@ void Mob::onDead() {
 
 // Spider Mob
 void SpiderMob::updatePosition() {
-    rotate(sf::degrees(getAttrib("rotation_speed") * m_info.dt.asSeconds()));
+    rotate(sf::degrees(getAttrib("rotation_speed") * m_info->dt.asSeconds()));
 
     // Movement along path
     Mob::updatePosition();
 }
 
 // Hornet Mob
-HornetMob::HornetMob(SharedInfo& info, const MobInfo& mob, std::list<std::unique_ptr<Mob>>& mobs)
+HornetMob::HornetMob(SharedInfo* info, const MobInfo& mob, std::list<std::unique_ptr<Mob>>& mobs)
     : m_mobs(mobs), Mob(info, mob) {
     nextShootInterval();
 }
 
 void HornetMob::update() {
-    m_timer += m_info.dt;
+    m_timer += m_info->dt;
     const float elapsed = m_timer.asSeconds();
 
     switch (m_state) {
@@ -168,7 +168,7 @@ void HornetMob::update() {
         float curr = getRotationOffset().asDegrees();
 
         if (curr < 180.f) {
-            float offset = getAttrib("rotation_speed") * m_info.dt.asSeconds();
+            float offset = getAttrib("rotation_speed") * m_info->dt.asSeconds();
             sf::Angle next = sf::degrees(std::min(180.f, curr + offset));
             setRotationOffset(next);
         }
@@ -204,7 +204,7 @@ void HornetMob::update() {
         float curr = getRotationOffset().asDegrees();
 
         if (curr > 0.f) {
-            float offset = getAttrib("rotation_speed") * m_info.dt.asSeconds();
+            float offset = getAttrib("rotation_speed") * m_info->dt.asSeconds();
             sf::Angle next = sf::degrees(std::max(0.f, curr - offset));
             setRotationOffset(next);
         }
@@ -239,7 +239,7 @@ void HornetMob::shoot() {
 }
 
 // Roach
-RoachMob::RoachMob(SharedInfo& info, const MobInfo& mob)
+RoachMob::RoachMob(SharedInfo* info, const MobInfo& mob)
     : Mob(info, mob), m_speed(getAttribs().speed) {
     nextPeriod();
 }
@@ -254,7 +254,7 @@ void RoachMob::update() {
     const float speedUpDur = getAttrib("speed_up_duration");
     const float slowDownDur = getAttrib("slow_down_duration");
 
-    m_timer += m_info.dt;
+    m_timer += m_info->dt;
     const float elapsed = m_timer.asSeconds();
 
     switch (m_state) {
@@ -321,7 +321,7 @@ void RoachMob::nextPeriod() {
 
 // Fly
 void FlyMob::updatePosition() {
-    const float dt = m_info.dt.asSeconds();
+    const float dt = m_info->dt.asSeconds();
 
     float rotationSpeed = getAttrib("rotation_speed");
     float range = getAttrib("rotation_range");
@@ -355,7 +355,7 @@ void WormMob::nextDuration() {
 
 void WormMob::update() {
     nextDuration();
-    m_timer += m_info.dt;
+    m_timer += m_info->dt;
     
     if (m_timer.asSeconds() >= m_currDuration) {
         m_state = (m_state == State::AboveGround) ? State::Underground : State::AboveGround;
@@ -381,13 +381,13 @@ bool WormMob::isUnderground() const {
 }
 
 // Queen Ant
-AntQueenMob::AntQueenMob(SharedInfo& info, const MobInfo& mob, std::list<std::unique_ptr<Mob>>& mobs)
+AntQueenMob::AntQueenMob(SharedInfo* info, const MobInfo& mob, std::list<std::unique_ptr<Mob>>& mobs)
     : m_mobs(mobs), Mob(info, mob) {
     nextDuration();
 }
 
 void AntQueenMob::update() {
-    m_timer += m_info.dt;
+    m_timer += m_info->dt;
     const float elapsed = m_timer.asSeconds();
 
     switch (m_state) {
@@ -435,13 +435,13 @@ void AntQueenMob::spawn() {
 }
 
 // Ant Egg
-AntEggMob::AntEggMob(SharedInfo& info, const MobInfo& mob, std::list<std::unique_ptr<Mob>>& mobs, float startPosition)
+AntEggMob::AntEggMob(SharedInfo* info, const MobInfo& mob, std::list<std::unique_ptr<Mob>>& mobs, float startPosition)
     : m_mobs(mobs), Mob(info, mob, startPosition) {
     setScale(m_scale * 0.5f);
 }
 
 void AntEggMob::update() {
-    m_timer += m_info.dt;
+    m_timer += m_info->dt;
     if (m_timer.asSeconds() > getAttrib("max_dutation")) {
         kill();
         return;

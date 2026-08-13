@@ -6,10 +6,10 @@
 
 class Mob : public Entity {
 public:
-    static std::unique_ptr<Mob> create(SharedInfo& info, const MobInfo& mob, std::list<std::unique_ptr<Mob>>& mobs);
+    static std::unique_ptr<Mob> create(SharedInfo* info, const MobInfo& mob, std::list<std::unique_ptr<Mob>>& mobs);
 
 public:
-    Mob(SharedInfo& info, const MobInfo& mob, float startPosition = 0.f);
+    Mob(SharedInfo* info, const MobInfo& mob, float startPosition = 0.f);
 
     virtual void update();
     virtual void tick();
@@ -83,7 +83,7 @@ private:
     };
 
 public:
-    HornetMob(SharedInfo& info, const MobInfo& mob, std::list<std::unique_ptr<Mob>>& mobs);
+    HornetMob(SharedInfo* info, const MobInfo& mob, std::list<std::unique_ptr<Mob>>& mobs);
 
     void update() override;
 
@@ -111,7 +111,7 @@ private:
     };
 
 public:
-    RoachMob(SharedInfo& info, const MobInfo& mob);
+    RoachMob(SharedInfo* info, const MobInfo& mob);
 
     void update() override;
 
@@ -174,7 +174,7 @@ private:
     };
 
 public:
-    AntQueenMob(SharedInfo& info, const MobInfo& mob, std::list<std::unique_ptr<Mob>>& mobs);
+    AntQueenMob(SharedInfo* info, const MobInfo& mob, std::list<std::unique_ptr<Mob>>& mobs);
 
     void update() override;
 
@@ -196,7 +196,7 @@ private:
 
 class AntEggMob : public Mob {
 public:
-    AntEggMob(SharedInfo& info, const MobInfo& mob, std::list<std::unique_ptr<Mob>>& mobs, float startPosition = 0.f);
+    AntEggMob(SharedInfo* info, const MobInfo& mob, std::list<std::unique_ptr<Mob>>& mobs, float startPosition = 0.f);
 
     void update() override;
 

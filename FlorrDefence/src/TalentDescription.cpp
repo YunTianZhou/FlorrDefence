@@ -11,7 +11,7 @@ TalentDescription::TalentDescription() :
 	m_lineSpacing(AssetManager::getFont().getLineSpacing(contentCharSize)) {
 	m_background.setFillColor({ 0, 0, 0, 128 });
 	m_background.setRadius(5.f);
-
+	
 	m_title.setFillColor(sf::Color::White);
 	m_title.setOutlineColor(sf::Color::Black);
 	m_title.setCharacterSize(titleCharSize);

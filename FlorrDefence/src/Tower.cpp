@@ -5,13 +5,13 @@
 #include "Tools.hpp"
 
 // Tower
-std::unique_ptr<Tower> Tower::create(SharedInfo& info, const CardInfo& card, sf::Vector2i square, Map& map) {
+std::unique_ptr<Tower> Tower::create(SharedInfo* info, const CardInfo& card, sf::Vector2i square, Map* map) {
     std::string type = TOWER_ATTRIBS[card.type].type;
     if (type == "shoot") {
         if (card.type == "triangle")
-            return std::make_unique<TriangleTower>(info, card, square, map.getMapInfo());
+            return std::make_unique<TriangleTower>(info, card, square, map->getMapInfo());
         else if (card.type == "laser")
-            return std::make_unique<LaserTower>(info, card, square, map);
+            return std::make_unique<LaserTower>(info, card, square, *map);
         else if (card.type == "uranium")
             return std::make_unique<UraniumTower>(info, card);
         return std::make_unique<ShootTower>(info, card);
@@ -24,7 +24,7 @@ std::unique_ptr<Tower> Tower::create(SharedInfo& info, const CardInfo& card, sf:
         else if (card.type == "shovel")
             return std::make_unique<ShovelTower>(info, card, square);
         else if (card.type == "glass")
-            return std::make_unique<GlassTower>(info, card, square, map.getMapInfo());
+            return std::make_unique<GlassTower>(info, card, square, map->getMapInfo());
         return std::make_unique<DefenceTower>(info, card, square);
     }
     else if (type == "summon") {
@@ -49,15 +49,15 @@ std::unique_ptr<Tower> Tower::create(SharedInfo& info, const CardInfo& card, sf:
     }
 }
 
-Tower::Tower(SharedInfo& info, const CardInfo& card)
+Tower::Tower(SharedInfo* info, const CardInfo& card)
 	: m_info(info), m_attribs(TOWER_ATTRIBS[card.type][card.rarity]) {
 	m_card.setCard(card);
 
-    m_info.counter.tower[getCard()]++;
+    m_info->counter.tower[getCard()]++;
 }
 
 Tower::~Tower() {
-    m_info.counter.tower[getCard()]--;
+    m_info->counter.tower[getCard()]--;
 }
 
 void Tower::draw(sf::RenderTarget& target, sf::RenderStates states) const {
@@ -67,13 +67,13 @@ void Tower::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 }
 
 // ShootTower
-ShootTower::ShootTower(SharedInfo& info, const CardInfo& card)
+ShootTower::ShootTower(SharedInfo* info, const CardInfo& card)
 	: Tower(info, card) {
 
 }
 
 void ShootTower::update() {
-    m_reloadTimer += m_info.dt;
+    m_reloadTimer += m_info->dt;
     float elapsedTime = m_reloadTimer.asSeconds();
     m_card.setReload(std::min(1.0f, (elapsedTime / getBuffedAttrib("reload"))), false);
 }
@@ -89,7 +89,7 @@ void ShootTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list
 }
 
 std::optional<std::list<std::unique_ptr<Mob>>::const_iterator> ShootTower::getNearestMob(const std::list<std::unique_ptr<Mob>>& mobs) const {
-    float range = m_info.playerState.buff.reach.apply(getAttrib("range") * MapInfo::squareSize.x);
+    float range = m_info->playerState.buff.reach.apply(getAttrib("range") * MapInfo::squareSize.x);
     float rangeSquared = range * range;
     auto towerPos = getPosition();
 
@@ -111,13 +111,13 @@ std::optional<std::list<std::unique_ptr<Mob>>::const_iterator> ShootTower::getNe
 }
 
 // DefenceTower
-DefenceTower::DefenceTower(SharedInfo& info, const CardInfo& card, sf::Vector2i square)
+DefenceTower::DefenceTower(SharedInfo* info, const CardInfo& card, sf::Vector2i square)
     : m_square(square), Tower(info, card) {
     m_card.setAlpha(0.8f);
 }
 
 void DefenceTower::update() {
-    if (auto defence = m_info.defencePetalMap[m_square.x][m_square.y]) {
+    if (auto defence = m_info->defencePetalMap[m_square.x][m_square.y]) {
         m_reloadTimer = sf::Time::Zero;
         if (defence->getCard() == getCard()) {
             int hp = defence->getHp();
@@ -129,7 +129,7 @@ void DefenceTower::update() {
         }
     }
     else {
-        m_reloadTimer += m_info.dt;
+        m_reloadTimer += m_info->dt;
         float elapsedTime = m_reloadTimer.asSeconds();
         m_card.setReload(std::min(1.0f, (elapsedTime / getBuffedAttrib("reload"))), false);
     }
@@ -137,7 +137,7 @@ void DefenceTower::update() {
 
 void DefenceTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {
     if (m_reloadTimer.asSeconds() > getBuffedAttrib("reload")) {
-        if (!m_info.defencePetalMap[m_square.x][m_square.y]) {
+        if (!m_info->defencePetalMap[m_square.x][m_square.y]) {
             petals.push_back(DefencePetal::create(m_info, m_card.getCard(), m_square));
             m_reloadTimer = sf::Time::Zero;
         }
@@ -145,7 +145,7 @@ void DefenceTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::li
 }
 
 // SummonTower
-SummonTower::SummonTower(SharedInfo& info, const CardInfo& card) 
+SummonTower::SummonTower(SharedInfo* info, const CardInfo& card) 
     : Tower(info, card) {}
 
 void SummonTower::update() {
@@ -154,7 +154,7 @@ void SummonTower::update() {
         m_card.setReload(0.f, true);
     }
     else {
-        m_reloadTimer += m_info.dt;
+        m_reloadTimer += m_info->dt;
         float elapsedTime = m_reloadTimer.asSeconds();
         m_card.setReload(std::min(1.0f, (elapsedTime / getBuffedAttrib("reload"))), false);
     }
@@ -170,11 +170,11 @@ void SummonTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::lis
 }
 
 bool SummonTower::ableToSummon() {
-    return m_info.counter.petal[getCard()] < m_info.counter.tower[getCard()] * getAttrib("copy");
+    return m_info->counter.petal[getCard()] < m_info->counter.tower[getCard()] * getAttrib("copy");
 }
 
 // Buff Tower
-BuffTower::BuffTower(SharedInfo& info, const CardInfo& card, sf::Vector2i square)
+BuffTower::BuffTower(SharedInfo* info, const CardInfo& card, sf::Vector2i square)
     : m_square(square), Tower(info, card) {
 
 }
@@ -190,23 +190,23 @@ void BuffTower::applyToBuff() {
     for (auto [name, value] : m_attribs.attribs) {
         if (name.find("_buff") != std::string::npos) {
             std::string key = name.substr(0, name.size() - 5);
-            m_info.playerState.towerBuff.get(key).add(value);
+            m_info->playerState.towerBuff.get(key).add(value);
         }
     }
 }
 
 bool BuffTower::isActive() const {
-    return m_info.playerState.buffManager.find(getCard(), m_square);
+    return m_info->playerState.buffManager.find(getCard(), m_square);
 }
 
 // MultiShotTower (Shoot Tower)
-MultiShotTower::MultiShotTower(SharedInfo& info, const CardInfo& card)
+MultiShotTower::MultiShotTower(SharedInfo* info, const CardInfo& card)
     : ShootTower(info, card) {
 }
 
 std::vector<std::list<std::unique_ptr<Mob>>::const_iterator>
 MultiShotTower::getTargets(const std::list<std::unique_ptr<Mob>>& mobs) const {
-    const float range = m_info.playerState.buff.reach.apply(getAttrib("range") * MapInfo::squareSize.x);
+    const float range = m_info->playerState.buff.reach.apply(getAttrib("range") * MapInfo::squareSize.x);
     const float rangeSq = range * range;
     const int maxTargets = (int)(getAttrib("copy"));
     auto towerPos = getPosition();
@@ -263,12 +263,12 @@ void MultiShotTower::tick(std::list<std::unique_ptr<Petal>>& petals,
 }
 
 // Web (Defence Tower)
-WebTower::WebTower(SharedInfo& info, const CardInfo& card, sf::Vector2i square)
+WebTower::WebTower(SharedInfo* info, const CardInfo& card, sf::Vector2i square)
     : DefenceTower(info, card, square) {
 }
 
 void WebTower::update() {
-    if (auto defence = m_info.defencePetalMap[m_square.x][m_square.y]) {
+    if (auto defence = m_info->defencePetalMap[m_square.x][m_square.y]) {
         m_reloadTimer = sf::Time::Zero;
         if (defence->getCard() == getCard()) {
             auto web = dynamic_cast<const WebPetal*>(defence);
@@ -279,7 +279,7 @@ void WebTower::update() {
         }
     }
     else {
-        m_reloadTimer += m_info.dt;
+        m_reloadTimer += m_info->dt;
         float elapsedTime = m_reloadTimer.asSeconds();
         m_card.setReload(std::min(1.0f, (elapsedTime / getBuffedAttrib("reload"))), false);
     }
@@ -287,7 +287,7 @@ void WebTower::update() {
 
 // Pollen Tower (Shoot Tower)
 void PollenTower::update() {
-    m_reloadTimer += m_info.dt;
+    m_reloadTimer += m_info->dt;
     float elapsedTime = m_reloadTimer.asSeconds();
     m_card.setReload(std::min(1.0f, (elapsedTime / getBuffedAttrib("reload"))), false);
 }
@@ -307,7 +307,7 @@ void PollenTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::lis
     while (copyLeft > 0 && (left > 0 || right < PATH_SQUARES.size())) {
         if (left >= 0) {
             sf::Vector2i leftSq = PATH_SQUARES[left];
-            if (m_info.defencePetalMap[leftSq.x][leftSq.y] == nullptr)
+            if (m_info->defencePetalMap[leftSq.x][leftSq.y] == nullptr)
                 petals.push_back(DefencePetal::create(m_info, m_card.getCard(), leftSq));
             copyLeft--;
         }
@@ -315,7 +315,7 @@ void PollenTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::lis
 
         if (right != index && copyLeft > 0 && right < PATH_SQUARES.size()) {
             sf::Vector2i rightSq = PATH_SQUARES[right];
-            if (m_info.defencePetalMap[rightSq.x][rightSq.y] == nullptr)
+            if (m_info->defencePetalMap[rightSq.x][rightSq.y] == nullptr)
                 petals.push_back(DefencePetal::create(m_info, m_card.getCard(), rightSq));
             copyLeft--;
         }
@@ -327,11 +327,11 @@ void PollenTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::lis
 
 // Shovel Tower (Defence Tower)
 void ShovelTower::update() {
-    if (auto defence = m_info.defencePetalMap[m_square.x][m_square.y]) {
+    if (auto defence = m_info->defencePetalMap[m_square.x][m_square.y]) {
         int rarity = RARITIE_LEVELS.at(m_card.getCard().rarity);
         int petalRarity = RARITIE_LEVELS.at(defence->getCard().rarity);
         if (rarity >= petalRarity) {
-            m_reloadTimer += m_info.dt;
+            m_reloadTimer += m_info->dt;
             float elapsedTime = m_reloadTimer.asSeconds();
             m_card.setReload(std::min(1.0f, (elapsedTime / getBuffedAttrib("reload"))), false);
             return;
@@ -344,13 +344,13 @@ void ShovelTower::update() {
 
 void ShovelTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {
     if (m_reloadTimer.asSeconds() > getBuffedAttrib("reload")) {
-        if (auto defence = m_info.defencePetalMap[m_square.x][m_square.y]) {
+        if (auto defence = m_info->defencePetalMap[m_square.x][m_square.y]) {
             int rarity = RARITIE_LEVELS.at(m_card.getCard().rarity);
             int petalRarity = RARITIE_LEVELS.at(defence->getCard().rarity);
             if (rarity >= petalRarity) {
                 defence->kill();
                 int64_t coin = TOWER_ATTRIBS["shovel"].rarities[defence->getCard().rarity].coin;
-                m_info.playerState.addCoin(coin);
+                m_info->playerState.addCoin(coin);
             }
         }
         m_reloadTimer = sf::Time::Zero;
@@ -360,7 +360,7 @@ void ShovelTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::lis
 // Rose Tower (Buff Tower)
 void RoseTower::update() {
     if (isActive()) {
-        m_reloadTimer += m_info.dt;
+        m_reloadTimer += m_info->dt;
         float elapseTime = m_reloadTimer.asSeconds();
         m_card.setReload(std::min(1.0f, (elapseTime / getBuffedAttrib("reload"))), false);
     }
@@ -372,7 +372,7 @@ void RoseTower::update() {
 
 void RoseTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {
     if (m_reloadTimer.asSeconds() > getBuffedAttrib("reload")) {
-        m_info.playerState.heal(getAttrib("heal"));
+        m_info->playerState.heal(getAttrib("heal"));
         m_reloadTimer = sf::Time::Zero;
     }
 }
@@ -380,7 +380,7 @@ void RoseTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<
 // Shell Tower (Buff Tower)
 void ShellTower::update() {
     if (isActive()) {
-        m_reloadTimer += m_info.dt;
+        m_reloadTimer += m_info->dt;
         float elapseTime = m_reloadTimer.asSeconds();
         m_card.setReload(std::min(1.0f, (elapseTime / getBuffedAttrib("reload"))), false);
     }
@@ -392,7 +392,7 @@ void ShellTower::update() {
 
 void ShellTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {
     if (m_reloadTimer.asSeconds() > getBuffedAttrib("reload")) {
-        m_info.playerState.addShield(getAttrib("shield"));
+        m_info->playerState.addShield(getAttrib("shield"));
         m_reloadTimer = sf::Time::Zero;
     }
 }
@@ -400,7 +400,7 @@ void ShellTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list
 // Coin Tower (Buff Tower)
 void CoinTower::update() {
     if (isActive()) {
-        m_reloadTimer += m_info.dt;
+        m_reloadTimer += m_info->dt;
         float elapseTime = m_reloadTimer.asSeconds();
         m_card.setReload(std::min(1.0f, (elapseTime / getBuffedAttrib("reload"))), false);
     }
@@ -412,14 +412,14 @@ void CoinTower::update() {
 
 void CoinTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {
     if (m_reloadTimer.asSeconds() > getBuffedAttrib("reload")) {
-        m_info.playerState.addCoin(m_attribs.coin);
+        m_info->playerState.addCoin(m_attribs.coin);
         m_reloadTimer = sf::Time::Zero;
     }
 }
 
 // Triangle Tower (Shoot Tower)
-TriangleTower::TriangleTower(SharedInfo& info, const CardInfo& card, sf::Vector2i square, const MapInfo& map)
-    : ShootTower(info, card), m_square(square), m_map(map) {}
+TriangleTower::TriangleTower(SharedInfo* info, const CardInfo& card, sf::Vector2i square, const MapInfo& map)
+    : ShootTower(info, card), m_square(square), m_map(&map) {}
 
 void TriangleTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {
     if (m_reloadTimer.asSeconds() > getBuffedAttrib("reload")) {
@@ -439,7 +439,7 @@ int TriangleTower::countAdjacentSameType() {
     for (int d = 0; d < 8; d++) {
         sf::Vector2i adj_square = m_square + sf::Vector2i(dx[d], dy[d]);
         if (adj_square.x >= 0 && adj_square.x < 11 && adj_square.y >= 0 && adj_square.y < 10) {
-            const Tower* adj_tower = m_map.getTower(adj_square);
+            const Tower* adj_tower = m_map->getTower(adj_square);
             if (adj_tower && adj_tower->getCard() == getCard()) {
                 count++;
             }
@@ -450,24 +450,24 @@ int TriangleTower::countAdjacentSameType() {
 }
 
 // Laser Tower (Shoot Tower)
-LaserTower::LaserTower(SharedInfo& info, const CardInfo& card, sf::Vector2i square, Map& map)
-    : ShootTower(info, card), m_square(square), m_map(map) {
+LaserTower::LaserTower(SharedInfo* info, const CardInfo& card, sf::Vector2i square, Map& map)
+    : ShootTower(info, card), m_square(square), m_map(&map) {
     m_card.setReload(1.f, false);
 }
 
 void LaserTower::update() {
-    if (!m_info.laserMap[m_square.x][m_square.y])
-        m_map.getPetals().push_back(std::make_unique<LaserPetal>(m_info, m_card.getCard(), m_square, m_map.getMapInfo(), m_map.getMobs()));
+    if (!m_info->laserMap[m_square.x][m_square.y])
+        m_map->getPetals().push_back(std::make_unique<LaserPetal>(m_info, m_card.getCard(), m_square, m_map->getMapInfo(), m_map->getMobs()));
 }
 
 // Glass Tower (Defence Tower)
-GlassTower::GlassTower(SharedInfo& info, const CardInfo& card, sf::Vector2i square, const MapInfo& map)
-    : DefenceTower(info, card, square), m_map(map) {}
+GlassTower::GlassTower(SharedInfo* info, const CardInfo& card, sf::Vector2i square, const MapInfo& map)
+    : DefenceTower(info, card, square), m_map(&map) {}
 
 void GlassTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) {
     if (m_reloadTimer.asSeconds() > getBuffedAttrib("reload")) {
-        if (!m_info.defencePetalMap[m_square.x][m_square.y]) {
-            petals.push_back(std::make_unique<GlassPetal>(m_info, m_card.getCard(), m_square, m_map));
+        if (!m_info->defencePetalMap[m_square.x][m_square.y]) {
+            petals.push_back(std::make_unique<GlassPetal>(m_info, m_card.getCard(), m_square, *m_map));
             m_reloadTimer = sf::Time::Zero;
         }
     }
@@ -476,7 +476,7 @@ void GlassTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list
 // Yucca Tower (Buff Tower)
 void YuccaTower::update() {
     if (isActive()) {
-        m_reloadTimer += m_info.dt;
+        m_reloadTimer += m_info->dt;
         float elapseTime = m_reloadTimer.asSeconds();
         m_card.setReload(std::min(1.0f, (elapseTime / getBuffedAttrib("reload"))), false);
     }
@@ -498,7 +498,7 @@ void YuccaTower::tick(std::list<std::unique_ptr<Petal>>& petals, const std::list
 }
 
 // Uranium Tower (Shoot Tower)
-UraniumTower::UraniumTower(SharedInfo& info, const CardInfo& card)
+UraniumTower::UraniumTower(SharedInfo* info, const CardInfo& card)
     : ShootTower(info, card) {
 
     // Circle
@@ -512,10 +512,10 @@ UraniumTower::UraniumTower(SharedInfo& info, const CardInfo& card)
 
 void UraniumTower::update() {
     m_card.setReload(1.f, true);
-    m_timer += m_info.dt;
+    m_timer += m_info->dt;
 
     // Update circle effect
-    m_pulseTimer += m_info.dt;
+    m_pulseTimer += m_info->dt;
 
     const float frequency = 0.5f;
     float t = m_pulseTimer.asSeconds() * frequency;

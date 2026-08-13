@@ -43,7 +43,7 @@ private:
 	CardInfo m_talent;
 	sf::Vector2f m_talentCenter;
 	float m_talentRadius = 0.f;
-	const float m_lineSpacing;
+	float m_lineSpacing = 0.f;
 	bool m_isVerified = false;
 
 	sf::Vector2f m_size;

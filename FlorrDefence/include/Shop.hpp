@@ -8,7 +8,7 @@
 
 class Product : public sf::Drawable, public sf::Transformable {
 public:
-	Product(SharedInfo& info);
+	Product(SharedInfo* info);
 
 	void setWidth(float width);
 	void setCard(const CardInfo& card);
@@ -28,7 +28,7 @@ private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 private:
-	SharedInfo& m_info;
+	SharedInfo* m_info;
 	int64_t m_price = 0;
 	sf::RoundRect m_background;
 	CardStack m_stack;
@@ -41,7 +41,7 @@ private:
 
 class ShopInfo {
 public:
-	ShopInfo(const SharedInfo& info, const std::string& type);
+	ShopInfo(const SharedInfo* info, const std::string& type);
 	bool update();
 
 	const std::vector<std::string>& getProducts() const { return m_products; }
@@ -56,7 +56,7 @@ private:
 	void refresh();
 
 private:
-	const SharedInfo& m_info;
+	const SharedInfo* m_info;
 	std::string m_type;
 	std::vector<std::string> m_allProducts;
 	std::vector<std::string> m_products;
@@ -78,7 +78,7 @@ inline void from_json(const json& j, ShopInfo& s) {
 
 class Shop : public sf::Drawable {
 public:
-	Shop(SharedInfo& info);
+	Shop(SharedInfo* info);
 
 	void update();
 	void updateShopInfo();
@@ -109,7 +109,7 @@ private:
 	inline static sf::Time warningThreshold = sf::seconds(60.f);
 
 private:
-	SharedInfo& m_info;
+	SharedInfo* m_info;
 	RadioButtonGroup m_menu;
 	sf::Text m_elapsedRefreshTimeText;
 	std::unordered_map<std::string, ShopInfo> m_shops;

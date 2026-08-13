@@ -34,7 +34,7 @@ struct Stage {
 
 class SpawnManager {
 public:
-    explicit SpawnManager(SharedInfo& info);
+    explicit SpawnManager(SharedInfo* info);
 
     void load();
 
@@ -48,7 +48,7 @@ private:
     double computeNextInterval(const Stage& s, int level);
 
 private:
-    SharedInfo& m_info;
+    SharedInfo* m_info;
     std::vector<Stage> m_stages;
     size_t m_maxMob = 200;
 

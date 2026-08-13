@@ -9,7 +9,7 @@
 
 class TalentNode : public sf::Drawable {
 public:
-	TalentNode(SharedInfo& info, int id);
+	TalentNode(SharedInfo* info, int id);
 
 	void activate();
 	void setPrice(int price);
@@ -33,7 +33,7 @@ public:
 
 private:
 	int m_id = 0;
-	SharedInfo& m_info;
+	SharedInfo* m_info;
 
 	mutable sf::CircleShape m_background;
 	sf::RectangleShape m_icon;
@@ -49,7 +49,7 @@ private:
 
 class TalentEdge : public sf::Drawable {
 public:
-	TalentEdge(SharedInfo& info, int prev, int curr);
+	TalentEdge(SharedInfo* info, int prev, int curr);
 
 private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -58,7 +58,7 @@ private:
 	inline static const float thickness = 10.f;
 
 private:
-	SharedInfo& m_info;
+	SharedInfo* m_info;
 
 	int m_prev;
 	int m_curr;
@@ -68,7 +68,7 @@ private:
 
 class Talent : public sf::Drawable {
 public:
-	Talent(SharedInfo& info);
+	Talent(SharedInfo* info);
 
 	void update();
 	void onEnter();
@@ -96,7 +96,7 @@ private:
 	inline static const sf::FloatRect subWindowRect = sf::FloatRect({ startX, startY - 10.f }, { width, endY - startY - 10.f });
 
 private:
-	SharedInfo& m_info;
+	SharedInfo* m_info;
 	ScrollBar m_scrollBar;
 
 	std::vector<TalentNode> m_nodes;

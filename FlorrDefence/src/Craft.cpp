@@ -14,7 +14,7 @@ void CraftInfo::reset(const std::string& rarity) {
 	remaningCount = 0;
 }
 
-Craft::Craft(SharedInfo& info) 
+Craft::Craft(SharedInfo* info) 
 	: m_info(info), m_craftProbText(AssetManager::getFont()) {
 	initComponents();
 	collapseCards();
@@ -23,7 +23,7 @@ Craft::Craft(SharedInfo& info)
 void Craft::update() {
 	// Craft
 	if (m_craftState == "crafting") {
-		m_craftInfo.elapsedTime += m_info.dt;
+		m_craftInfo.elapsedTime += m_info->dt;
 
 		if (m_craftInfo.elapsedTime >= m_craftInfo.processTime) {
 			endCraft();
@@ -33,7 +33,7 @@ void Craft::update() {
 			float startSpeed = 360.f;
 			float spinSpeed = startSpeed + 3.f * elapsedSec * elapsedSec;
 
-			m_craftTableAngle += sf::degrees(spinSpeed * m_info.dt.asSeconds());
+			m_craftTableAngle += sf::degrees(spinSpeed * m_info->dt.asSeconds());
 
 			float frequency = 1.0f + 0.03f * elapsedSec; // slower acceleration
 			float phase = elapsedSec * frequency * 2.f * 3.14159265f + 3.14159265f / 2.f;
@@ -62,17 +62,17 @@ void Craft::update() {
 	}
 
 	// Craft Button
-	m_craftButton.update(m_info.mouseWorldPosition);
+	m_craftButton.update(m_info->mouseWorldPosition);
 
 	// Scroll Bar
 	float prevOffset = m_scrollBar.getOffset();
-	m_scrollBar.update(m_info.mouseWorldPosition);
+	m_scrollBar.update(m_info->mouseWorldPosition);
 	if (prevOffset != m_scrollBar.getOffset())
 		m_updated = false;
 }
 
 void Craft::onEnter() {
-	if (m_info.playerState.backpack.getCount(m_craftStack.card) < m_craftStack.count)
+	if (m_info->playerState.backpack.getCount(m_craftStack.card) < m_craftStack.count)
 		collapseCards();
 
 	m_scrollBar.setOffset(0.f);
@@ -91,25 +91,25 @@ void Craft::onEvent(const sf::Event& event) {
 		m_scrollBar.onMouseButtonPressed(*pressedEvent);
 
 		if (pressedEvent->button == sf::Mouse::Button::Left) {
-			sf::Vector2f mousePosition = m_info.mouseWorldPosition;
+			sf::Vector2f mousePosition = m_info->mouseWorldPosition;
 			if (!subWindowRect.contains(mousePosition))
 				mousePosition = { -1.f, -1.f };  // Outside of sub window
 			for (CardStack& stack : m_cards) {
 				if (stack.getRect().contains(mousePosition)) {
 					CardStackInfo cards = stack.getInfo();
-					if (!m_info.input.keyShift)
+					if (!m_info->input.keyShift)
 						cards.count = std::min(cards.count, 5 - 
 							(m_craftStack.card == cards.card && m_craftStack.count < 5 && 
 								m_craftState != "succeeded" ? m_craftStack.count : 0));
 					insertCards(cards);
-					if (m_info.input.keyCtrl)
+					if (m_info->input.keyCtrl)
 						startCraft();
 				}
 			}
 
 			sf::Vector2f cardSquare = { cardLength, cardLength };
 			for (sf::FloatRect craftCardRect : m_craftCardRects) {
-				if (craftCardRect.contains(m_info.mouseWorldPosition)) {
+				if (craftCardRect.contains(m_info->mouseWorldPosition)) {
 					collapseCards();
 				}
 			}
@@ -121,7 +121,7 @@ void Craft::onEvent(const sf::Event& event) {
 		m_scrollBar.onMouseButtonReleased(*releasedEvent);
 	}
 	else if (const auto* scrolledEvent = event.getIf<sf::Event::MouseWheelScrolled>()) {
-		if (!m_info.input.mouseLeftButton && subWindowRect.contains(m_info.mouseWorldPosition)) {
+		if (!m_info->input.mouseLeftButton && subWindowRect.contains(m_info->mouseWorldPosition)) {
 			m_scrollBar.onMouseWheelScrolled(*scrolledEvent);
 			m_updated = false;
 		}
@@ -191,8 +191,8 @@ void Craft::endCraft() {
 	const std::string& rarity = m_craftStack.card.rarity;
 	const std::string& nextRarity = RARITIES[std::distance(RARITIES.begin(), std::find(RARITIES.begin(), RARITIES.end(), rarity)) + 1];
 
-	m_info.playerState.backpack.add({ m_craftStack.card, m_craftInfo.remaningCount - m_craftStack.count });
-	m_info.playerState.backpack.add({ { nextRarity, m_craftStack.card.type }, m_craftInfo.successCount });
+	m_info->playerState.backpack.add({ m_craftStack.card, m_craftInfo.remaningCount - m_craftStack.count });
+	m_info->playerState.backpack.add({ { nextRarity, m_craftStack.card.type }, m_craftInfo.successCount });
 
 	if (m_craftInfo.successCount > 0) {
 		m_craftState = "succeeded";
@@ -213,7 +213,7 @@ void Craft::updateComponents() const {
 	m_card.setOrigin({ 0.f, 0.f });
 	m_empty.setOrigin({ 0.f, 0.f });
 
-	const BackpackInfo& backpack = m_info.playerState.backpack;
+	const BackpackInfo& backpack = m_info->playerState.backpack;
 
 	float y = startY - m_scrollBar.getOffset();
 	for (const std::string& type : TOWER_TYPES) {

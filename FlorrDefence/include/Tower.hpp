@@ -10,10 +10,10 @@ class MapInfo;
 
 class Tower : public sf::Drawable, public sf::Transformable {
 public:
-	static std::unique_ptr<Tower> create(SharedInfo& info, const CardInfo& card, sf::Vector2i square, Map& map);
+	static std::unique_ptr<Tower> create(SharedInfo* info, const CardInfo& card, sf::Vector2i square, Map* map);
 
 public:
-	Tower(SharedInfo& info, const CardInfo& card);
+	Tower(SharedInfo* info, const CardInfo& card);
 	virtual ~Tower();
 
 	virtual void update() {}
@@ -23,7 +23,7 @@ public:
 	void setLength(float length) { m_card.setLength(length); }
 	CardInfo getCard() const { return m_card.getCard(); };
 	float getAttrib(const std::string& name) const { return m_attribs.attribs.at(name); }
-	float getBuffedAttrib(const std::string& name) const { return m_info.playerState.buff.get(name).apply(getAttrib(name)); }
+	float getBuffedAttrib(const std::string& name) const { return m_info->playerState.buff.get(name).apply(getAttrib(name)); }
 
 	friend void to_json(json& j, const Tower& t);
 	friend void from_json(const json& j, Tower& t);
@@ -32,7 +32,7 @@ private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 protected:
-	SharedInfo& m_info;
+	SharedInfo* m_info;
 	const TowerAttribs::RarityEntry& m_attribs;
 	TowerCard m_card;
 	sf::Time m_reloadTimer;
@@ -50,7 +50,7 @@ inline void from_json(const json& j, Tower& t) {
 
 class ShootTower : public Tower {
 public:
-	ShootTower(SharedInfo& info, const CardInfo& card);
+	ShootTower(SharedInfo* info, const CardInfo& card);
 
 	virtual void update() override;
 	virtual void tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) override;
@@ -61,7 +61,7 @@ protected:
 
 class DefenceTower : public Tower {
 public:
-	DefenceTower(SharedInfo& info, const CardInfo& card, sf::Vector2i square);
+	DefenceTower(SharedInfo* info, const CardInfo& card, sf::Vector2i square);
 
 	virtual void update() override;
 	virtual void tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) override;
@@ -72,7 +72,7 @@ protected:
 
 class SummonTower : public Tower {
 public:
-	SummonTower(SharedInfo& info, const CardInfo& card);
+	SummonTower(SharedInfo* info, const CardInfo& card);
 
 	virtual void update() override;
 	virtual void tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) override;
@@ -83,7 +83,7 @@ protected:
 
 class BuffTower : public Tower {
 public:
-	BuffTower(SharedInfo& info, const CardInfo& card, sf::Vector2i square);
+	BuffTower(SharedInfo* info, const CardInfo& card, sf::Vector2i square);
 
 	virtual void update() override;
 
@@ -97,7 +97,7 @@ protected:
 
 class MultiShotTower : public ShootTower {
 public:
-	MultiShotTower(SharedInfo& info, const CardInfo& card);
+	MultiShotTower(SharedInfo* info, const CardInfo& card);
 
 	void tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) override;
 
@@ -108,7 +108,7 @@ private:
 
 class WebTower : public DefenceTower {
 public:
-	WebTower(SharedInfo& info, const CardInfo& card, sf::Vector2i square);
+	WebTower(SharedInfo* info, const CardInfo& card, sf::Vector2i square);
 
 	void update() override;
 };
@@ -158,7 +158,7 @@ public:
 
 class TriangleTower : public ShootTower {
 public:
-	TriangleTower(SharedInfo& info, const CardInfo& card, sf::Vector2i square, const MapInfo& map);
+	TriangleTower(SharedInfo* info, const CardInfo& card, sf::Vector2i square, const MapInfo& map);
 
 	void tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) override;
 
@@ -167,12 +167,12 @@ private:
 
 private:
 	sf::Vector2i m_square;
-	const MapInfo& m_map;
+	const MapInfo* m_map;
 };
 
 class LaserTower : public ShootTower {
 public:
-	LaserTower(SharedInfo& info, const CardInfo& card, sf::Vector2i square, Map& map);
+	LaserTower(SharedInfo* info, const CardInfo& card, sf::Vector2i square, Map& map);
 
 	void update() override;
 
@@ -180,17 +180,17 @@ public:
 
 private:
 	sf::Vector2i m_square;
-	Map& m_map;
+	Map* m_map;
 };
 
 class GlassTower : public DefenceTower {
 public:
-	GlassTower(SharedInfo& info, const CardInfo& card, sf::Vector2i square, const MapInfo& map);
+	GlassTower(SharedInfo* info, const CardInfo& card, sf::Vector2i square, const MapInfo& map);
 
 	void tick(std::list<std::unique_ptr<Petal>>& petals, const std::list<std::unique_ptr<Mob>>& mobs) override;
 
 private:
-	const MapInfo& m_map;
+	const MapInfo* m_map;
 };
 
 class YuccaTower : public BuffTower {
@@ -204,7 +204,7 @@ public:
 
 class UraniumTower : public ShootTower {
 public:
-	UraniumTower(SharedInfo& info, const CardInfo& card);
+	UraniumTower(SharedInfo* info, const CardInfo& card);
 
 	void update() override;
 

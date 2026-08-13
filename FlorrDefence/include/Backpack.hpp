@@ -28,7 +28,7 @@ private:
 
 class Backpack : public sf::Drawable {
 public:
-	Backpack(SharedInfo& info);
+	Backpack(SharedInfo* info);
 
 	void update();
 	void onEnter();
@@ -51,7 +51,7 @@ private:
 	inline static const sf::FloatRect subWindowRect = sf::FloatRect({ startX, startY - 10.f }, { width + 20.f, endY - startY - 10.f});
 
 private:
-	SharedInfo& m_info;
+	SharedInfo* m_info;
 	mutable ScrollBar m_scrollBar;
 	mutable float m_contentHeight = 0.f;
 	mutable std::vector<CardStack> m_cards;

@@ -10,7 +10,7 @@
 std::filesystem::path Record::defaultLoadPath = "FlorrDefence.json";
 std::filesystem::path Record::defaultSavePath = "FlorrDefence.json";
 
-Record::Record(SharedInfo& info, Map& map, Shop& shop, Talent& talent)
+Record::Record(SharedInfo* info, Map& map, Shop& shop, Talent& talent)
 	: m_info(info), m_map(map), m_shop(shop), m_talent(talent) {
 
 }
@@ -20,7 +20,7 @@ bool Record::try_load() {
 }
 
 bool Record::try_load(std::filesystem::path path) {
-	m_info.init();
+	m_info->init();
 
 	if (path.empty()) {
 		std::cout << "Game record path is empty, start a new game by default." << std::endl;
@@ -41,15 +41,15 @@ bool Record::try_load(std::filesystem::path path) {
 	m_data.clear();
 	ifs >> m_data;
 
-	m_data["player"].get_to(m_info.playerState);
+	m_data["player"].get_to(m_info->playerState);
 	m_data["map"].get_to(m_map);
 	m_data["shop"].get_to(m_shop);
 	m_data["talent"].get_to(m_talent);
 
-	auto& uniques = m_info.playerState.aquiredUniques;
+	auto& uniques = m_info->playerState.aquiredUniques;
 	for (const std::string& type : TOWER_TYPES) {
 		CardInfo card = { "unique", type };
-		if (m_info.playerState.backpack.getCount(card) > 0
+		if (m_info->playerState.backpack.getCount(card) > 0
 			|| m_map.getMapInfo().containsTower(card))
 			uniques.insert(type);
 	}
@@ -71,13 +71,13 @@ void Record::save(std::filesystem::path path) {
 
 	std::cout << "Saving game..." << std::endl;
 
-	if (m_info.draggedCard.has_value()) {
+	if (m_info->draggedCard.has_value()) {
 		std::cout << "[WARNING] Saving game while dragging a card!" << std::endl;
-		m_info.playerState.backpack.add({ m_info.draggedCard->getCard(), 1 });
+		m_info->playerState.backpack.add({ m_info->draggedCard->getCard(), 1 });
 	}
 
 	m_data.clear();
-	m_data["player"] = m_info.playerState;
+	m_data["player"] = m_info->playerState;
 	m_data["map"] = m_map;
 	m_data["shop"] = m_shop;
 	m_data["talent"] = m_talent;

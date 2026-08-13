@@ -22,7 +22,7 @@ private:
     bool trySaveToPath(const std::filesystem::path& path, bool ignoreThreshold = false);
 
 private:
-    sf::RenderWindow& m_window;
+    sf::RenderWindow* m_window;
     int m_frameCount = 0;
     float m_elapsedTime = 0.f;
     sf::Clock m_saveCooldownClock;

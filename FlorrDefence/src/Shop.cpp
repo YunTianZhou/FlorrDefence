@@ -11,7 +11,7 @@ static inline sf::Color lerpColor(const sf::Color& a, const sf::Color& b, float 
 	};
 }
 
-Product::Product(SharedInfo& info)
+Product::Product(SharedInfo* info)
 	: m_info(info) {
 	m_background.setFillColor(DARK_COLORS.at("wood"));
 	m_buyCB.setFillColor(LIGHT_COLORS.at("gold"));
@@ -46,16 +46,16 @@ void Product::setCount(int count) {
 }
 
 void Product::update() {
-	m_mousePosition = getInverseTransform().transformPoint(m_info.mouseWorldPosition);
-	m_buyCB.setDisabled(m_price > m_info.playerState.coin ||
-		(m_stack.getCard().rarity == "unique" && m_info.playerState.aquiredUniques.count(m_stack.getCard().type)));
+	m_mousePosition = getInverseTransform().transformPoint(m_info->mouseWorldPosition);
+	m_buyCB.setDisabled(m_price > m_info->playerState.coin ||
+		(m_stack.getCard().rarity == "unique" && m_info->playerState.aquiredUniques.count(m_stack.getCard().type)));
 	m_buyCB.update(m_mousePosition);
 
-	if (!m_info.draggedCard.has_value() && m_stack.getRect().contains(m_mousePosition)) {
+	if (!m_info->draggedCard.has_value() && m_stack.getRect().contains(m_mousePosition)) {
 		float length = m_stack.getLength();
 		sf::Vector2f pos = getTransform().transformPoint(m_stack.getPosition());
 		pos += sf::Vector2f(length, length) / 2.f;
-		m_info.cardDescription.set(m_stack.getCard(), pos, length);
+		m_info->cardDescription.set(m_stack.getCard(), pos, length);
 	}
 }
 
@@ -117,7 +117,7 @@ void Product::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	states.shader = nullptr;
 }
 
-ShopInfo::ShopInfo(const SharedInfo& info, const std::string& type)
+ShopInfo::ShopInfo(const SharedInfo* info, const std::string& type)
 	: m_info(info), m_type(type) {
 	m_allProducts.clear();
 	for (const std::string& type : TOWER_TYPES)
@@ -127,7 +127,7 @@ ShopInfo::ShopInfo(const SharedInfo& info, const std::string& type)
 }
 
 bool ShopInfo::update() {
-	m_refreshTimer += m_info.dt;
+	m_refreshTimer += m_info->dt;
 
 	if (m_refreshTimer >= SHOP_ATTRIBS[m_type].refreshInterval) {
 		refresh();
@@ -151,7 +151,7 @@ void ShopInfo::refresh() {
 	m_products = randomSample(m_allProducts, SHOP_ATTRIBS[m_type].productCount);
 }
 
-Shop::Shop(SharedInfo& info)
+Shop::Shop(SharedInfo* info)
 	: m_info(info), m_elapsedRefreshTimeText(AssetManager::getFont()) {
 	initComponents();
 }
@@ -159,10 +159,10 @@ Shop::Shop(SharedInfo& info)
 void Shop::update() {
 	// Menu
 	for (int i = 0; i < m_menu.getSize(); i++) {
-		bool disable = RARITIE_LEVELS.at(SHOP_RARITIES[i]) > (int)round(m_info.playerState.buff.shop.apply(1));
+		bool disable = RARITIE_LEVELS.at(SHOP_RARITIES[i]) > (int)round(m_info->playerState.buff.shop.apply(1));
 		m_menu.getButton(i).setDisabled(disable);
 	}
-	m_menu.update(m_info.mouseWorldPosition);
+	m_menu.update(m_info->mouseWorldPosition);
 
 	// ShopInfo
 	updateShopInfo();
@@ -194,7 +194,7 @@ void Shop::update() {
 	}
 
 	// Products
-	sf::Vector2f mousePosition = m_info.mouseWorldPosition;
+	sf::Vector2f mousePosition = m_info->mouseWorldPosition;
 	if (!subWindowRect.contains(mousePosition))
 		mousePosition = { -1.f, -1.f };  // Outside of sub window
 	for (Product& product : m_products)
@@ -202,14 +202,14 @@ void Shop::update() {
 
 	// Scroll Bar
 	float prevOffset = m_scrollBar.getOffset();
-	m_scrollBar.update(m_info.mouseWorldPosition);
+	m_scrollBar.update(m_info->mouseWorldPosition);
 	if (prevOffset != m_scrollBar.getOffset())
 		m_updated = false;
 }
 
 void Shop::updateShopInfo() {
 	for (int i = 0; i < m_menu.getSize(); i++) {
-		bool disable = RARITIE_LEVELS.at(SHOP_RARITIES[i]) > (int)round(m_info.playerState.buff.shop.apply(1));
+		bool disable = RARITIE_LEVELS.at(SHOP_RARITIES[i]) > (int)round(m_info->playerState.buff.shop.apply(1));
 		if (!disable)
 			if (m_shops.at(SHOP_RARITIES[i]).update())
 				m_updated = false;
@@ -246,23 +246,23 @@ void Shop::onEvent(const sf::Event& event) {
 			if (product.onMouseButtonReleased(*releasedEvent)) {
 				// Buy tower
 				CardStackInfo info = product.getCardStackInfo();
-				int64_t count = m_info.input.keyShift && info.card.rarity != "unique" ?
-					m_info.playerState.coin / product.getPrice() : 1;
+				int64_t count = m_info->input.keyShift && info.card.rarity != "unique" ?
+					m_info->playerState.coin / product.getPrice() : 1;
 
-				int64_t rem = std::max<int64_t>(0, towerLimit - m_info.playerState.backpack.getCount(info.card));
+				int64_t rem = std::max<int64_t>(0, towerLimit - m_info->playerState.backpack.getCount(info.card));
 				count = std::min(count, rem / product.getCount());
 
-				m_info.playerState.coin -= count * product.getPrice();
+				m_info->playerState.coin -= count * product.getPrice();
 				info.count *= int(count);
 
-				m_info.playerState.backpack.add(info);
+				m_info->playerState.backpack.add(info);
 				if (product.getCardStackInfo().card.rarity == "unique")
-					m_info.playerState.aquiredUniques.insert(product.getCardStackInfo().card.type);
+					m_info->playerState.aquiredUniques.insert(product.getCardStackInfo().card.type);
 			}
 		}
 	}
 	else if (const auto* scrolledEvent = event.getIf<sf::Event::MouseWheelScrolled>()) {
-		if (!m_info.input.mouseLeftButton && subWindowRect.contains(m_info.mouseWorldPosition)) {
+		if (!m_info->input.mouseLeftButton && subWindowRect.contains(m_info->mouseWorldPosition)) {
 			m_scrollBar.onMouseWheelScrolled(*scrolledEvent);
 			m_updated = false;
 		}

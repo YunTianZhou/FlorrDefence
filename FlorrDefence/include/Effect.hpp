@@ -4,19 +4,19 @@
 
 class Effect : public sf::Drawable {
 public:
-	Effect(const SharedInfo& info);
+	Effect(const SharedInfo* info);
 
 	virtual void update() = 0;
 	virtual bool isDone() = 0;
 
 protected:
-	const SharedInfo& m_info;
+	const SharedInfo* m_info;
 
 };
 
 class LightningEffect : public Effect {
 public:
-	LightningEffect(const SharedInfo& info, sf::Vector2f root, int rootConnected, std::vector<sf::Vector2f> positions);
+	LightningEffect(const SharedInfo* info, sf::Vector2f root, int rootConnected, std::vector<sf::Vector2f> positions);
 
 	void update();
 	bool isDone();

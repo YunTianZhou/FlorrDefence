@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include "Game.hpp"
 #include "AssetManager.hpp"
 #include "SpriteCollisionManager.hpp"

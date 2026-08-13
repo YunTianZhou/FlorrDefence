@@ -9,11 +9,11 @@ sf::Vector2f addJitter(sf::Vector2f pos, float delta) {
 }
 
 // Effect
-Effect::Effect(const SharedInfo& info) 
+Effect::Effect(const SharedInfo* info) 
 	: m_info(info) {}
 
 // Lightning Effect
-LightningEffect::LightningEffect(const SharedInfo& info, sf::Vector2f root, int rootConnected, std::vector<sf::Vector2f> positions)
+LightningEffect::LightningEffect(const SharedInfo* info, sf::Vector2f root, int rootConnected, std::vector<sf::Vector2f> positions)
 	: Effect(info) {
 	const float delta = 8.f;
 	root = addJitter(root, delta);
@@ -26,7 +26,7 @@ LightningEffect::LightningEffect(const SharedInfo& info, sf::Vector2f root, int 
 }
 
 void LightningEffect::update() {
-	m_timer += m_info.dt;
+	m_timer += m_info->dt;
 	float t = m_timer.asSeconds();
 
 	float ratio = std::min(t / duration, 1.f);

@@ -17,7 +17,7 @@ struct CraftInfo {
 
 class Craft : public sf::Drawable {
 public:
-	Craft(SharedInfo& info);
+	Craft(SharedInfo* info);
 
 	void update();
 	void onEnter();
@@ -45,7 +45,7 @@ private:
 	inline static int craftLimit = 500000;
 
 private:
-	SharedInfo& m_info;
+	SharedInfo* m_info;
 	mutable ScrollBar m_scrollBar;
 	mutable float m_contentHeight = 0.f;
 

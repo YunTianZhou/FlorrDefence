@@ -11,8 +11,8 @@ class MapInfo;
 
 class Petal : public Entity {
 public:
-	Petal(SharedInfo& info, const CardInfo& card);
-	Petal(SharedInfo& info, const CardInfo& card, const sf::Texture& texture);  // For summon petal
+	Petal(SharedInfo* info, const CardInfo& card);
+	Petal(SharedInfo* info, const CardInfo& card, const sf::Texture& texture);  // For summon petal
 
 	virtual void update() {}
 	virtual void applyDebuff(Debuff& debuff) const {}
@@ -31,7 +31,7 @@ public:
 protected:
 	virtual bool hasAttrib(const std::string& name) const { return m_attribs.attribs.find(name) != m_attribs.attribs.end(); }
 	virtual float getAttrib(const std::string& name) const { return m_attribs.attribs.at(name); }
-	virtual float getBuffedAttrib(const std::string& name) const { return m_info.playerState.buff.get(name).apply(getAttrib(name)); }
+	virtual float getBuffedAttrib(const std::string& name) const { return m_info->playerState.buff.get(name).apply(getAttrib(name)); }
 
 protected:
 	const TowerAttribs::RarityEntry& m_attribs;
@@ -40,11 +40,11 @@ protected:
 
 class ShootPetal : public Petal {
 public:
-	static std::unique_ptr<ShootPetal> create(SharedInfo& info, const CardInfo& card, sf::Vector2f startPosition, std::list<std::unique_ptr<Mob>>::const_iterator target);
+	static std::unique_ptr<ShootPetal> create(SharedInfo* info, const CardInfo& card, sf::Vector2f startPosition, std::list<std::unique_ptr<Mob>>::const_iterator target);
 
 public:
-	ShootPetal(SharedInfo& info, const CardInfo& card, sf::Vector2f startPosition, std::list<std::unique_ptr<Mob>>::const_iterator target);
-	ShootPetal(SharedInfo& info, const CardInfo& card);  // For laser
+	ShootPetal(SharedInfo* info, const CardInfo& card, sf::Vector2f startPosition, std::list<std::unique_ptr<Mob>>::const_iterator target);
+	ShootPetal(SharedInfo* info, const CardInfo& card);  // For laser
 
 	virtual void update() override;
 	virtual void updatePosition() override;
@@ -67,10 +67,10 @@ protected:
 
 class DefencePetal : public Petal {
 public:
-	static std::unique_ptr<DefencePetal> create(SharedInfo& info, const CardInfo& card, sf::Vector2i square);
+	static std::unique_ptr<DefencePetal> create(SharedInfo* info, const CardInfo& card, sf::Vector2i square);
 
 public:
-	DefencePetal(SharedInfo& info, const CardInfo& card, sf::Vector2i square);
+	DefencePetal(SharedInfo* info, const CardInfo& card, sf::Vector2i square);
 
 	virtual void update() override;
 	virtual void updatePosition() override;
@@ -84,10 +84,10 @@ protected:
 
 class MobPetal : public Petal {
 public:
-	static std::unique_ptr<MobPetal> create(SharedInfo& info, const CardInfo& card);
+	static std::unique_ptr<MobPetal> create(SharedInfo* info, const CardInfo& card);
 
 public:
-	MobPetal(SharedInfo& info, const CardInfo& card, float startPosition = 39.f);
+	MobPetal(SharedInfo* info, const CardInfo& card, float startPosition = 39.f);
 
 	virtual void update() override;
 	virtual void updatePosition() override;
@@ -101,7 +101,7 @@ public:
 protected:
 	bool hasAttrib(const std::string& name) const override { return getMobAttribs().attribs.contains(name); }
 	float getAttrib(const std::string& name) const override { return getMobAttribs().attribs.at(name); }
-	float getBuffedAttrib(const std::string& name) const override { return m_info.playerState.buff.get(name).apply(getAttrib(name)); }
+	float getBuffedAttrib(const std::string& name) const override { return m_info->playerState.buff.get(name).apply(getAttrib(name)); }
 
 private:
 	MobInfo m_mob;
@@ -111,7 +111,7 @@ private:
 
 class WebPetal : public DefencePetal {
 public:
-	WebPetal(SharedInfo& info, const CardInfo& card, sf::Vector2i square);
+	WebPetal(SharedInfo* info, const CardInfo& card, sf::Vector2i square);
 
 	void update() override;
 
@@ -127,7 +127,7 @@ private:
 
 class TrianglePetal : public ShootPetal {
 public:
-	TrianglePetal(SharedInfo& info, const CardInfo& card, sf::Vector2f startPosition, std::list<std::unique_ptr<Mob>>::const_iterator target, int adjCount);
+	TrianglePetal(SharedInfo* info, const CardInfo& card, sf::Vector2f startPosition, std::list<std::unique_ptr<Mob>>::const_iterator target, int adjCount);
 
 	int getDamage() const override;
 
@@ -181,7 +181,7 @@ public:
 
 class LaserPetal : public ShootPetal {
 public:
-	LaserPetal(SharedInfo& info, const CardInfo& card, sf::Vector2i square, MapInfo& map, const std::list<std::unique_ptr<Mob>>& mobs);
+	LaserPetal(SharedInfo* info, const CardInfo& card, sf::Vector2i square, MapInfo& map, const std::list<std::unique_ptr<Mob>>& mobs);
 
 	int getArmor() const override;
 	int getDamage() const override;
@@ -212,12 +212,12 @@ public:
 
 class GlassPetal : public DefencePetal {
 public:
-	GlassPetal(SharedInfo& info, const CardInfo& card, sf::Vector2i square, const MapInfo& map);
+	GlassPetal(SharedInfo* info, const CardInfo& card, sf::Vector2i square, const MapInfo& map);
 
 	void update();
 
 	int getArmor() const override;
 
 private:
-	const MapInfo& m_map;
+	const MapInfo* m_map;
 };
