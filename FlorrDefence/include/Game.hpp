@@ -20,7 +20,7 @@ public:
     void start();
     void run();
 
-    Request getRequest() const { return m_request; }
+    Request popRequest();
     std::filesystem::path getRequestPath() const { return m_requestPath; }
 
     friend class Record;

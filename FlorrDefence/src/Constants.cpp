@@ -134,8 +134,7 @@ DamageType stringToDamageType(const std::string& str) {
 }
 
 void loadSettings() {
-	std::ifstream file("res/config/settings.json");
-	if (file.is_open()) {
+	auto load = [&](std::ifstream& file) {
 		try {
 			nlohmann::json j;
 			file >> j;
@@ -150,11 +149,35 @@ void loadSettings() {
 		catch (const std::exception& e) {
 			std::cerr << "Failed to parse settings.json: " << e.what() << std::endl;
 		}
-		file.close();
+	};
+
+	std::filesystem::path settingsPath = "settings.json";
+	std::filesystem::path defaultPath = "res/config/settings_default.json";
+
+	if (!std::filesystem::exists(settingsPath)) {
+		std::cout << "settings.json not found, copying default settings." << std::endl;
+
+		try {
+			std::filesystem::copy_file(
+				defaultPath,
+				settingsPath,
+				std::filesystem::copy_options::overwrite_existing
+			);
+		}
+		catch (const std::filesystem::filesystem_error& e) {
+			std::cerr << "[WARNING] Failed to copy default settings: " << e.what() << std::endl;
+			return;
+		}
 	}
-	else {
-		std::cerr << "settings.json not found, using defaults" << std::endl;
+
+	std::ifstream file(settingsPath);
+
+	if (!file.is_open()) {
+		std::cerr << "[WARNING] Failed to open settings.json!" << std::endl;
+		return;
 	}
+
+	load(file);
 }
 
 static void loadInitSupplies() {

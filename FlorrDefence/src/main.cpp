@@ -47,7 +47,7 @@ int main() {
     while (window.isOpen()) {
         game->run();
 
-        switch (game->getRequest()) {
+        switch (game->popRequest()) {
         case Game::Request::None:
             break;
 

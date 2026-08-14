@@ -65,6 +65,12 @@ void Game::run() {
     }
 }
 
+Game::Request Game::popRequest() {
+    Request r = m_request;
+    m_request = Request::None; 
+    return r;
+}
+
 void Game::handleEvents() {
     while (std::optional event = m_window->pollEvent()) {
         if (event->is<sf::Event::Closed>()) {
