@@ -1,4 +1,8 @@
-﻿cmake_minimum_required (VERSION 3.8)
+﻿if(CMAKE_HOST_WIN32)
+  cmake_minimum_required(VERSION 3.24)
+else()
+  cmake_minimum_required(VERSION 3.22)
+endif()
 
 # Enable Hot Reload for MSVC compilers if supported.
 if (POLICY CMP0141)

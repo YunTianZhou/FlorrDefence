@@ -3,8 +3,34 @@
 #include <iostream>
 #include <fstream>
 #include <format>
+#include <chrono>
+
+#ifdef _WIN32
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <windows.h>
+#endif
 
 #include "Game.hpp"
+
+namespace {
+	void replaceFile(const std::filesystem::path& source, const std::filesystem::path& destination) {
+#ifdef _WIN32
+		if (!MoveFileExW(source.c_str(), destination.c_str(),
+			MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH)) {
+			throw std::filesystem::filesystem_error(
+				"Failed to replace save file",
+				source,
+				destination,
+				std::error_code(GetLastError(), std::system_category())
+			);
+		}
+#else
+		std::filesystem::rename(source, destination);
+#endif
+	}
+}
 
 Record& Record::instance() {
 	static Record record;
@@ -23,7 +49,7 @@ bool Record::try_load(Game& game, const std::filesystem::path& path) {
 
 	if (!ifs.is_open()) {
 		std::cout << "Record not found, start a new game." << std::endl;
-		return false;
+		return true;
 	}
 
 	std::cout << "Loading game record..." << std::endl;
@@ -57,41 +83,56 @@ bool Record::try_load(Game& game, const std::filesystem::path& path) {
 	}
 }
 
-void Record::save(Game& game, const std::filesystem::path& path) {
+bool Record::save(const Game& game, const std::filesystem::path& path) {
 	if (path.empty()) {
 		std::cout << "Target saving file is empty, do not save by default." << std::endl;
-		return;
+		return false;
 	}
 
 	std::cout << "Saving game..." << std::endl;
 
-	if (game.m_info.draggedCard.has_value()) {
-		std::cout << "[WARNING] Saving game while dragging a card!" << std::endl;
-		game.m_info.playerState.backpack.add({ game.m_info.draggedCard->getCard(), 1 });
-	}
-
+	std::filesystem::path temporaryPath;
 	try {
-		m_data.clear();
-		m_data["player"] = game.m_info.playerState;
-		m_data["map"] = game.m_map;
-		m_data["shop"] = game.m_ui.m_shop;
-		m_data["talent"] = game.m_ui.m_talent;
+		json data;
+		data["player"] = game.m_info.playerState;
 
-		std::ofstream ofs(path);
-
-		if (!ofs.is_open()) {
-			std::cerr << "Failed to save record to " << path << std::endl;
-			return;
+		if (game.m_info.draggedCard.has_value()) {
+			BackpackInfo backpack = game.m_info.playerState.backpack;
+			backpack.add({ game.m_info.draggedCard->getCard(), 1 });
+			data["player"]["backpack"] = backpack;
 		}
 
-		ofs << m_data.dump(4);
+		data["map"] = game.m_map;
+		data["shop"] = game.m_ui.m_shop;
+		data["talent"] = game.m_ui.m_talent;
+
+		temporaryPath = path;
+		auto timestamp = std::chrono::steady_clock::now().time_since_epoch().count();
+		temporaryPath += ".tmp." + std::to_string(timestamp);
+
+		{
+			std::ofstream ofs(temporaryPath, std::ios::binary | std::ios::trunc);
+			ofs.exceptions(std::ios::failbit | std::ios::badbit);
+			ofs << data.dump(4);
+			ofs.flush();
+			ofs.close();
+		}
+
+		replaceFile(temporaryPath, path);
+		m_data = std::move(data);
 
 		std::cout << std::format(
 			"Game successfully saved to '{}'",
 			path.string()
 		) << std::endl;
+		return true;
 	}
 	catch (const std::exception& e) {
+		if (!temporaryPath.empty()) {
+			std::error_code error;
+			std::filesystem::remove(temporaryPath, error);
+		}
 		std::cerr << "Failed to save record: " << e.what() << std::endl;
+		return false;
 	}
 }

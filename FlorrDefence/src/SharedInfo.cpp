@@ -110,7 +110,7 @@ void PlayerState::update() {
     updateLevel();
 
     hp = std::min(hp, hpLimit);
-    shield = std::max(0, std::min(shield, hp));
+    shield = std::max(0, std::min(shield, hpLimit));
 
     hpLimit = (int)buff.health.apply((float)originalHpLimit);
     if (hpLimit != prevHpLimit) {

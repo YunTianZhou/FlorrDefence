@@ -17,7 +17,7 @@ public:
 	Record& operator=(Record&&) = delete;
 
 	bool try_load(Game& game, const std::filesystem::path& path);
-	void save(Game& game, const std::filesystem::path& path);
+	bool save(const Game& game, const std::filesystem::path& path);
 
 private:
 	Record() = default;

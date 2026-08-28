@@ -67,10 +67,14 @@ MapInfo::MapInfo(SharedInfo* info, Map* map)
 }
 
 const Tower* MapInfo::getTower(sf::Vector2i square) const {
+    if (!isValid(square))
+        return nullptr;
     return m_map[square.x][square.y].get();
 }
 
 Tower* MapInfo::getTower(sf::Vector2i square) {
+    if (!isValid(square))
+        return nullptr;
     return m_map[square.x][square.y].get();
 }
 
@@ -91,7 +95,7 @@ void MapInfo::setCard(sf::Vector2i square, const CardInfo& card) {
 }
 
 void MapInfo::removeCard(sf::Vector2i square) {
-    if (isEmpty(square))
+    if (!isValid(square) || isEmpty(square))
         return;
 
     m_map[square.x][square.y].reset();  // Deletes the tower
@@ -207,10 +211,14 @@ bool MapInfo::isValid(sf::Vector2i square) const {
 }
 
 bool MapInfo::isEmpty(sf::Vector2i square) const {
+    if (!isValid(square))
+        return false;
     return m_map[square.x][square.y] == nullptr;
 }
 
 bool MapInfo::isPlaceable(sf::Vector2i square, const CardInfo& card) const {
+    if (!isValid(square))
+        return false;
     ST squareType = m_squareTypeMap[square.x][square.y];
 
     if (squareType == ST::Obstacle)
@@ -427,8 +435,10 @@ void Map::collision(Petal& petal, Mob& mob) {
         LightningPetal& lightning = dynamic_cast<LightningPetal&>(petal);
         lightning.onHit(mob, m_mobs, m_effects);
     }
+    else {
+        mob.hit(petal.getDamage(), petal.getDamageType());
+    }
 
-    mob.hit(petal.getDamage(), petal.getDamageType());
     petal.hit(mob.getDamage());
     petal.applyDebuff(mob.getDebuff());
 }

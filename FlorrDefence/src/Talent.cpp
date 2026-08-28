@@ -68,10 +68,16 @@ bool TalentNode::isInside(const sf::Vector2f& position, const sf::Vector2f& offs
 }
 
 void TalentNode::onMouseButtonPressed(sf::Event::MouseButtonPressed event, sf::Vector2f offset) {
+	if (event.button != sf::Mouse::Button::Left)
+		return;
+
 	m_held = isInside(m_info->mouseWorldPosition, offset);
 }
 
 bool TalentNode::onMouseButtonReleased(sf::Event::MouseButtonReleased event, sf::Vector2f offset) {
+	if (event.button != sf::Mouse::Button::Left)
+		return false;
+
 	bool pressed = m_held && isInside(m_info->mouseWorldPosition, offset);
 	m_held = false;
 
@@ -190,16 +196,19 @@ void Talent::onEvent(const sf::Event& event) {
 	if (const auto* pressedEvent = event.getIf<sf::Event::MouseButtonPressed>()) {
 		m_scrollBar.onMouseButtonPressed(*pressedEvent);
 
-		for (auto& node : m_nodes)
-			node.onMouseButtonPressed(*pressedEvent, getOffset());
+		if (pressedEvent->button == sf::Mouse::Button::Left &&
+			subWindowRect.contains(m_info->mouseWorldPosition)) {
+			for (auto& node : m_nodes)
+				node.onMouseButtonPressed(*pressedEvent, getOffset());
+		}
 	}
 	else if (const auto* releasedEvent = event.getIf<sf::Event::MouseButtonReleased>()) {
 		m_scrollBar.onMouseButtonReleased(*releasedEvent);
 
+		bool releaseInside = subWindowRect.contains(m_info->mouseWorldPosition);
 		for (auto& node : m_nodes)
-			if (node.onMouseButtonReleased(*releasedEvent, getOffset()))
+			if (node.onMouseButtonReleased(*releasedEvent, getOffset()) && releaseInside)
 				buyTalent(TALENT_ID_TO_INDEX[node.getAttribs().id]);
-
 	}
 	else if (const auto* scrolledEvent = event.getIf<sf::Event::MouseWheelScrolled>()) {
 		if (!m_info->input.mouseLeftButton && subWindowRect.contains(m_info->mouseWorldPosition)) {

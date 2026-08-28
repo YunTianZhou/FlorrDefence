@@ -199,7 +199,8 @@ bool Game::trySaveToPath(const std::filesystem::path& path, bool ignoreThreshold
 
         // Perform save
         try {
-            Record::instance().save(*this, path);
+            if (!Record::instance().save(*this, path))
+                return false;
 
             m_saveCooldownClock.restart();
             m_hasSavedOnce = true;

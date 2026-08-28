@@ -324,45 +324,56 @@ int TrianglePetal::getDamage() const {
 void LightningPetal::onHit(Mob& mob, std::list<std::unique_ptr<Mob>>& mobs, std::list<std::unique_ptr<Effect>>& effects) {
 	using MobsIt = std::list<std::unique_ptr<Mob>>::iterator;
 
-	std::vector<MobsIt> targets = getTargets(mobs);
+	std::vector<MobsIt> targets = getTargets(mobs, mob);
 	for (MobsIt& target : targets)
 		(*target)->hit(getDamage(), getDamageType());
 
+	if (targets.empty()) {
+		kill();
+		return;
+	}
 
 	std::sort(targets.begin(), targets.end(), [](const MobsIt& a, const MobsIt& b) {
 		return (*a)->getPathPosition() < (*b)->getPathPosition();
-		});
+	});
 
 	int connected = -1;
 	float connectedDst = 0.f;
 	std::vector<sf::Vector2f> positions(targets.size());
-	for (int i = 0; i < targets.size(); i++) {
-		auto& mob = *targets[i];
-		positions[i] = mob->getPosition();
+	for (std::size_t i = 0; i < targets.size(); i++) {
+		auto& currentMob = *targets[i];
+		positions[i] = currentMob->getPosition();
 
-		float dst = abs(mob->getPathPosition() - mob->getPathPosition());
+		float dst = std::abs(currentMob->getPathPosition() - mob.getPathPosition());
 		if (connected == -1 || dst < connectedDst) {
-			connected = i;
+			connected = static_cast<int>(i);
 			connectedDst = dst;
 		}
 	}
 
-	effects.emplace_back(std::make_unique<LightningEffect>(m_info, getPosition(), connected, move(positions)));
+	effects.emplace_back(std::make_unique<LightningEffect>(m_info, getPosition(), connected, std::move(positions)));
 	kill();
 }
 
 
-std::vector<std::list<std::unique_ptr<Mob>>::iterator> LightningPetal::getTargets(std::list<std::unique_ptr<Mob>>& mobs) const {
+std::vector<std::list<std::unique_ptr<Mob>>::iterator> LightningPetal::getTargets(std::list<std::unique_ptr<Mob>>& mobs,const Mob& impactMob) const {
+	using MobsIt = std::list<std::unique_ptr<Mob>>::iterator;
+
 	const float range = getAttrib("bounce_range") * MapInfo::squareSize.x;
 	const float rangeSq = range * range;
-	const int maxTargets = (int)(getAttrib("bounces"));
+	const int maxTargets = std::max(1, static_cast<int>(getAttrib("bounces")));
+	const std::size_t maxAdditionalTargets = static_cast<std::size_t>(maxTargets - 1);
 	auto position = getPosition();
 
-	std::vector<std::pair<
-		std::list<std::unique_ptr<Mob>>::iterator,
-		float>> best;
+	std::optional<MobsIt> impactTarget;
+	std::vector<std::pair<MobsIt, float>> best;
 
 	for (auto it = mobs.begin(); it != mobs.end(); it++) {
+		if (it->get() == &impactMob) {
+			impactTarget = it;
+			continue;
+		}
+
 		// Lightning cannot hit underground mobs
 		if (it->get()->isUnderground()) continue;
 
@@ -371,17 +382,18 @@ std::vector<std::list<std::unique_ptr<Mob>>::iterator> LightningPetal::getTarget
 		float dy = mp.y - position.y;
 		float d2 = dx * dx + dy * dy;
 		if (d2 > rangeSq) continue;
+		if (maxAdditionalTargets == 0) continue;
 
-		if (best.size() < maxTargets) {
+		if (best.size() < maxAdditionalTargets) {
 			best.emplace_back(it, d2);
-			int i = (int)best.size() - 1;
+			std::size_t i = best.size() - 1;
 			while (i > 0 && best[i].second < best[i - 1].second) {
 				std::swap(best[i], best[i - 1]);
 				i--;
 			}
 		}
 		else if (d2 < best.back().second) {
-			int i = (int)best.size() - 1;
+			std::size_t i = best.size() - 1;
 			while (i > 0 && best[i - 1].second > d2) {
 				best[i] = best[i - 1];
 				i--;
@@ -390,8 +402,12 @@ std::vector<std::list<std::unique_ptr<Mob>>::iterator> LightningPetal::getTarget
 		}
 	}
 
-	std::vector<std::list<std::unique_ptr<Mob>>::iterator> targets;
-	targets.reserve(best.size());
+	std::vector<MobsIt> targets;
+	if (!impactTarget)
+		return targets;
+
+	targets.reserve(best.size() + 1);
+	targets.push_back(*impactTarget);
 	for (auto& p : best)
 		targets.push_back(p.first);
 

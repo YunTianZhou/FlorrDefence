@@ -1,6 +1,7 @@
 #pragma once
 #include <list>
 #include <optional>
+#include <stdexcept>
 #include <SFML/Graphics.hpp>
 #include <nlohmann/json.hpp>
 #include "Mob.hpp"
@@ -86,10 +87,18 @@ inline void from_json(const json& j, MapInfo& m) {
 			e.at("x").get<int>(),
 			e.at("y").get<int>()
 		};
+		if (!m.isValid(square))
+			throw std::out_of_range("Tower coordinates are outside the map");
 
 		CardInfo card = e.at("tower").at("card").get<CardInfo>();
+		if (!m.isPlaceable(square, card))
+			throw std::invalid_argument("Tower cannot be placed on its saved square");
+
 		m.setCard(square, card);
-		e.at("tower").get_to(*m.getTower(square));
+		Tower* tower = m.getTower(square);
+		if (!tower)
+			throw std::runtime_error("Failed to restore tower");
+		e.at("tower").get_to(*tower);
 	}
 }
 

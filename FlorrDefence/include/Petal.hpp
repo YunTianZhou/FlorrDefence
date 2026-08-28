@@ -143,7 +143,10 @@ public:
 	void onHit(Mob& mob, std::list<std::unique_ptr<Mob>>& mobs, std::list<std::unique_ptr<Effect>>& effects);
 
 private:
-	std::vector<std::list<std::unique_ptr<Mob>>::iterator> getTargets(std::list<std::unique_ptr<Mob>>& mobs) const;
+	std::vector<std::list<std::unique_ptr<Mob>>::iterator> getTargets(
+		std::list<std::unique_ptr<Mob>>& mobs,
+		const Mob& impactMob
+	) const;
 };
 
 class PincerPetal : public ShootPetal {
