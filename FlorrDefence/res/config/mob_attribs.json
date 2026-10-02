@@ -287,6 +287,21 @@
             "pre_shoot_delay": 0.3,
             "post_shoot_delay": 0.5
           }
+        },
+        "super": {
+          "hp": 82012500,
+          "speed": 1.7,
+          "damage": 109350,
+          "armor": 583,
+          "coin_drop": 875000000,
+          "xp_drop": 5800000,
+          "attribs": {
+            "shoot_interval": 2,
+            "shoot_interval_jitter": 1.0,
+            "rotation_speed": 720,
+            "pre_shoot_delay": 0.3,
+            "post_shoot_delay": 0.5
+          }
         }
       }
     },
@@ -354,6 +369,15 @@
           "armor": 0,
           "coin_drop": 600000.0,
           "xp_drop": 7290,
+          "attribs": {}
+        },
+        "super": {
+          "hp": 390625,
+          "speed": 3.0,
+          "damage": 21870,
+          "armor": 0,
+          "coin_drop": 75000000,
+          "xp_drop": 21870,
           "attribs": {}
         }
       }
@@ -493,6 +517,15 @@
           "armor": 7800,
           "coin_drop": 12000000,
           "xp_drop": 21870
+        },
+        "super": {
+          "hp": 65610000,
+          "speed": 1.3,
+          "damage": 65610,
+          "armor": 22453,
+          "coin_drop": 1500000000,
+          "xp_drop": 4700000,
+          "attribs": {}
         }
       }
     },
@@ -617,6 +650,23 @@
             "running_speed": 2.5,
             "slow_down_duration": 0.5
           }
+        },
+        "super": {
+          "hp": 82012500,
+          "speed": 1.3,
+          "damage": 43740,
+          "armor": 583,
+          "coin_drop": 1250000000,
+          "xp_drop": 2900000,
+          "attribs": {
+            "rest_duration": 5.0,
+            "rest_duration_jitter": 3.0,
+            "speed_up_duration": 1.0,
+            "running_duration": 5.0,
+            "running_duration_jitter": 1.0,
+            "running_speed": 2.5,
+            "slow_down_duration": 0.5
+          }
         }
       }
     },
@@ -708,6 +758,19 @@
           "armor": 582,
           "coin_drop": 7000000,
           "xp_drop": 7290,
+          "attribs": {
+            "evasion": 0.9,
+            "rotation_speed": 180,
+            "rotation_range": 45
+          }
+        },
+        "super": {
+          "hp": 21870000,
+          "speed": 1.3,
+          "damage": 21870,
+          "armor": 583,
+          "coin_drop": 875000000,
+          "xp_drop": 5800000,
           "attribs": {
             "evasion": 0.9,
             "rotation_speed": 180,
@@ -1084,6 +1147,20 @@
             "spawn_duration_low": 2,
             "spawn_duration_high": 4
           }
+        },
+        "super": {
+          "hp": 328050000,
+          "speed": 1.2,
+          "damage": 21870,
+          "armor": 583,
+          "coin_drop": 875000000,
+          "xp_drop": 6800000,
+          "attribs": {
+            "move_duration_low": 5,
+            "move_duration_high": 8,
+            "spawn_duration_low": 2,
+            "spawn_duration_high": 4
+          }
         }
       }
     },
@@ -1328,6 +1405,15 @@
           "coin_drop": 6000000,
           "xp_drop": 21870,
           "attribs": {}
+        },
+        "super": {
+          "hp": 999999,
+          "speed": 1.0,
+          "damage": 196830,
+          "armor": 1746,
+          "coin_drop": 750000000,
+          "xp_drop": 65610,
+          "attribs": {}
         }
       }
     },
@@ -1395,6 +1481,15 @@
           "armor": 194,
           "coin_drop": 6000000,
           "xp_drop": 72900,
+          "attribs": {}
+        },
+        "super": {
+          "hp": 999999,
+          "speed": 1.5,
+          "damage": 590490,
+          "armor": 582,
+          "coin_drop": 750000000,
+          "xp_drop": 218700,
           "attribs": {}
         }
       }
@@ -1475,6 +1570,17 @@
           "armor": 194,
           "coin_drop": 6000000,
           "xp_drop": 72900,
+          "attribs": {
+            "rotation_speed": 240
+          }
+        },
+        "super": {
+          "hp": 900000,
+          "speed": 1.5,
+          "damage": 787320,
+          "armor": 582,
+          "coin_drop": 750000000,
+          "xp_drop": 218700,
           "attribs": {
             "rotation_speed": 240
           }

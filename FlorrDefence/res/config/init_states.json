@@ -3,8 +3,8 @@
   "xp": 0,
   "body_damage": 100,
   "level": 1,
-  "coin": 10000000000000,
-  "talent": 1000,
+  "coin": 0,
+  "talent": 0,
   "cards": [
     [ "common", "basic", 5 ]
   ]

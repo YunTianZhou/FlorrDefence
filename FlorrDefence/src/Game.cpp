@@ -268,7 +268,7 @@ void Game::handleSpecialKey(sf::Keyboard::Key keyCode) {
             break;
 
         case sf::Keyboard::Key::Q:
-            m_info.playerState.coin += 10'000'000'000'000ll;
+            m_info.playerState.coin += 100'000'000'000'000ll;
             break;
 
         case sf::Keyboard::Key::Num0:

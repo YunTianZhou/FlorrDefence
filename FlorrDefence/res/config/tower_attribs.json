@@ -50,6 +50,12 @@
         "attribs": {
           "overheal_buff": 0.50
         }
+      },
+      "unique": {
+        "price": 5192722080000,
+        "attribs": {
+          "overheal_buff": 0.6
+        }
       }
     }
   },
@@ -121,7 +127,7 @@
         }
       },
       "unique": {
-        "price": 0,
+        "price": 7941018400000,
         "attribs": {
           "reload": 7.0,
           "copy": 4,
@@ -164,6 +170,10 @@
       },
       "super": {
         "price": 3245451300000,
+        "attribs": {}
+      },
+      "unique": {
+        "price": 12981805200000,
         "attribs": {}
       }
     }
@@ -250,6 +260,16 @@
           "range": 5.0,
           "speed": 4.0
         }
+      },
+      "unique": {
+        "price": 40000000000000000,
+        "attribs": {
+          "hp": 5000000,
+          "damage": 5000000,
+          "reload": 1.0,
+          "range": 5.0,
+          "speed": 4.0
+        }
       }
     }
   },
@@ -321,7 +341,7 @@
         }
       },
       "unique": {
-        "price": 0,
+        "price": 10589080400000,
         "attribs": {
           "reload": 5.0,
           "copy": 1,
@@ -420,6 +440,17 @@
           "range": 4.0,
           "speed": 2.0
         }
+      },
+      "unique": {
+        "price": 4154177664000,
+        "attribs": {
+          "hp": 65610,
+          "damage": 98415,
+          "armor": 21870,
+          "reload": 2.5,
+          "range": 4.0,
+          "speed": 2.0
+        }
       }
     }
   },
@@ -472,6 +503,12 @@
         "price": 2596361040000,
         "attribs": {
           "mob_spawn_rate_buff": 1.5
+        }
+      },
+      "unique": {
+        "price": 10385444160000,
+        "attribs": {
+          "mob_spawn_rate_buff": 2.0
         }
       }
     }
@@ -574,6 +611,18 @@
           "armor_debuff": 5000,
           "armor_debuff_duration": 3
         }
+      },
+      "unique": {
+        "price": 5192722080000,
+        "attribs": {
+          "hp": 1,
+          "damage": 21000,
+          "reload": 2.8,
+          "range": 4.0,
+          "speed": 4.0,
+          "armor_debuff": 15000,
+          "armor_debuff_duration": 3
+        }
       }
     }
   },
@@ -649,8 +698,8 @@
       "ultra": {
         "price": 12727260000,
         "attribs": {
-          "hp": 243,
-          "damage": 1944,
+          "hp": 729,
+          "damage": 5832,
           "reload": 3.0,
           "range": 4.0,
           "speed": 2.0,
@@ -662,6 +711,17 @@
         "attribs": {
           "hp": 3000,
           "damage": 20000,
+          "reload": 2.9,
+          "range": 4.0,
+          "speed": 2.0,
+          "evasion": 0.91
+        }
+      },
+      "unique": {
+        "price": 12981805200000,
+        "attribs": {
+          "hp": 9000,
+          "damage": 60000,
           "reload": 2.9,
           "range": 4.0,
           "speed": 2.0,
@@ -719,6 +779,12 @@
         "price": 3684025800000,
         "attribs": {
           "luck_buff": 0.35
+        }
+      },
+      "unique": {
+        "price": 14736103200000,
+        "attribs": {
+          "luck_buff": 0.38
         }
       }
     }
@@ -778,6 +844,13 @@
       "super": {
         "price": 2596361040000,
         "coin": 81920,
+        "attribs": {
+          "reload": 0.2
+        }
+      },
+      "unique": {
+        "price": 10385444160000,
+        "coin": 327680,
         "attribs": {
           "reload": 0.2
         }
@@ -866,6 +939,16 @@
           "range": 5.0,
           "speed": 3.0
         }
+      },
+      "unique": {
+        "price": 5991602400000,
+        "attribs": {
+          "hp": 1968300,
+          "damage": 32805,
+          "reload": 6.0,
+          "range": 5.0,
+          "speed": 3.0
+        }
       }
     }
   },
@@ -919,6 +1002,12 @@
         "price": 1038544416000,
         "attribs": {
           "body_damage_buff": 65000
+        }
+      },
+      "unique": {
+        "price": 4154177664000,
+        "attribs": {
+          "body_damage_buff": 195000
         }
       }
     }
@@ -996,6 +1085,15 @@
           "damage": 21870,
           "reload": 8.0,
           "death_heal": 25000
+        }
+      },
+      "unique": {
+        "price": 10385444160000,
+        "attribs": {
+          "hp": 1,
+          "damage": 65610,
+          "reload": 8.0,
+          "death_heal": 75000
         }
       }
     }
@@ -1082,6 +1180,16 @@
           "range": 4.0,
           "speed": 4.0
         }
+      },
+      "unique": {
+        "price": 10385444160000,
+        "attribs": {
+          "hp": 65610,
+          "damage": 98415,
+          "reload": 3.0,
+          "range": 4.0,
+          "speed": 4.0
+        }
       }
     }
   },
@@ -1136,6 +1244,12 @@
         "attribs": {
           "damage_reduction_buff": 0.8
         }
+      },
+      "unique": {
+        "price": 3929627520000,
+        "attribs": {
+          "damage_reduction_buff": 0.9
+        }
       }
     }
   },
@@ -1188,6 +1302,12 @@
         "price": 389454156000,
         "attribs": {
           "speed_buff": 1.2
+        }
+      },
+      "unique": {
+        "price": 1557816624000,
+        "attribs": {
+          "speed_buff": 1.3
         }
       }
     }
@@ -1258,6 +1378,14 @@
           "damage": 10935,
           "reload": 1.8
         }
+      },
+      "unique": {
+        "price": 5192722080000,
+        "attribs": {
+          "hp": 1,
+          "damage": 32805,
+          "reload": 1.8
+        }
       }
     }
   },
@@ -1310,6 +1438,12 @@
         "price": 4543631820000,
         "attribs": {
           "reload_buff": -0.15
+        }
+      },
+      "unique": {
+        "price": 18174527280000,
+        "attribs": {
+          "reload_buff": -0.2
         }
       }
     }
@@ -1385,6 +1519,15 @@
         "attribs": {
           "hp": 21870,
           "damage": 6561,
+          "reload": 5.0,
+          "knockback": 5.0
+        }
+      },
+      "unique": {
+        "price": 12981805200000,
+        "attribs": {
+          "hp": 65610,
+          "damage": 19683,
           "reload": 5.0,
           "knockback": 5.0
         }
@@ -1474,6 +1617,16 @@
           "damage_increase_rate": 0.35,
           "max_damage_rate": 15
         }
+      },
+      "unique": {
+        "price": 12981805200000,
+        "attribs": {
+          "hp": 1,
+          "damage": 4800,
+          "radius": 2.0,
+          "damage_increase_rate": 0.35,
+          "max_damage_rate": 15
+        }
       }
     }
   },
@@ -1527,6 +1680,12 @@
         "price": 2596361040000,
         "attribs": {
           "heal_value_buff": 15000
+        }
+      },
+      "unique": {
+        "price": 10385444160000,
+        "attribs": {
+          "heal_value_buff": 45000
         }
       }
     }
@@ -1616,6 +1775,17 @@
         "attribs": {
           "hp": 1,
           "damage": 5000,
+          "reload": 0.2,
+          "range": 3.5,
+          "speed": 4.0,
+          "copy": 5
+        }
+      },
+      "unique": {
+        "price": 7789083120000,
+        "attribs": {
+          "hp": 1,
+          "damage": 15000,
           "reload": 0.2,
           "range": 3.5,
           "speed": 4.0,
@@ -1723,6 +1893,18 @@
           "bounces": 10,
           "bounce_range": 3.5
         }
+      },
+      "unique": {
+        "price": 12981805200000,
+        "attribs": {
+          "hp": 1,
+          "reload": 4.5,
+          "range": 5.0,
+          "speed": 3.5,
+          "damage": 39366,
+          "bounces": 10,
+          "bounce_range": 3.5
+        }
       }
     }
   },
@@ -1804,6 +1986,16 @@
         "attribs": {
           "hp": 4374,
           "damage": 50000,
+          "reload": 3.0,
+          "range": 5.5,
+          "speed": 4.0
+        }
+      },
+      "unique": {
+        "price": 10385444160000,
+        "attribs": {
+          "hp": 13122,
+          "damage": 150000,
           "reload": 3.0,
           "range": 5.5,
           "speed": 4.0
@@ -1909,6 +2101,18 @@
           "slow_down": 0.9,
           "slow_down_duration": 1.4
         }
+      },
+      "unique": {
+        "price": 10385444160000,
+        "attribs": {
+          "hp": 65610,
+          "damage": 32805,
+          "reload": 2.8,
+          "range": 3.0,
+          "speed": 4.0,
+          "slow_down": 0.9,
+          "slow_down_duration": 1.4
+        }
       }
     }
   },
@@ -1983,6 +2187,15 @@
         "attribs": {
           "hp": 1,
           "damage": 70000,
+          "reload": 3.5,
+          "copy": 1
+        }
+      },
+      "unique": {
+        "price": 4154177664000,
+        "attribs": {
+          "hp": 1,
+          "damage": 210000,
           "reload": 3.5,
           "copy": 1
         }
@@ -2071,6 +2284,16 @@
           "range": 4.0,
           "speed": 4.0
         }
+      },
+      "unique": {
+        "price": 10385444160000,
+        "attribs": {
+          "hp": 1,
+          "damage": 19500,
+          "reload": 0.1,
+          "range": 4.0,
+          "speed": 4.0
+        }
       }
     }
   },
@@ -2140,6 +2363,14 @@
           "damage": 14580,
           "reload": 20.0
         }
+      },
+      "unique": {
+        "price": 5192722080000,
+        "attribs": {
+          "hp": 8748000,
+          "damage": 43740,
+          "reload": 20.0
+        }
       }
     }
   },
@@ -2200,6 +2431,13 @@
         "price": 2596361040000,
         "attribs": {
           "heal": 15000,
+          "reload": 0.9
+        }
+      },
+      "unique": {
+        "price": 10385444160000,
+        "attribs": {
+          "heal": 45000,
           "reload": 0.9
         }
       }
@@ -2264,6 +2502,13 @@
           "shield": 1600,
           "reload": 1
         }
+      },
+      "unique": {
+        "price": 10385444160000,
+        "attribs": {
+          "shield": 4800,
+          "reload": 1
+        }
       }
     }
   },
@@ -2322,6 +2567,13 @@
       "super": {
         "price": 389454156000,
         "coin": 30000,
+        "attribs": {
+          "reload": 5.0
+        }
+      },
+      "unique": {
+        "price": 1557816624000,
+        "coin": 90000,
         "attribs": {
           "reload": 5.0
         }
@@ -2396,13 +2648,13 @@
             }
         },
         "unique": {
-            "price": 0,
-            "attribs": {
-                "reload": 10.0,
-                "copy": 4,
-                "mob_rarity": 6
-            }
+        "price": 23390640000000,
+        "attribs": {
+          "reload": 10.0,
+          "copy": 4,
+          "mob_rarity": 6
         }
+      }
     }
   },
   "stinger": {
@@ -2503,6 +2755,18 @@
           "crit_chance": 0.2,
           "crit_damage_factor": 4.0
         }
+      },
+      "unique": {
+        "price": 5192722080000,
+        "attribs": {
+          "hp": 1,
+          "damage": 1200000,
+          "reload": 9.0,
+          "range": 5.0,
+          "speed": 4.0,
+          "crit_chance": 0.2,
+          "crit_damage_factor": 4.0
+        }
       }
     }
   },
@@ -2556,6 +2820,12 @@
         "price": 982406880000,
         "attribs": {
           "evasion_buff": 0.8
+        }
+      },
+      "unique": {
+        "price": 3929627520000,
+        "attribs": {
+          "evasion_buff": 0.9
         }
       }
     }
@@ -2639,6 +2909,28 @@
           "range": 5.0,
           "speed": 3.5
         }
+      },
+      "super": {
+        "price": 3245451300000,
+        "attribs": {
+          "hp": 21870,
+          "damage": 17496,
+          "damage_increase": 8748,
+          "reload": 3.0,
+          "range": 5.0,
+          "speed": 3.5
+        }
+      },
+      "unique": {
+        "price": 12981805200000,
+        "attribs": {
+          "hp": 65610,
+          "damage": 52488,
+          "damage_increase": 26244,
+          "reload": 3.0,
+          "range": 5.0,
+          "speed": 3.5
+        }
       }
     }
   },
@@ -2692,6 +2984,20 @@
         "price": 12727260000,
         "attribs": {
           "damage": 5832,
+          "radius": 3.0
+        }
+      },
+      "super": {
+        "price": 3245451300000,
+        "attribs": {
+          "damage": 17496,
+          "radius": 3.0
+        }
+      },
+      "unique": {
+        "price": 12981805200000,
+        "attribs": {
+          "damage": 52488,
           "radius": 3.0
         }
       }
@@ -2779,6 +3085,16 @@
           "scale": 5.0,
           "slow_down": 0.60
         }
+      },
+      "unique": {
+        "price": 7789083120000,
+        "attribs": {
+          "hp": 1,
+          "reload": 5.0,
+          "duration": 15.0,
+          "scale": 5.0,
+          "slow_down": 0.6
+        }
       }
     }
   },
@@ -2825,6 +3141,18 @@
         "price": 12727260000,
         "attribs": {
           "yin_yang_buff": 7
+        }
+      },
+      "super": {
+        "price": 3245451300000,
+        "attribs": {
+          "yin_yang_buff": 8
+        }
+      },
+      "unique": {
+        "price": 12981805200000,
+        "attribs": {
+          "yin_yang_buff": 9
         }
       }
     }
@@ -2878,6 +3206,20 @@
         "price": 10181808000,
         "attribs": {
           "petal_heal": 0.6,
+          "reload": 2
+        }
+      },
+      "super": {
+        "price": 2596361040000,
+        "attribs": {
+          "petal_heal": 0.7,
+          "reload": 2
+        }
+      },
+      "unique": {
+        "price": 10385444160000,
+        "attribs": {
+          "petal_heal": 0.8,
           "reload": 2
         }
       }
