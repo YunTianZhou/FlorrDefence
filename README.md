@@ -84,8 +84,8 @@ shop, and talents. On startup, the game loads `load_path_default` from
 `settings.json` (`FlorrDefence.json` by default). If that file does not exist, a
 new game starts. Relative paths are resolved from the game's working directory.
 
-- **Save:** Ctrl + S writes to `save_path_default`. Autosave uses the same path
-  every 60 seconds by default. Both work only while you are alive.
+- **Save:** Ctrl + S writes to `save_path_default`. The game automatically saves when you close the window.
+  Autosave uses the same path every 60 seconds by default. **Both work only while you are alive.**
 - **Save a checkpoint:** Ctrl + Shift + S opens Save As to save a separate JSON
   file while you are alive.
 - **Load a checkpoint:** Ctrl + O opens a record and replaces the current run.
@@ -105,9 +105,10 @@ A simple way to manage records is to keep one active save and separate backups:
 3. To switch to another run permanently, close the game, set both default paths
    to that run's file, and relaunch. To start fresh, use a new, unused filename.
 
-Save before quitting; closing the window does not trigger a dedicated save.
-Keep copies of important records outside the game/build directory before
-replacing a download or cleaning a build.
+> [!WARNING]
+> **Save before quitting**; closing the window does not trigger a dedicated save.
+> Keep copies of important records outside the game/build directory before
+> replacing a download or cleaning a build.
 
 
 ## Customization
