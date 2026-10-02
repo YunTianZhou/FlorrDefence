@@ -9,7 +9,7 @@ dangerous enemy waves.
 
 > [!NOTE]
 > The game is NOT under active development. The current configuration is still unbalanced.
-> Unfortunately I do not have time to balance the configuration. I will be thankful if you are willing to help (see Contributing)!
+> Unfortunately I do not have time to balance the configuration. I will be thankful if you are willing to help (see `Contributing` below)!
 
 
 ## Screenshots
@@ -104,7 +104,7 @@ cd build/FlorrDefence
 ```
 
 
-## Configuration
+## User Settings
 
 
 On first launch, the game copies
@@ -136,14 +136,25 @@ You can help by:
 - Reporting bugs
 - Assisting with balancing configurations
 - Improving game mechanics
+- Help improve this page (e.g. write a game guide)
 - Any other way you can think of!
 
-
-Bug reports and focused pull requests are welcome. 
-
+Bug reports and focused pull requests are welcome.
 When reporting a problem, include your operating system, compiler, build type, reproduction steps, and any
 console output. Keep gameplay-data changes separate from engine changes where
 possible so balancing differences are easy to review.
+
+All game configurations are in [config](FlorrDefence/res/config), they are all JSON files, including:
+
+- [init_states.json](FlorrDefence/res/config/init_states.json): Initial cards, coins, and talents.
+- [tower_attribs.json](FlorrDefence/res/config/tower_attribs.json): Attributes for each tower and rarity
+- [mob_attribs.json](FlorrDefence/res/config/mob_attribs.json): Attributes for each mob and rarity
+- [shop_attribs.json](FlorrDefence/res/config/shop_attribs.json): Contents and update intervals for shops
+- [talent_attribs.json](FlorrDefence/res/config/talent_attribs.json): Talent buffs attributes and costs
+- [mob_spawn_config.json](FlorrDefence/res/config/mob_spawn_config.json): Controling mob spawning in each level
+- [settings_default.json](FlorrDefence/res/config/settings_default.json): Default user settings
+- [tower_descrption.json](FlorrDefence/res/config/tower_descrption.json): Content displayed when horvering a tower
+- [talent_description.json](FlorrDefence/res/config/talent_description.json): Content displayed when horvering a talent
 
 ## Attribution
 
@@ -151,5 +162,6 @@ possible so balancing differences are easy to review.
 affiliated with its creators.** It uses
 [SFML](https://www.sfml-dev.org/),
 [nlohmann/json](https://github.com/nlohmann/json),
-[portable-file-dialogs](https://github.com/samhocevar/portable-file-dialogs), and
-[Cornered](https://github.com/metaquarx/Cornered).
+[portable-file-dialogs](https://github.com/samhocevar/portable-file-dialogs),
+[Cornered](https://github.com/metaquarx/Cornered), and
+[RichText](https://github.com/skyrpex/RichText/).
