@@ -5,7 +5,7 @@
 
 class PlayerStateDisplayer : public sf::Drawable {
 public:
-	PlayerStateDisplayer(const PlayerState& state);
+	PlayerStateDisplayer(const SharedInfo& info);
 
 	void update();
 
@@ -14,6 +14,8 @@ private:
 
 private:
 	const PlayerState& m_state;
+	const SharedInfo& m_info;
+	sf::Text m_encounterText;
 
 	// Hp bar
 	sf::RoundRect m_hpBarBackground;

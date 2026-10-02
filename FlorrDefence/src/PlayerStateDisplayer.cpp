@@ -7,14 +7,19 @@ const sf::Vector2f XP_BORDER_OFFSET = { 3.f, 3.f };
 const sf::Vector2f SHIELD_BORDER_OFFSET = { 5.f, 7.f };
 const sf::Vector2f COIN_SYMBOL_OFFSET = { -20.f, -20.f };
 
-PlayerStateDisplayer::PlayerStateDisplayer(const PlayerState& state)
-	: m_state(state),
+PlayerStateDisplayer::PlayerStateDisplayer(const SharedInfo& info)
+	: m_state(info.playerState), m_info(info), m_encounterText(AssetManager::getFont()),
 	m_hpText(AssetManager::getFont()),
 	m_levelText(AssetManager::getFont()),
 	m_coinText(AssetManager::getFont()),
 	m_talentText(AssetManager::getFont()) {
 
 	sf::Vector2f barStart = { 1100.f, 50.f };
+	m_encounterText.setPosition({1060.f, 145.f});
+	m_encounterText.setCharacterSize(18);
+	m_encounterText.setFillColor(sf::Color::White);
+	m_encounterText.setOutlineColor(sf::Color::Black);
+	m_encounterText.setOutlineThickness(1.f);
 
 	// Hp bar
 	m_hpBarBackground.setPosition(barStart);
@@ -86,6 +91,7 @@ PlayerStateDisplayer::PlayerStateDisplayer(const PlayerState& state)
 }
 
 void PlayerStateDisplayer::update() {
+	m_encounterText.setString(m_info.encounterStatus);
 	auto updateBar = [](sf::Vector2f size, float ratio, sf::RoundRect& barFill, 
 						sf::Color full, sf::Color zero) {
 		float        diameter = 2.f * barFill.getRadius();
@@ -139,6 +145,7 @@ void PlayerStateDisplayer::update() {
 }
 
 void PlayerStateDisplayer::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+	target.draw(m_encounterText, states);
 	// Hp bar
 	target.draw(m_hpBarBackground, states);
 	if (m_state.hp > 0)

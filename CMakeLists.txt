@@ -11,6 +11,10 @@ if (POLICY CMP0141)
 endif()
  
 project ("FlorrDefence")
+option(FLORR_BUILD_TESTS "Build encounter progression and runtime tests" OFF)
+if(FLORR_BUILD_TESTS)
+  enable_testing()
+endif()
 
 set(SFML_BUILD_AUDIO OFF CACHE BOOL "" FORCE)
 

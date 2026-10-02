@@ -3,7 +3,7 @@
 
 UI::UI(SharedInfo* info)
 	: m_info(info), m_shop(info), m_backpack(info), m_craft(info), m_talent(info),
-	  m_playerStateDisplayer(std::make_unique<PlayerStateDisplayer>(m_info->playerState)){
+	  m_playerStateDisplayer(std::make_unique<PlayerStateDisplayer>(*m_info)){
 	initComponents();
 }
 

@@ -3,6 +3,7 @@
 #include <list>
 #include <random>
 #include "SharedInfo.hpp"
+#include "EncounterPlan.hpp"
 
 class Mob;
 
@@ -39,8 +40,28 @@ public:
     void load();
 
     void update(std::list<std::unique_ptr<Mob>>& mobList);
+    void startEarly();
+    nlohmann::json save() const;
+    void restore(const nlohmann::json& state);
 
 private:
+    void loadLegacy();
+    void updateEncounter(std::list<std::unique_ptr<Mob>>& mobs);
+    void prepareEncounter();
+    void updateStatus(size_t alive);
+    bool m_legacy = false;
+    nlohmann::json m_config;
+    std::unique_ptr<EncounterPlan> m_rules;
+    std::vector<MobInfo> m_queue;
+    std::vector<double> m_strengths;
+    size_t m_spawned = 0;
+    int m_wave = 1;
+    unsigned m_seed = 0;
+    bool m_preparing = true;
+    bool m_bossRound = false;
+    double m_remaining = 0, m_interval = 1;
+    std::string m_theme;
+
     Stage const* findStage(int level) const;
     const MobTypeEntry* chooseMobType(const Stage& s);
 

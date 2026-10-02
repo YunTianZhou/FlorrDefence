@@ -129,7 +129,8 @@ edits made only in the output folder.
 - [mob_attribs.json](FlorrDefence/res/config/mob_attribs.json): Attributes for each mob and rarity.
 - [shop_attribs.json](FlorrDefence/res/config/shop_attribs.json): Shop contents and refresh intervals.
 - [talent_attribs.json](FlorrDefence/res/config/talent_attribs.json): Talent buffs and costs.
-- [mob_spawn_config.json](FlorrDefence/res/config/mob_spawn_config.json): Mob spawning for each level.
+- [mob_spawn_config.json](FlorrDefence/res/config/mob_spawn_config.json): Encounter budgets, pacing, and enemy themes for new games (see below).
+- [mob_spawn_legacy.json](FlorrDefence/res/config/mob_spawn_legacy.json): Original level-based spawning, used by old records.
 - [tower_descrption.json](FlorrDefence/res/config/tower_descrption.json): Text displayed when hovering over a tower.
 - [talent_description.json](FlorrDefence/res/config/talent_description.json): Text displayed when hovering over a talent.
 - [settings_default.json](FlorrDefence/res/config/settings_default.json): Defaults copied into `settings.json` on first launch. Edit the existing `settings.json` for your own save paths, autosave, and display preferences (see [User Settings](#user-settings)).
@@ -138,6 +139,54 @@ For example, change `coin` in `init_states.json` to adjust the starting coins,
 then launch with an unused `load_path_default` and matching `save_path_default`
 to test a new game without overwriting your main record.
 
+
+### Encounters and spawn tuning
+
+New games use numbered encounters. Each encounter has a finite enemy budget;
+player XP still earns levels and talents but no longer chooses enemy difficulty.
+The next encounter begins after all enemies and their offspring are cleared,
+followed by an eight-second preparation break. Press **N** during preparation
+to start immediately. The status line above the inventory tabs shows the wave,
+theme, and enemies remaining. Every fifth encounter starts with a stronger enemy.
+
+Existing records without encounter data keep the original spawning system.
+New records save their mode, wave, remaining spawn queue, and timers. Use a new
+record to try encounters; loading an old record will display `Legacy spawning`.
+Setting `mode` to `legacy` in `mob_spawn_config.json` also starts new games with
+the old rules. A saved record's mode takes precedence over this setting.
+
+Tune [mob_spawn_config.json](FlorrDefence/res/config/mob_spawn_config.json):
+
+| Setting | Effect |
+| --- | --- |
+| `progression` | Wave/budget anchors. Budgets grow smoothly by a percentage between anchors; the final budget is held after the last anchor. |
+| `spawn_seconds` | Time used to distribute the wave's enemies (45 seconds by default). Spawn-rate buffs shorten this, without adding enemies or rewards. |
+| `prepare_seconds` | Breathing room after clearing a wave. |
+| `max_spawns`, `max_mob` | Maximum primary spawns per wave and maximum live enemies, respectively. The live limit also covers missiles and ant offspring in encounter mode. |
+| `normal_max_share`, `boss_max_share` | Maximum fraction of the budget spent on a single regular enemy or the scheduled boss. |
+| `boss_every` | Number of encounters between boss rounds. |
+| `enemies` | Allowed types and their threat-cost multipliers. Raise a multiplier to make a troublesome type less affordable. |
+| `themes` | Rotating compositions. Favored types have triple selection weight among affordable enemies. |
+
+Threat cost estimates health, speed, armor, evasion, and damage from mob data.
+Type multipliers account for special behavior such as spawning offspring.
+In encounter mode, enemies share the full budget: HP and kill rewards scale
+linearly with their threat allowance, while damage scales with its square root.
+Armor, movement, and abilities keep their original values. Offspring inherit
+their parent's strength. This bridges large rarity gaps without leaving long
+stretches of identical difficulty. Super mobs are reserved for scheduled bosses;
+bosses receive a health bar even at lower rarities. Scaled stats and the boss
+marker survive saving and loading. Legacy mobs keep the original stats.
+These are balancing estimates, not a combat simulation. Start by changing budget
+anchors to adjust difficulty or duration to adjust pacing, then test a few waves
+before changing individual enemy multipliers. Resource and reward balance still
+needs playtesting with real defenses.
+
+To run the automated spawn checks, configure with `-DFLORR_BUILD_TESTS=ON`, build,
+then run `ctest --test-dir out/build/x64-release --output-on-failure` (replace the
+build path on Linux). Tests audit seeded encounters and exercise the actual spawn
+manager, mob cap, XP independence, and record restoration. Runtime tests need a
+working graphics driver for SFML textures and use a separate resource directory.
 
 ## Building from source
 

@@ -149,6 +149,8 @@ struct InputInfo {
 };
 
 struct SharedInfo {
+    size_t mobLimit = 100;
+    std::string encounterStatus;
     sf::Vector2f mouseWorldPosition;
     InputInfo input;
     sf::Time dt;

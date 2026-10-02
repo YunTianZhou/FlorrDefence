@@ -221,6 +221,10 @@ bool Game::trySaveToPath(const std::filesystem::path& path, bool ignoreThreshold
 
 void Game::handleSpecialKey(sf::Keyboard::Key keyCode) {
     if (m_info.playerState.isAlive()) {
+        if (!m_info.input.keyCtrl && keyCode == sf::Keyboard::Key::N) {
+            m_map.startEncounterEarly();
+            return;
+        }
 
         // Ctrl + S -> Save
         if (m_info.input.keyCtrl && !m_info.input.keyShift &&

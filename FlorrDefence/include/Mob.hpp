@@ -26,6 +26,10 @@ public:
     virtual void onDead() override;
 
     MobInfo getMob() const { return m_mob; }
+    bool isEncounterBoss() const { return m_encounterBoss; }
+    void setEncounterBoss(bool boss) { m_encounterBoss = boss; }
+    void setEncounterStrength(double strength);
+    double getEncounterStrength() const { return m_encounterStrength; }
     Debuff& getDebuff() { return m_debuff; }
     float getPathPosition() const { return m_position; }
 
@@ -33,7 +37,9 @@ public:
     friend void from_json(const json& j, Mob& m);
 
 public:
-    const MobAttribs::RarityEntry& getAttribs() const { return MOB_ATTRIBS[m_mob.type][m_mob.rarity]; }
+    const MobAttribs::RarityEntry& getAttribs() const {
+        return m_encounterStrength == 1 ? MOB_ATTRIBS.at(m_mob.type)[m_mob.rarity] : m_encounterAttribs;
+    }
     const bool hasAttrib(const std::string& name) const { return getAttribs().attribs.contains(name); }
     const float getAttrib(const std::string& name) const { return getAttribs().attribs.at(name); }
 
@@ -47,18 +53,25 @@ protected:
 
 protected:
     MobInfo m_mob;
+    bool m_encounterBoss = false;
+    double m_encounterStrength = 1;
+    MobAttribs::RarityEntry m_encounterAttribs;
     float m_position = 0.f;
     float m_knockback = 0.f;
     Debuff m_debuff;
 };
 
 inline void to_json(json& j, const Mob& m) {
+    j["encounter_boss"] = m.m_encounterBoss;
+    j["encounter_strength"] = m.m_encounterStrength;
     j["card"] = m.getMob();
     j["hp"] = m.m_hp;
     j["position"] = m.m_position;
 }
 
 inline void from_json(const json& j, Mob& m) {
+    m.m_encounterBoss = j.value("encounter_boss", false);
+    m.setEncounterStrength(j.value("encounter_strength", 1.0));
     assert(m.getMob() == j.value("card", MobInfo{}));
     m.m_hp = j.value("hp", 0);
     m.m_position = j.value("position", 0.f);

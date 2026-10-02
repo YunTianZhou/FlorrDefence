@@ -2,6 +2,8 @@
 #include "AssetManager.hpp"
 #include "Tools.hpp"
 #include "Map.hpp"
+#include <cmath>
+#include <limits>
 
 // Mob
 std::unique_ptr<Mob> Mob::create(SharedInfo* info, const MobInfo& mob, std::list<std::unique_ptr<Mob>>& mobs) {
@@ -51,6 +53,24 @@ Mob::Mob(SharedInfo* info, const MobInfo& mob, float startPosition)
     m_hp = getAttribs().hp;
 
     updatePathPosition(m_position);  // prevent flashing
+}
+
+void Mob::setEncounterStrength(double strength) {
+    if (!std::isfinite(strength) || strength <= 0 || strength > 1000000)
+        throw std::invalid_argument("Invalid encounter strength");
+    m_encounterAttribs = MOB_ATTRIBS.at(m_mob.type)[m_mob.rarity];
+    auto scaleInt = [](int value, double factor) {
+        return static_cast<int>(std::clamp(std::round(value * factor), 0.0,
+            static_cast<double>(std::numeric_limits<int>::max() / 2)));
+    };
+    m_encounterAttribs.hp = std::max(1, scaleInt(m_encounterAttribs.hp, strength));
+    m_encounterAttribs.damage = scaleInt(m_encounterAttribs.damage, std::sqrt(strength));
+    m_encounterAttribs.xpDrop = scaleInt(m_encounterAttribs.xpDrop, strength);
+    m_encounterAttribs.coinDrop = static_cast<int64_t>(std::clamp(
+        std::round(m_encounterAttribs.coinDrop * strength), 0.0,
+        static_cast<double>(std::numeric_limits<int64_t>::max() / 2)));
+    m_encounterStrength = strength;
+    m_hp = getAttribs().hp;
 }
 
 void Mob::update() {
@@ -235,7 +255,10 @@ void HornetMob::nextShootInterval() {
 }
 
 void HornetMob::shoot() {
-    m_mobs.push_back(std::make_unique<Mob>(m_info, MobInfo{ m_mob.rarity, "missile" }, m_position));
+    if (m_mobs.size() >= m_info->mobLimit) return;
+    auto missile = std::make_unique<Mob>(m_info, MobInfo{ m_mob.rarity, "missile" }, m_position);
+    missile->setEncounterStrength(m_encounterStrength);
+    m_mobs.push_back(std::move(missile));
 }
 
 // Roach
@@ -431,7 +454,10 @@ void AntQueenMob::nextDuration() {
 }
 
 void AntQueenMob::spawn() {
-    m_mobs.push_back(std::make_unique<AntEggMob>(m_info, MobInfo{ m_mob.rarity, "ant_egg" }, m_mobs, m_position));
+    if (m_mobs.size() >= m_info->mobLimit) return;
+    auto egg = std::make_unique<AntEggMob>(m_info, MobInfo{ m_mob.rarity, "ant_egg" }, m_mobs, m_position);
+    egg->setEncounterStrength(m_encounterStrength);
+    m_mobs.push_back(std::move(egg));
 }
 
 // Ant Egg
@@ -452,6 +478,9 @@ void AntEggMob::update() {
 
 void AntEggMob::onDead() {
     float spawnChance = getAttrib("spawn_chance");
-    if (randomUniform(0.f, 1.f) <= spawnChance)
-        m_mobs.push_back(std::make_unique<Mob>(m_info, MobInfo{ m_mob.rarity, "ant_baby" }, m_position));
+    if (m_mobs.size() < m_info->mobLimit && randomUniform(0.f, 1.f) <= spawnChance) {
+        auto baby = std::make_unique<Mob>(m_info, MobInfo{ m_mob.rarity, "ant_baby" }, m_position);
+        baby->setEncounterStrength(m_encounterStrength);
+        m_mobs.push_back(std::move(baby));
+    }
 }

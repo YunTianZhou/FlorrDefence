@@ -323,7 +323,7 @@ bool Map::update() {
     }
     if (!m_trackedBoss.has_value()) {
         for (auto& mob : m_mobs) {
-            if (!mob->isDead() && mob->getMob().rarity == "super") {
+            if (!mob->isDead() && (mob->isEncounterBoss() || mob->getMob().rarity == "super")) {
                 m_trackedBoss = mob.get();
                 float hpRatio = (float)mob->getHp() / (float)mob->getAttribs().hp;
                 m_bossHealthBar.update(mob->getMob(), hpRatio);

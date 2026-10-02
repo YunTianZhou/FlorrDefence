@@ -111,6 +111,8 @@ public:
 	void tickDeadEntities();
 	void collision(Petal& petal, Mob& mob);
 	bool onEvent(const sf::Event& event);
+	void startEncounterEarly() { m_spawner.startEarly(); }
+	friend void to_json(json& j, const Map& m);
 
 	const MapInfo& getMapInfo() const { return m_map; }
 	MapInfo& getMapInfo() { return m_map; }
@@ -159,6 +161,7 @@ private:
 
 
 inline void to_json(json& j, const Map& m) {
+	j["spawner"] = m.m_spawner.save();
 	j["info"] = m.getMapInfo();
 	j["mobs"] = json::array();
 	for (const std::unique_ptr<Mob>& mob : m.getMobs())
@@ -166,6 +169,7 @@ inline void to_json(json& j, const Map& m) {
 }
 
 inline void from_json(const json& j, Map& m) {
+	m.m_spawner.restore(j.value("spawner", json{}));
     // // Clear existing data
 	// m.getPetals().clear();
 	// m.getMobs().clear();
