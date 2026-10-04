@@ -1,5 +1,4 @@
 {
-  "mode": "encounters",
   "max_mob": 100,
   "max_spawns": 40,
   "spawn_seconds": 45,

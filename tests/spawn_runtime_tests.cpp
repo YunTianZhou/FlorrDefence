@@ -69,7 +69,7 @@ int main() {
         mobs.clear(); spawner.update(mobs);
         require(mobs.size() == 1, "Catch-up burst after cap");
 
-        // Exercise Map's real record boundary, including saved live mobs and migration.
+        // Exercise Map's real record boundary, including saved live mobs and wave jumps.
         Map map(&info);
         map.getMobs().push_back(Mob::create(&info, {"common", "bee"}, map.getMobs()));
         auto& scaled = *map.getMobs().front();
@@ -84,17 +84,33 @@ int main() {
         savedMap.get_to(loadedMap);
         require(json(loadedMap) == savedMap, "Map record did not round-trip");
         require(loadedMap.getMobs().front()->isEncounterBoss(), "Boss marker lost on load");
-        savedMap.erase("spawner");
-        for (auto& mob : savedMap["mobs"]) {
-            mob.erase("encounter_strength"); mob.erase("encounter_boss");
-        }
-        Map legacyMap(&otherInfo);
-        savedMap.get_to(legacyMap);
-        require(json(legacyMap).at("spawner").at("mode") == "legacy", "Old record changed modes");
-        require(legacyMap.getMobs().front()->getEncounterStrength() == 1, "Legacy mob scaled");
-        auto legacyState = json(legacyMap).at("spawner");
-        restored.restore(legacyState);
-        require(restored.save() == legacyState, "Legacy state did not round-trip");
+        auto oldRecord = savedMap;
+        oldRecord.erase("spawner");
+        bool oldRejected = false;
+        try { oldRecord.get_to(loadedMap); } catch (const std::invalid_argument&) { oldRejected = true; }
+        require(oldRejected, "Record without encounter progress accepted");
+        require(loadedMap.getMapInfo().findSquareAndPlace({"common", "basic"}), "Debug defense setup failed");
+        auto towersBeforeSkip = json(loadedMap.getMapInfo());
+        loadedMap.getPetals().push_back(ShootPetal::create(&otherInfo, {"common", "basic"},
+            {0.f, 0.f}, loadedMap.getMobs().cbegin()));
+        auto beforeSkip = otherInfo.playerState;
+        loadedMap.advanceWaves(10);
+        auto skipped = json(loadedMap);
+        require(skipped.at("spawner").at("wave") == 11, "Debug wave jump failed");
+        require(skipped.at("spawner").at("preparing") && skipped.at("spawner").at("spawned") == 0,
+            "Debug jump did not reset preparation/queue");
+        require(loadedMap.getMobs().empty(), "Debug jump kept enemies");
+        require(json(loadedMap.getMapInfo()) == towersBeforeSkip, "Debug jump changed towers");
+        require(loadedMap.getPetals().size() == 1, "Debug jump removed friendly petals");
+        loadedMap.getPetals().front()->update(); // A removed homing target must not be dereferenced.
+        require(otherInfo.playerState.coin == beforeSkip.coin && otherInfo.playerState.xp == beforeSkip.xp &&
+            otherInfo.playerState.level == beforeSkip.level && otherInfo.playerState.talent == beforeSkip.talent,
+            "Debug wave jump awarded resources or changed level");
+        Map skippedReload(&info);
+        skipped.get_to(skippedReload);
+        require(json(skippedReload) == skipped, "Debug jump did not survive save/load");
+        loadedMap.advanceWaves(0);
+        require(json(loadedMap) == skipped, "Zero wave jump changed state");
         auto malformed = inProgress;
         malformed["spawned"] = 201;
         bool rejected = false;
@@ -126,7 +142,7 @@ int main() {
         }
         std::cout << "Starting-defense smoke: " << frames * 0.125 << "s, HP "
             << battleInfo.playerState.hp << ", wave " << json(battle).at("spawner").at("wave") << '\n';
-        std::cout << "PASS: early start, XP independence, clear gate, cap, save/load, old-record migration\n";
+        std::cout << "PASS: early start, XP independence, clear gate, cap, save/load, debug wave jumps, old-record rejection\n";
         return 0;
     } catch (const std::exception& e) { std::cerr << e.what() << '\n'; return 1; }
 }

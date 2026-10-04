@@ -259,6 +259,18 @@ Map::Map(SharedInfo* info)
     initComponents();
 }
 
+void Map::advanceWaves(int amount) {
+    if (amount <= 0) return;
+    // Debug skips discard enemies without kill rewards. Detach homing shots
+    // before invalidating their mob iterators; keep towers and friendly petals.
+    for (auto& petal : m_petals)
+        if (auto shot = dynamic_cast<ShootPetal*>(petal.get())) shot->lostTarget();
+    m_trackedBoss.reset();
+    m_sortedMobs.clear();
+    m_mobs.clear();
+    m_spawner.advanceWaves(amount);
+}
+
 bool Map::update() {
     // Sub Map
     m_map.update();

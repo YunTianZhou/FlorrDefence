@@ -112,6 +112,7 @@ public:
 	void collision(Petal& petal, Mob& mob);
 	bool onEvent(const sf::Event& event);
 	void startEncounterEarly() { m_spawner.startEarly(); }
+	void advanceWaves(int amount);
 	friend void to_json(json& j, const Map& m);
 
 	const MapInfo& getMapInfo() const { return m_map; }

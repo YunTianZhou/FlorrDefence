@@ -1,5 +1,6 @@
 #include <iostream>
 #include <filesystem>
+#include <limits>
 
 #include "Game.hpp"
 #include "Constants.hpp"
@@ -254,29 +255,37 @@ void Game::handleSpecialKey(sf::Keyboard::Key keyCode) {
 
     // Debug keys
     if (DEBUG_MODE && m_info.playerState.isAlive()) {
+        auto addTalentPoints = [&](int amount) {
+            auto& points = m_info.playerState.talent;
+            points = std::min(points, std::numeric_limits<int>::max() - amount) + amount;
+        };
         switch (keyCode) {
         case sf::Keyboard::Key::Num1:
-            m_info.playerState.level++;
+            m_map.advanceWaves(1);
             break;
 
         case sf::Keyboard::Key::Num2:
-            m_info.playerState.level += 10;
+            m_map.advanceWaves(10);
             break;
 
         case sf::Keyboard::Key::Num3:
-            m_info.playerState.level += 100;
+            m_map.advanceWaves(100);
             break;
 
         case sf::Keyboard::Key::Num4:
-            m_info.playerState.level -= 100;
+            addTalentPoints(1);
+            break;
+
+        case sf::Keyboard::Key::Num5:
+            addTalentPoints(10);
+            break;
+
+        case sf::Keyboard::Key::Num6:
+            addTalentPoints(100);
             break;
 
         case sf::Keyboard::Key::Q:
             m_info.playerState.coin += 100'000'000'000'000ll;
-            break;
-
-        case sf::Keyboard::Key::Num0:
-            m_info.playerState.level = 1;
             break;
 
         default:

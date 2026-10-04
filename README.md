@@ -58,6 +58,20 @@ Current game include:
 | Hold H | Show enemy rarity |
 
 
+### Debug controls
+
+With `debug_mode` enabled in `settings.json`, while alive:
+
+| Key | Action |
+| --- | --- |
+| 1 / 2 / 3 | Advance 1 / 10 / 100 waves |
+| 4 / 5 / 6 | Add 1 / 10 / 100 talent points (TP) |
+| Q | Add 100 trillion coins |
+
+Wave jumps remove current enemies without rewards, preserve your defense, and
+begin the target wave's preparation period. Press **N** to start it immediately.
+Debug keys no longer change player level.
+
 ## User Settings
 
 
@@ -130,7 +144,6 @@ edits made only in the output folder.
 - [shop_attribs.json](FlorrDefence/res/config/shop_attribs.json): Shop contents and refresh intervals.
 - [talent_attribs.json](FlorrDefence/res/config/talent_attribs.json): Talent buffs and costs.
 - [mob_spawn_config.json](FlorrDefence/res/config/mob_spawn_config.json): Encounter budgets, pacing, and enemy themes for new games (see below).
-- [mob_spawn_legacy.json](FlorrDefence/res/config/mob_spawn_legacy.json): Original level-based spawning, used by old records.
 - [tower_descrption.json](FlorrDefence/res/config/tower_descrption.json): Text displayed when hovering over a tower.
 - [talent_description.json](FlorrDefence/res/config/talent_description.json): Text displayed when hovering over a talent.
 - [settings_default.json](FlorrDefence/res/config/settings_default.json): Defaults copied into `settings.json` on first launch. Edit the existing `settings.json` for your own save paths, autosave, and display preferences (see [User Settings](#user-settings)).
@@ -149,11 +162,8 @@ followed by an eight-second preparation break. Press **N** during preparation
 to start immediately. The status line above the inventory tabs shows the wave,
 theme, and enemies remaining. Every fifth encounter starts with a stronger enemy.
 
-Existing records without encounter data keep the original spawning system.
-New records save their mode, wave, remaining spawn queue, and timers. Use a new
-record to try encounters; loading an old record will display `Legacy spawning`.
-Setting `mode` to `legacy` in `mob_spawn_config.json` also starts new games with
-the old rules. A saved record's mode takes precedence over this setting.
+Records save the wave, remaining spawn queue, strengths, and timers. Existing
+encounter records remain supported; pre-encounter records are no longer supported.
 
 Tune [mob_spawn_config.json](FlorrDefence/res/config/mob_spawn_config.json):
 
@@ -176,7 +186,7 @@ Armor, movement, and abilities keep their original values. Offspring inherit
 their parent's strength. This bridges large rarity gaps without leaving long
 stretches of identical difficulty. Super mobs are reserved for scheduled bosses;
 bosses receive a health bar even at lower rarities. Scaled stats and the boss
-marker survive saving and loading. Legacy mobs keep the original stats.
+marker survive saving and loading.
 These are balancing estimates, not a combat simulation. Start by changing budget
 anchors to adjust difficulty or duration to adjust pacing, then test a few waves
 before changing individual enemy multipliers. Resource and reward balance still
